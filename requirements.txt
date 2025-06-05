@@ -13,4 +13,5 @@ salib>=1.4.0
 # Additional dependencies for specific features
 networkx>=2.6.0
 pathos>=0.2.8
-dill>=0.3.4 
+dill>=0.3.4
+h5py>=3.7.0 

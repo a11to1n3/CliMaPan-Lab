@@ -38,6 +38,7 @@ dependencies = [
     "networkx>=2.6.0",
     "pathos>=0.2.8",
     "dill>=0.3.4",
+    "h5py>=3.7.0",
 ]
 
 [project.optional-dependencies]
@@ -85,4 +86,4 @@ profile = "black"
 multi_line_output = 3
 line_length = 88
 known_first_party = ["climapan_lab"]
-known_third_party = ["agentpy", "numpy", "pandas", "matplotlib", "sklearn", "scipy", "joblib", "salib", "networkx", "pathos", "dill"] 
+known_third_party = ["agentpy", "numpy", "pandas", "matplotlib", "sklearn", "scipy", "joblib", "salib", "networkx", "pathos", "dill", "h5py"] 
