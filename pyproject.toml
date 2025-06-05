@@ -4,16 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "climapan-lab"
-version = "1.0.0"
+version = "0.0.1"
 authors = [
-    {name = "CliMaPan-Lab Team", email = "contact@climapan-lab.org"},
+    {name = "CliMaPan-Lab Team", email = "duyanhpham[at]outlook.com"},
 ]
 description = "Climate-Pandemic Economic Modeling Laboratory"
 readme = "README.md"
 license = {file = "LICENSE"}
 requires-python = ">=3.8"
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",

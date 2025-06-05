@@ -8,4 +8,4 @@ This module exports the main EconModel class.
 from .src.models import EconModel
 
 # Export for convenience
-__all__ = ['EconModel'] 
+__all__ = ["EconModel"]

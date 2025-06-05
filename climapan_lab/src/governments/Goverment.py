@@ -5,8 +5,7 @@ import pandas as pd
 
 
 class Government(ap.Agent):
-
-    """ A government agent """
+    """A government agent"""
 
     def setup(self):
         self.taxRate = self.p.taxRate
@@ -20,19 +19,21 @@ class Government(ap.Agent):
         self.bond_list = [0]
         self.iB = self.p.iB
 
-
-
     def checkConsistency(self):
         return self.expenditure == self.totalTaxes
 
     def agentAssign(self):
         # short out agents without loanDemand > 0
         # updateConsumerList = self.model.consumer_agents.select(self.model.consumer_agents.newCreditAsked > 0)
-        updateCSFList = self.model.csfirm_agents.select(self.model.csfirm_agents.bankrupt == True)
-        updateCPList = self.model.cpfirm_agents.select(self.model.cpfirm_agents.bankrupt == True)
-        
-        #self.orderedAgentsInterestsRaw = np.argsort(np.concatenate([updateCSFList.defaultProb, updateCPList.defaultProb, self.model.greenEFirm.defaultProb, self.model.brownEFirm.defaultProb]))
-        #self.orderedAgentsInterests = np.concatenate([updateCSFList.id, updateCPList.id, self.model.greenEFirm.id, self.model.brownEFirm.id])[self.orderedAgentsInterestsRaw]
+        updateCSFList = self.model.csfirm_agents.select(
+            self.model.csfirm_agents.bankrupt == True
+        )
+        updateCPList = self.model.cpfirm_agents.select(
+            self.model.cpfirm_agents.bankrupt == True
+        )
+
+        # self.orderedAgentsInterestsRaw = np.argsort(np.concatenate([updateCSFList.defaultProb, updateCPList.defaultProb, self.model.greenEFirm.defaultProb, self.model.brownEFirm.defaultProb]))
+        # self.orderedAgentsInterests = np.concatenate([updateCSFList.id, updateCPList.id, self.model.greenEFirm.id, self.model.brownEFirm.id])[self.orderedAgentsInterestsRaw]
 
     # def _calculate_wealth(self, agent):
     #     if agent.getEmploymentState():
@@ -44,10 +45,10 @@ class Government(ap.Agent):
     #         if self.numberOfEmployed > 0:
     #             self.numberOfEmployed -= 1
 
-#         wealth = agent.getWealth()
+    #         wealth = agent.getWealth()
 
     def _calculate_firm_bailout(self, agent):
-        '''
+        """
         This internal function of the Bank class is used to represent the demands
         between firm agents and the bank
 
@@ -56,31 +57,38 @@ class Government(ap.Agent):
             agent: The target firm agent
         ---
         Returns:
-        '''
+        """
         if agent.getNetWorth() < 0:
             self.expenditure -= np.sum(agent.getNetWorth())
 
-
-### Direct Transfers to Households:
+    ### Direct Transfers to Households:
     def transfer_expenditure(self, value):
         self.transfer += value
 
-### put the government calculation here (unemployment dole, tax)
+    ### put the government calculation here (unemployment dole, tax)
     def E_Gov(self):
-        self.expenditure = self.p.unemploymentDole * sum(np.array(self.model.aliveConsumers.getUnemploymentState() == 1)) + self.fiscal
+        self.expenditure = (
+            self.p.unemploymentDole
+            * sum(np.array(self.model.aliveConsumers.getUnemploymentState() == 1))
+            + self.fiscal
+        )
         return self.expenditure
-    
+
     def UE_Gov(self):
-        self.ue_gov = self.p.unemploymentDole * sum(np.array(self.model.aliveConsumers.getUnemploymentState() == 1))
+        self.ue_gov = self.p.unemploymentDole * sum(
+            np.array(self.model.aliveConsumers.getUnemploymentState() == 1)
+        )
         return self.ue_gov
 
     def update_budget(self, value):
         self.budget += value
 
-# budget balance condition:
-### Government issue bond to cover any deficit:
+    # budget balance condition:
+    ### Government issue bond to cover any deficit:
     def issue_bond(self):
         if self.tax >= self.expenditure + (1 + self.iB) * np.sum(self.bond_list):
             self.bond = 0
         else:
-            self.bond = self.expenditure + (1 + self.iB) * np.sum(self.bond_list) - self.tax
+            self.bond = (
+                self.expenditure + (1 + self.iB) * np.sum(self.bond_list) - self.tax
+            )

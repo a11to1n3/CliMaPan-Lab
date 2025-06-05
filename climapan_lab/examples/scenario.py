@@ -15,14 +15,18 @@ class load_data:
     def __init__(self, result, results_base_path="results"):
         """
         Load simulation data from results directory.
-        
+
         Args:
             result: Name of the result directory
             results_base_path: Base path for results (default: "results")
         """
         self.data_folder = f"{results_base_path}/{result}"
-        self.data_table = pd.read_csv(f"{self.data_folder}/single_run.csv.gz", compression="gzip")
-        self.consumption = np.load(f"{self.data_folder}/Consumption.npy", allow_pickle=True)
+        self.data_table = pd.read_csv(
+            f"{self.data_folder}/single_run.csv.gz", compression="gzip"
+        )
+        self.consumption = np.load(
+            f"{self.data_folder}/Consumption.npy", allow_pickle=True
+        )
         self.employment = np.load(f"{self.data_folder}/Employed.npy", allow_pickle=True)
         self.unemployment = np.load(f"{self.data_folder}/UnemploymentRate.npy")
         self.bi = np.load(f"{self.data_folder}/BrownInvestments.npy", allow_pickle=True)
@@ -30,56 +34,116 @@ class load_data:
         self.gdp = np.load(f"{self.data_folder}/GDP.npy", allow_pickle=True)
         self.loans = np.load(f"{self.data_folder}/Loans.npy", allow_pickle=True)
         self.banklqr = np.load(f"{self.data_folder}/BankLDR.npy", allow_pickle=True)
-        self.bankdeposit = np.load(f"{self.data_folder}/BankDeposits.npy", allow_pickle=True)
-        self.csdeposit = np.load(f"{self.data_folder}/CSDeposit.npy",allow_pickle=True)
+        self.bankdeposit = np.load(
+            f"{self.data_folder}/BankDeposits.npy", allow_pickle=True
+        )
+        self.csdeposit = np.load(f"{self.data_folder}/CSDeposit.npy", allow_pickle=True)
         self.cpdeposit = np.load(f"{self.data_folder}/CPDeposit.npy", allow_pickle=True)
-        self.csdefaultP = np.load(f"{self.data_folder}/CSCreditDefaultRisk.npy",allow_pickle=True)
-        self.cpdefaultP = np.load(f"{self.data_folder}/CPCreditDefaultRisk.npy",allow_pickle=True)
-        self.csprofit = np.load(f"{self.data_folder}/CSNetProfits.npy", allow_pickle=True)
-        self.cpprofit = np.load(f"{self.data_folder}/CPNetProfits.npy", allow_pickle=True)
+        self.csdefaultP = np.load(
+            f"{self.data_folder}/CSCreditDefaultRisk.npy", allow_pickle=True
+        )
+        self.cpdefaultP = np.load(
+            f"{self.data_folder}/CPCreditDefaultRisk.npy", allow_pickle=True
+        )
+        self.csprofit = np.load(
+            f"{self.data_folder}/CSNetProfits.npy", allow_pickle=True
+        )
+        self.cpprofit = np.load(
+            f"{self.data_folder}/CPNetProfits.npy", allow_pickle=True
+        )
         self.fiscal = np.load(f"{self.data_folder}/FiscalPolicy.npy", allow_pickle=True)
-        self.csnetworth = np.load(f"{self.data_folder}/CSNetWorth.npy", allow_pickle=True)
-        self.dte = np.load(f"{self.data_folder}/BankLoanOverEquity.npy", allow_pickle=True)
-        self.non_loan = np.load(f"{self.data_folder}/NonPerformingLoan.npy", allow_pickle=True)
+        self.csnetworth = np.load(
+            f"{self.data_folder}/CSNetWorth.npy", allow_pickle=True
+        )
+        self.dte = np.load(
+            f"{self.data_folder}/BankLoanOverEquity.npy", allow_pickle=True
+        )
+        self.non_loan = np.load(
+            f"{self.data_folder}/NonPerformingLoan.npy", allow_pickle=True
+        )
         self.bankdte = np.load(f"{self.data_folder}/BankDTE.npy", allow_pickle=True)
-        self.csloanpayment = np.load(f"{self.data_folder}/CSLoanPayment.npy", allow_pickle=True)
-        self.cploanpayment = np.load(f"{self.data_folder}/CPLoanPayment.npy", allow_pickle=True)
+        self.csloanpayment = np.load(
+            f"{self.data_folder}/CSLoanPayment.npy", allow_pickle=True
+        )
+        self.cploanpayment = np.load(
+            f"{self.data_folder}/CPLoanPayment.npy", allow_pickle=True
+        )
         self.cswage = np.load(f"{self.data_folder}/CSWageBill.npy", allow_pickle=True)
         self.cpwage = np.load(f"{self.data_folder}/CPWageBill.npy", allow_pickle=True)
-        self.cscost = np.load(f"{self.data_folder}/CSProductionCost.npy", allow_pickle=True)
-        self.cpcost = np.load(f"{self.data_folder}/CPProductionCost.npy", allow_pickle=True)
-        self.csinvestment = np.load(f"{self.data_folder}/CSCapitalInvestment.npy", allow_pickle=True)
+        self.cscost = np.load(
+            f"{self.data_folder}/CSProductionCost.npy", allow_pickle=True
+        )
+        self.cpcost = np.load(
+            f"{self.data_folder}/CPProductionCost.npy", allow_pickle=True
+        )
+        self.csinvestment = np.load(
+            f"{self.data_folder}/CSCapitalInvestment.npy", allow_pickle=True
+        )
         self.csprice = np.load(f"{self.data_folder}/CSPrice.npy", allow_pickle=True)
         self.cpprice = np.load(f"{self.data_folder}/CPPrice.npy", allow_pickle=True)
         self.csucost = np.load(f"{self.data_folder}/CSUCost.npy", allow_pickle=True)
         self.cpucost = np.load(f"{self.data_folder}/CPUCost.npy", allow_pickle=True)
         self.cpsale = np.load(f"{self.data_folder}/CPSale.npy", allow_pickle=True)
         self.cssale = np.load(f"{self.data_folder}/CSSale.npy", allow_pickle=True)
-        self.cssoldproduct = np.load(f"{self.data_folder}/CSSoldProducts.npy", allow_pickle=True)
-        self.cpsoldproduct = np.load(f"{self.data_folder}/CPSoldProducts.npy", allow_pickle=True)
-        self.csbankrupt = np.load(f"{self.data_folder}/CSNumBankrupt.npy", allow_pickle=True)
-        self.cpbankrupt = np.load(f"{self.data_folder}/CPNumBankrupt.npy", allow_pickle=True)
-        self.expenditure = np.load(f"{self.data_folder}/Expenditures.npy", allow_pickle=True)
-        self.uexpenditure = np.load(f"{self.data_folder}/UnemploymentExpenditure.npy", allow_pickle=True)
-        self.cscapacity = np.load(f"{self.data_folder}/CScapacity.npy", allow_pickle=True)
-        self.cpcapacity = np.load(f"{self.data_folder}/CPcapacity.npy", allow_pickle=True)
+        self.cssoldproduct = np.load(
+            f"{self.data_folder}/CSSoldProducts.npy", allow_pickle=True
+        )
+        self.cpsoldproduct = np.load(
+            f"{self.data_folder}/CPSoldProducts.npy", allow_pickle=True
+        )
+        self.csbankrupt = np.load(
+            f"{self.data_folder}/CSNumBankrupt.npy", allow_pickle=True
+        )
+        self.cpbankrupt = np.load(
+            f"{self.data_folder}/CPNumBankrupt.npy", allow_pickle=True
+        )
+        self.expenditure = np.load(
+            f"{self.data_folder}/Expenditures.npy", allow_pickle=True
+        )
+        self.uexpenditure = np.load(
+            f"{self.data_folder}/UnemploymentExpenditure.npy", allow_pickle=True
+        )
+        self.cscapacity = np.load(
+            f"{self.data_folder}/CScapacity.npy", allow_pickle=True
+        )
+        self.cpcapacity = np.load(
+            f"{self.data_folder}/CPcapacity.npy", allow_pickle=True
+        )
         self.csk = np.load(f"{self.data_folder}/CSCapital.npy", allow_pickle=True)
-        self.wage = np.load(f"{self.data_folder}/Wage.npy", allow_pickle=True)      
-        self.tax =np.load(f"{self.data_folder}/TotalTaxes.npy", allow_pickle=True)
-        self.deposit =np.load(f"{self.data_folder}/BankDeposits.npy", allow_pickle=True)
-        self.loan_demand =np.load(f"{self.data_folder}/TotalLoanDemand.npy", allow_pickle=True)
-        self.BankEquity = np.load(f"{self.data_folder}/BankEquity.npy", allow_pickle=True)
-        self.inflation = np.load(f"{self.data_folder}/InflationRate.npy", allow_pickle=True)
-        self.geprofit = np.load(f"{self.data_folder}/GENetProfits.npy", allow_pickle=True)
-        self.beprofit = np.load(f"{self.data_folder}/BENetProfits.npy", allow_pickle=True)
-        self.profitmargin = np.load(f"{self.data_folder}/CSMargin.npy", allow_pickle=True)
+        self.wage = np.load(f"{self.data_folder}/Wage.npy", allow_pickle=True)
+        self.tax = np.load(f"{self.data_folder}/TotalTaxes.npy", allow_pickle=True)
+        self.deposit = np.load(
+            f"{self.data_folder}/BankDeposits.npy", allow_pickle=True
+        )
+        self.loan_demand = np.load(
+            f"{self.data_folder}/TotalLoanDemand.npy", allow_pickle=True
+        )
+        self.BankEquity = np.load(
+            f"{self.data_folder}/BankEquity.npy", allow_pickle=True
+        )
+        self.inflation = np.load(
+            f"{self.data_folder}/InflationRate.npy", allow_pickle=True
+        )
+        self.geprofit = np.load(
+            f"{self.data_folder}/GENetProfits.npy", allow_pickle=True
+        )
+        self.beprofit = np.load(
+            f"{self.data_folder}/BENetProfits.npy", allow_pickle=True
+        )
+        self.profitmargin = np.load(
+            f"{self.data_folder}/CSMargin.npy", allow_pickle=True
+        )
 
         try:
-            self.infectdaily = np.load(f"{self.data_folder}/Infection.npy", allow_pickle=True)
+            self.infectdaily = np.load(
+                f"{self.data_folder}/Infection.npy", allow_pickle=True
+            )
         except FileNotFoundError:
             self.infectdaily = np.zeros(120)
         try:
-            self.susceptible = np.load(f"{self.data_folder}/Susceptible.npy", allow_pickle=True)
+            self.susceptible = np.load(
+                f"{self.data_folder}/Susceptible.npy", allow_pickle=True
+            )
         except FileNotFoundError:
             self.susceptible = np.zeros(120)
         try:
@@ -91,7 +155,9 @@ class load_data:
         except FileNotFoundError:
             self.mild = np.zeros(120)
         try:
-            self.critical = np.load(f"{self.data_folder}/critical.npy", allow_pickle=True)
+            self.critical = np.load(
+                f"{self.data_folder}/critical.npy", allow_pickle=True
+            )
         except FileNotFoundError:
             self.critical = np.zeros(120)
         try:
@@ -107,20 +173,24 @@ class load_data:
         except FileNotFoundError:
             self.dead = np.zeros(120)
         try:
-            self.emit = np.load(f"{self.data_folder}/ClimateC02Concentration.npy", allow_pickle=True)
+            self.emit = np.load(
+                f"{self.data_folder}/ClimateC02Concentration.npy", allow_pickle=True
+            )
         except FileNotFoundError:
             self.emit = np.zeros(120)
-        try:    
-            self.temp = np.load(f"{self.data_folder}/ClimateTemperature.npy", allow_pickle=True)
+        try:
+            self.temp = np.load(
+                f"{self.data_folder}/ClimateTemperature.npy", allow_pickle=True
+            )
         except FileNotFoundError:
             self.temp = np.zeros(120)
 
     def tolist(self):
         for key, value in self.__dict__.items():
-                if isinstance(value, np.ndarray):
-                    self.__dict__[key] = value.tolist()
+            if isinstance(value, np.ndarray):
+                self.__dict__[key] = value.tolist()
 
-    def prep(self, cov = False, climate = False):
+    def prep(self, cov=False, climate=False):
         self.gdp = [x for x in self.gdp if x is not None]
         self.inflation = [x for x in self.inflation if x is not None]
         self.tax = [x for x in self.tax if x is not None]
@@ -130,7 +200,7 @@ class load_data:
         self.deposit = [x for x in self.deposit if x is not None]
         self.banklqr = [x for x in self.banklqr if x is not None]
         self.employment = [x for x in self.employment if x is not None]
-        self.unemployment = [x for x in self.unemployment if str(x) != 'nan']
+        self.unemployment = [x for x in self.unemployment if str(x) != "nan"]
         self.uexpenditure = [x for x in self.uexpenditure if x is not None]
         self.consumption = [x for x in self.consumption if x is not None]
         self.expenditure = [x for x in self.expenditure if x is not None]
@@ -182,8 +252,8 @@ class load_data:
             self.exposed = [x for x in self.exposed if x is not None]
             self.dead = [x for x in self.dead if x is not None]
 
-        #self.consumption = np.sum(self.consumption, axis=1)
-        #self.consumption = np.sum(self.consumption)
+        # self.consumption = np.sum(self.consumption, axis=1)
+        # self.consumption = np.sum(self.consumption)
         self.csdeposit = np.sum(self.csdeposit, axis=1)
         self.cpdeposit = np.sum(self.cpdeposit, axis=1)
         self.csloanpayment = np.sum(self.csloanpayment, axis=1)
@@ -237,15 +307,16 @@ class load_data:
                 # Handle division by zero by setting growth rate to 0
                 growth_rate = 0
             else:
-                growth_rate = ((self.loans[i] - self.loans[i - 1]) / self.loans[i - 1]) * 100
+                growth_rate = (
+                    (self.loans[i] - self.loans[i - 1]) / self.loans[i - 1]
+                ) * 100
 
             self.credit_growth.append(growth_rate)
 
         # Optionally, insert a placeholder (e.g., 0) for the first period where growth is undefined
-        self.credit_growth.insert(0, 0)  # Inserting 0 for the first period since it's the start of the series
+        self.credit_growth.insert(
+            0, 0
+        )  # Inserting 0 for the first period since it's the start of the series
 
     def smooth(self):
         pass
-
-
-

@@ -4,6 +4,7 @@ This script generates a simplified UML diagram showing the structure and relatio
 of the EconModel class and its associated agent classes with common functions.
 """
 
+
 def generate_uml_diagram():
     uml_content = """
 @startuml EconModel_Common_Functions_Diagram
@@ -251,23 +252,27 @@ end note
 """
     return uml_content
 
+
 def save_uml_diagram():
     """Save the UML diagram to a file"""
     uml_content = generate_uml_diagram()
-    
-    with open('econmodel_uml_diagram_common_functions.puml', 'w') as f:
+
+    with open("econmodel_uml_diagram_common_functions.puml", "w") as f:
         f.write(uml_content)
-    
-    print("UML diagram with common functions saved to 'econmodel_uml_diagram_common_functions.puml'")
+
+    print(
+        "UML diagram with common functions saved to 'econmodel_uml_diagram_common_functions.puml'"
+    )
     print("\nTo generate the diagram image:")
     print("1. Install PlantUML: pip install plantuml")
     print("2. Run: python -m plantuml econmodel_uml_diagram_common_functions.puml")
     print("3. Or use online PlantUML editor: http://www.plantuml.com/plantuml/uml/")
-    
+
     return uml_content
+
 
 if __name__ == "__main__":
     uml_content = save_uml_diagram()
     print("\nUML PlantUML Code with Common Functions:")
     print("=" * 50)
-    print(uml_content) 
+    print(uml_content)

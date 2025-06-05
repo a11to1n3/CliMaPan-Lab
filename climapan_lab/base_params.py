@@ -8,4 +8,4 @@ This module exports the default economic parameters for the simulation.
 from .src.params import parameters
 
 # Export as economic_params for consistency with new naming
-economic_params = parameters 
+economic_params = parameters

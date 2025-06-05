@@ -10,7 +10,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="climapan-lab",
-    version="1.0.0",
+    version="0.0.1",
     author="CliMaPan-Lab Team",
     description="Climate-Pandemic Economic Modeling Laboratory",
     long_description=long_description,
@@ -19,7 +19,7 @@ setup(
     packages=find_packages(exclude=["tests*", "docs*", "results*"]),
     include_package_data=True,
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 3 - Alpha",
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
@@ -55,4 +55,4 @@ setup(
             "climapan-example=climapan_lab.examples.simple_example:run_simple_simulation",
         ],
     },
-) 
+)

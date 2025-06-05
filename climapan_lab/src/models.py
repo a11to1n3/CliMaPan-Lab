@@ -22,10 +22,11 @@ from .climate import Climate
 from .utils import gini, _merge_edgelist, listToArray, lognormal, normal
 from .governments.Goverment import Government
 
+
 class EconModel(ap.Model):
 
     def setup(self):
-        """ Initialize the agents and network of the model. """
+        """Initialize the agents and network of the model."""
 
         # Initiate variables
 
@@ -34,9 +35,9 @@ class EconModel(ap.Model):
         self.num_worker = 0
         self.num_owner = 0
         self.fossil_fuel_price = self.p.fossil_fuel_price
-        #self.expectedInflationRate = self.p.bankCredibility * self.p.targetInflation
+        # self.expectedInflationRate = self.p.bankCredibility * self.p.targetInflation
         self.consumption_var = self.p.consumption_var
-        #self.expectedInflationRateList = []
+        # self.expectedInflationRateList = []
         self.averagePriceList = [0.5]
         self.numCSFirmBankrupt = 0
         self.numCPFirmBankrupt = 0
@@ -51,7 +52,7 @@ class EconModel(ap.Model):
         self.covidState = False
         self.lockdown = False
         self.lockdown_scale = self.p.lock_down_production_utilization
-        self.fiscalDate =np.inf
+        self.fiscalDate = np.inf
         self.fiscal_count = 0
         self.num_infection = 0
         self.num_death = 0
@@ -61,7 +62,7 @@ class EconModel(ap.Model):
         self.num_severe = 0
         self.num_critical = 0
         self.num_recover = 0
-        #self.covid_infect = 0
+        # self.covid_infect = 0
         self.covid_death = 0
         self.covid_new = 0
         self.total_good = 0
@@ -77,45 +78,64 @@ class EconModel(ap.Model):
         self.alpha_h = self.p.alpha_h
         self.alpha_f = self.p.alpha_f
         # Inititate agents
-        
+
         ## Initiate consumer agents
         self.consumer_agents = ap.AgentList(self, self.p.c_agents, Consumer)
         for i in range(len(self.consumer_agents)):
             ageRandomness = np.random.normal(0, 0.1)
 
             if ageRandomness < -0.1:
-                self.consumer_agents[i].setAgeGroup('young')
+                self.consumer_agents[i].setAgeGroup("young")
             elif ageRandomness > 0.15:
-                self.consumer_agents[i].setAgeGroup('elderly')
+                self.consumer_agents[i].setAgeGroup("elderly")
             else:
-                self.consumer_agents[i].setAgeGroup('working')
+                self.consumer_agents[i].setAgeGroup("working")
 
         count = 0
-        self.workingAgeConsumers = [idx for idx in range(len(self.consumer_agents)) if self.consumer_agents[idx].getAgeGroup() == 'working']
+        self.workingAgeConsumers = [
+            idx
+            for idx in range(len(self.consumer_agents))
+            if self.consumer_agents[idx].getAgeGroup() == "working"
+        ]
         for i in self.workingAgeConsumers:
             if count < self.p.capitalists:
-                self.consumer_agents[i].setConsumerType('capitalists')
-                self.consumer_agents[i].owner = self.consumer_agents[i].consumerType not in ["workers", None]
+                self.consumer_agents[i].setConsumerType("capitalists")
+                self.consumer_agents[i].owner = self.consumer_agents[
+                    i
+                ].consumerType not in ["workers", None]
                 self.consumer_agents[i].update_deposit(self.owner_endownment)
                 self.num_owner += 1
             elif count < self.p.capitalists + self.p.green_energy_owners:
-                self.consumer_agents[i].setConsumerType('green_energy_owners')
-                self.consumer_agents[i].owner = self.consumer_agents[i].consumerType not in ["workers", None]
+                self.consumer_agents[i].setConsumerType("green_energy_owners")
+                self.consumer_agents[i].owner = self.consumer_agents[
+                    i
+                ].consumerType not in ["workers", None]
                 self.consumer_agents[i].update_deposit(self.owner_endownment)
                 self.num_owner += 1
-            elif count < self.p.capitalists + self.p.green_energy_owners + self.p.brown_energy_owners:
-                self.consumer_agents[i].setConsumerType('brown_energy_owners')
-                self.consumer_agents[i].owner = self.consumer_agents[i].consumerType not in ["workers", None]
+            elif (
+                count
+                < self.p.capitalists
+                + self.p.green_energy_owners
+                + self.p.brown_energy_owners
+            ):
+                self.consumer_agents[i].setConsumerType("brown_energy_owners")
+                self.consumer_agents[i].owner = self.consumer_agents[
+                    i
+                ].consumerType not in ["workers", None]
                 self.consumer_agents[i].update_deposit(self.owner_endownment)
                 self.num_owner += 1
             else:
-                self.consumer_agents[i].setConsumerType('workers')
+                self.consumer_agents[i].setConsumerType("workers")
                 self.num_worker += 1
                 self.consumer_agents[i].update_deposit(self.worker_endownment)
             count += 1
 
-        self.aliveConsumers = self.consumer_agents.select(self.consumer_agents.getCovidStateAttr('state') != 'dead')
-        self.aliveConsumers = self.aliveConsumers.select(self.aliveConsumers.isDead() != True)
+        self.aliveConsumers = self.consumer_agents.select(
+            self.consumer_agents.getCovidStateAttr("state") != "dead"
+        )
+        self.aliveConsumers = self.aliveConsumers.select(
+            self.aliveConsumers.isDead() != True
+        )
 
         ## Initiate bank agents
         self.bank_agents = ap.AgentList(self, 1, Bank)
@@ -124,29 +144,43 @@ class EconModel(ap.Model):
         self.government_agents = ap.AgentList(self, self.p.g_agents, Government)
 
         ## Initiate firm agents
-        ### Consumption goods firms       
+        ### Consumption goods firms
         self.csfirm_agents = ap.AgentList(self, self.p.csf_agents, ConsumerGoodsFirm)
-        while not 'green' in self.csfirm_agents.getUseEnergy() or not 'brown' in self.csfirm_agents.getUseEnergy():
+        while (
+            not "green" in self.csfirm_agents.getUseEnergy()
+            or not "brown" in self.csfirm_agents.getUseEnergy()
+        ):
             for i in range(len(self.csfirm_agents)):
                 if np.random.uniform(0, 1) < 0.5:
-                    self.csfirm_agents[i].useEnergyType('brown')
-                    self.csfirm_agents[i].brown_firm = self.csfirm_agents[i].useEnergy == 'brown'
+                    self.csfirm_agents[i].useEnergyType("brown")
+                    self.csfirm_agents[i].brown_firm = (
+                        self.csfirm_agents[i].useEnergy == "brown"
+                    )
                 else:
-                    self.csfirm_agents[i].useEnergyType('green')
-                    self.csfirm_agents[i].brown_firm = self.csfirm_agents[i].useEnergy == 'brown'
+                    self.csfirm_agents[i].useEnergyType("green")
+                    self.csfirm_agents[i].brown_firm = (
+                        self.csfirm_agents[i].useEnergy == "brown"
+                    )
         ### Capital goods firms
         self.cpfirm_agents = ap.AgentList(self, self.p.cpf_agents, CapitalGoodsFirm)
-        while not 'green' in self.cpfirm_agents.getUseEnergy() or not 'brown' in self.cpfirm_agents.getUseEnergy():
+        while (
+            not "green" in self.cpfirm_agents.getUseEnergy()
+            or not "brown" in self.cpfirm_agents.getUseEnergy()
+        ):
             for i in range(len(self.cpfirm_agents)):
-                if np.random.beta(3,7) < 0.5:
-                    self.cpfirm_agents[i].useEnergyType('brown')
+                if np.random.beta(3, 7) < 0.5:
+                    self.cpfirm_agents[i].useEnergyType("brown")
                     self.cpfirm_agents[i].capital = 5000
-                    self.cpfirm_agents[i].brown_firm = self.cpfirm_agents[i].useEnergy == 'brown'
+                    self.cpfirm_agents[i].brown_firm = (
+                        self.cpfirm_agents[i].useEnergy == "brown"
+                    )
                 else:
-                    self.cpfirm_agents[i].useEnergyType('green')
+                    self.cpfirm_agents[i].useEnergyType("green")
                     self.cpfirm_agents[i].capital = 4200
-                    self.cpfirm_agents[i].brown_firm = self.cpfirm_agents[i].useEnergy == 'brown'
-        
+                    self.cpfirm_agents[i].brown_firm = (
+                        self.cpfirm_agents[i].useEnergy == "brown"
+                    )
+
         ### Energy firms
         self.greenEFirm = ap.AgentList(self, 1, GreenEnergyFirm)
         self.brownEFirm = ap.AgentList(self, 1, BrownEnergyFirm)
@@ -158,12 +192,12 @@ class EconModel(ap.Model):
         # GDP init
         self.GDP = 0
         for firm in self.totalFirms:
-            self.GDP += np.sum([firm.getSoldProducts()*firm.getPrice()])
-            self.sale += np.sum([firm.getSoldProducts()*firm.getPrice()])
+            self.GDP += np.sum([firm.getSoldProducts() * firm.getPrice()])
+            self.sale += np.sum([firm.getSoldProducts() * firm.getPrice()])
         for firm in self.csfirm_agents:
-            self.cssale += np.sum([firm.getSoldProducts()*firm.getPrice()])
+            self.cssale += np.sum([firm.getSoldProducts() * firm.getPrice()])
         for firm in self.cpfirm_agents:
-            self.ksale += np.sum([firm.getSoldProducts()*firm.getPrice()])
+            self.ksale += np.sum([firm.getSoldProducts() * firm.getPrice()])
         self.GDP += np.sum([self.expenditure])
 
         # Climate related module
@@ -173,34 +207,41 @@ class EconModel(ap.Model):
             self.climateModule.initGDP(self.GDP)
 
         # Initial values at time 0
-        self.gini = gini(np.array([(self.consumer_agents.getWage())+(self.consumer_agents.getIncome())]))
+        self.gini = gini(
+            np.array(
+                [(self.consumer_agents.getWage()) + (self.consumer_agents.getIncome())]
+            )
+        )
         self.consumption_gini = gini(np.array(self.consumer_agents.getConsumption()))
         self.fossil_fuel_price = copy.copy(self.p.fossil_fuel_price)
         self.today = date.fromisoformat(self.p.start_date) + timedelta(days=self.t - 1)
         self.tomorrow = self.today + timedelta(days=1)
         if not self.p.covid_settings:
-            self.covidStartDate = np.inf            
+            self.covidStartDate = np.inf
             self.fiscalDate = np.inf
         else:
-            self.covidStartDate = (date.fromisoformat(self.p.covid_start_date) - date.fromisoformat(self.p.start_date)).days #7305
+            self.covidStartDate = (
+                date.fromisoformat(self.p.covid_start_date)
+                - date.fromisoformat(self.p.start_date)
+            ).days  # 7305
             if self.p.settings in ["BAIL", "INJECTION", "S2BAU", "S3MOD"]:
                 self.fiscalDate = self.p.fiscal_time + self.covidStartDate
             else:
                 self.fiscalDate = np.inf
 
     def step(self):
-        """ Define the models' events per simulation step. """
+        """Define the models' events per simulation step."""
         self.initiate_step()
         # Check end of month
         if self.t <= self.covidStartDate:
-            if int(str(self.tomorrow).split('-')[-1]) == 1:
+            if int(str(self.tomorrow).split("-")[-1]) == 1:
                 self.month_no += 1
                 self.stepwise_forecast()
                 self.stepwise_produce()
                 self.stepwise_after_production()
                 self.stepwise_termination()
         else:
-            if not int(str(self.tomorrow).split('-')[-1]) == 1:
+            if not int(str(self.tomorrow).split("-")[-1]) == 1:
                 if self.num_infection != 0:
                     self._propagate_covid()
             else:
@@ -208,32 +249,45 @@ class EconModel(ap.Model):
                 self.stepwise_forecast()
                 self.stepwise_produce()
                 self.stepwise_after_production()
-                if (self.t >= self.fiscalDate) and self.p.covid_settings and self.p.settings in ["BAIL", "INJECTION", "S2BAU", "S3MOD"] and self.fiscal_count < 3:
+                if (
+                    (self.t >= self.fiscalDate)
+                    and self.p.covid_settings
+                    and self.p.settings in ["BAIL", "INJECTION", "S2BAU", "S3MOD"]
+                    and self.fiscal_count < 3
+                ):
                     self.fiscal_count += 1
                     self._fiscal_policy()
                     print("implement fiscal policy")
                 self.stepwise_termination()
-                  
+
     def initiate_step(self):
-        '''
+        """
         This internal function of the model is used to reset temporary variables or
         to accumulate variable every step
-        '''
+        """
         self.today += timedelta(days=1)
         self.tomorrow += timedelta(days=1)
-        self.aliveConsumers = self.aliveConsumers.select(self.aliveConsumers.getCovidStateAttr('state') != 'dead')
-        self.aliveConsumers = self.aliveConsumers.select(self.aliveConsumers.isDead() != True)
-        self.workingAgeConsumers = [idx for idx in range(len(self.aliveConsumers)) if self.aliveConsumers[idx].getAgeGroup() == 'working']
+        self.aliveConsumers = self.aliveConsumers.select(
+            self.aliveConsumers.getCovidStateAttr("state") != "dead"
+        )
+        self.aliveConsumers = self.aliveConsumers.select(
+            self.aliveConsumers.isDead() != True
+        )
+        self.workingAgeConsumers = [
+            idx
+            for idx in range(len(self.aliveConsumers))
+            if self.aliveConsumers[idx].getAgeGroup() == "working"
+        ]
         self.demand_fluctuation = normal(1, self.consumption_var)
 
         self.totalCarbonTaxes = 0
         self.totalTaxes = 0
         self.bank_agents.reset_bank()
-        
+
         [self.csfirm_agents[i].setTax(0) for i in range(len(self.csfirm_agents))]
         [self.cpfirm_agents[i].setTax(0) for i in range(len(self.cpfirm_agents))]
 
-        if int(str(self.tomorrow).split('-')[-1]) == 1:
+        if int(str(self.tomorrow).split("-")[-1]) == 1:
             self.fossil_fuel_price *= np.sum(1 + self.p.fossil_fuel_price_growth_rate)
 
         # Check covid start date
@@ -243,39 +297,107 @@ class EconModel(ap.Model):
 
         # Reset contact every new day
         if self.p.covid_settings:
-            self.num_infection = len([covidState for covidState in self.aliveConsumers.getCovidStateAttr('state') if covidState not in [None, 'susceptible', 'exposed', 'recovered', 'immunized', 'dead']])
-            #print("infection total", self.num_infection)
-            self.num_exposed = len([covidState for covidState in self.aliveConsumers.getCovidStateAttr('state') if covidState == 'exposed'])
-            self.num_death = len([covidState for covidState in self.aliveConsumers.getCovidStateAttr('state') if covidState == 'dead'])
-            self.num_susceptible = len([covidState for covidState in self.aliveConsumers.getCovidStateAttr('state') if covidState == 'susceptible'])
-            self.num_recover = len([covidState for covidState in self.aliveConsumers.getCovidStateAttr('state') if covidState in ['recovered', 'immunized']])
-            self.num_mild = len([covidState for covidState in self.aliveConsumers.getCovidStateAttr('state') if covidState == 'mild'])
-            self.num_critical = len([covidState for covidState in self.aliveConsumers.getCovidStateAttr('state') if covidState == 'critical'])
-            self.num_severe = len([covidState for covidState in self.aliveConsumers.getCovidStateAttr('state') if covidState == 'severe'])
+            self.num_infection = len(
+                [
+                    covidState
+                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
+                    if covidState
+                    not in [
+                        None,
+                        "susceptible",
+                        "exposed",
+                        "recovered",
+                        "immunized",
+                        "dead",
+                    ]
+                ]
+            )
+            # print("infection total", self.num_infection)
+            self.num_exposed = len(
+                [
+                    covidState
+                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
+                    if covidState == "exposed"
+                ]
+            )
+            self.num_death = len(
+                [
+                    covidState
+                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
+                    if covidState == "dead"
+                ]
+            )
+            self.num_susceptible = len(
+                [
+                    covidState
+                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
+                    if covidState == "susceptible"
+                ]
+            )
+            self.num_recover = len(
+                [
+                    covidState
+                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
+                    if covidState in ["recovered", "immunized"]
+                ]
+            )
+            self.num_mild = len(
+                [
+                    covidState
+                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
+                    if covidState == "mild"
+                ]
+            )
+            self.num_critical = len(
+                [
+                    covidState
+                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
+                    if covidState == "critical"
+                ]
+            )
+            self.num_severe = len(
+                [
+                    covidState
+                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
+                    if covidState == "severe"
+                ]
+            )
 
         # Terminate or continue Covid State:
-        #print("covid state", self.covidState)
+        # print("covid state", self.covidState)
         if self.p.covid_settings:
             if (self.num_infection / self.p.c_agents) <= 0.002:
                 self.covidState = False
-            else: self.covidState = True
+            else:
+                self.covidState = True
 
     def stepwise_forecast(self):
-        
-        '''
+        """
         This internal function of the model is used to make forecast for some of the
         agents for the upcoming time step, if neccessary
-        '''
+        """
 
         # Firm forecasting demand
         self._csf_forecast_demand()
         self._cpf_forecast_demand()
-        [self.csfirm_agents[i].calculate_input_demand() for i in range(len(self.csfirm_agents))]
-        [self.cpfirm_agents[i].calculate_input_demand() for i in range(len(self.cpfirm_agents))]
+        [
+            self.csfirm_agents[i].calculate_input_demand()
+            for i in range(len(self.csfirm_agents))
+        ]
+        [
+            self.cpfirm_agents[i].calculate_input_demand()
+            for i in range(len(self.cpfirm_agents))
+        ]
         if self.t > 31:
-            [self.csfirm_agents[i].production_budgeting() for i in range(len(self.csfirm_agents))]
-            [self.cpfirm_agents[i].production_budgeting() for i in range(len(self.cpfirm_agents))]
-            
+            [
+                self.csfirm_agents[i].production_budgeting()
+                for i in range(len(self.csfirm_agents))
+            ]
+            [
+                self.cpfirm_agents[i].production_budgeting()
+                for i in range(len(self.cpfirm_agents))
+            ]
+
         # Energy firm demand
         self._energy_demand()
 
@@ -291,10 +413,10 @@ class EconModel(ap.Model):
                 self.aliveConsumers[i].desired_C()
 
     def stepwise_produce(self):
-        '''
+        """
         This internal function of the model is used to propagate the production of the firm
         agents
-        '''
+        """
 
         # Energy market opens
         self.brownEFirm.produce()
@@ -307,27 +429,45 @@ class EconModel(ap.Model):
         # Check covid start date
         if self.t > self.covidStartDate and self.num_infection != 0:
             self._propagate_covid()
-        #[firm.hire() for firm in np.random.permutation(self.firms)]
+        # [firm.hire() for firm in np.random.permutation(self.firms)]
 
-        #We probably need a function to make sure unemployed ppl receive benefit here
+        # We probably need a function to make sure unemployed ppl receive benefit here
 
         # Goods and Capital firm opens
         [self.csfirm_agents[i].produce() for i in range(len(self.csfirm_agents))]
         [self.cpfirm_agents[i].produce() for i in range(len(self.cpfirm_agents))]
 
-        if (self.t >= self.fiscalDate) and self.p.covid_settings and self.p.settings == "S3MOD" and self.fiscal_count <3:
-            print(len(self.csfirm_agents.select(self.csfirm_agents.getUseEnergy() == "green")))
-            for i in range(len(self.csfirm_agents.select(self.csfirm_agents.getUseEnergy() == "green"))):
+        if (
+            (self.t >= self.fiscalDate)
+            and self.p.covid_settings
+            and self.p.settings == "S3MOD"
+            and self.fiscal_count < 3
+        ):
+            print(
+                len(
+                    self.csfirm_agents.select(
+                        self.csfirm_agents.getUseEnergy() == "green"
+                    )
+                )
+            )
+            for i in range(
+                len(
+                    self.csfirm_agents.select(
+                        self.csfirm_agents.getUseEnergy() == "green"
+                    )
+                )
+            ):
                 print("lumpsum_update")
                 print(self.csfirm_agents[i].get_actual_production())
-                self.csfirm_agents[i].update_actual_production(self.p.lumpSum / self.csfirm_agents[i].getPrice())
+                self.csfirm_agents[i].update_actual_production(
+                    self.p.lumpSum / self.csfirm_agents[i].getPrice()
+                )
                 print(self.csfirm_agents[i].get_actual_production())
 
-
-    def stepwise_after_production(self, eps = 1e-8):
-        '''
+    def stepwise_after_production(self, eps=1e-8):
+        """
         This internal function of the model is used to do jobs after production
-        '''
+        """
 
         # Firms transaction and accounting
 
@@ -341,7 +481,9 @@ class EconModel(ap.Model):
             self.csfirm_agents[i].update_capital_growth()
 
             self.bank_agents.NPL += self.csfirm_agents[i].non_loan
-            self.bank_agents.profit -= (1 + self.bankIL) * self.csfirm_agents[i].non_loan
+            self.bank_agents.profit -= (1 + self.bankIL) * self.csfirm_agents[
+                i
+            ].non_loan
             self.csfirm_agents[i].reset_non_loan()
         for i in range(len(self.cpfirm_agents)):
             self.cpfirm_agents[i].compute_net_profit()
@@ -353,7 +495,7 @@ class EconModel(ap.Model):
         if self.p.verboseFlag:
             print("____bank profit", self.bank_agents.profit)
             print("___bank DTE", self.bank_agents.DTE)
-                #print("capital firm growth", self.cpfirm_agents[i].capital, self.cpfirm_agents[i].capital_growth)
+            # print("capital firm growth", self.cpfirm_agents[i].capital, self.cpfirm_agents[i].capital_growth)
             print("total non loan", self.bank_agents.NPL)
         self.brownEFirm.compute_net_profit()
         self.greenEFirm.compute_net_profit()
@@ -361,15 +503,45 @@ class EconModel(ap.Model):
         self.greenEFirm.update_capital_growth()
         self.totalFirms.update_capital_value()
         ## Accounting owner's income
-        self.capitalistsIncome = (sum([i for i in self.cpfirm_agents.getOwnerIncome() if i >=0]) + sum([i for i in self.csfirm_agents.getOwnerIncome() if i >=0])) / self.p.capitalists * (1 - self.p.incomeTaxRate)
-        #print("capitalist income", self.capitalistsIncome)
-        self.totalTaxes += (sum([i for i in self.cpfirm_agents.getOwnerIncome() if i >=0]) + sum([i for i in self.csfirm_agents.getOwnerIncome() if i >=0])) / self.p.capitalists * self.p.incomeTaxRate
-        self.greenEnergyOwnersIncome = (sum([i for i in self.greenEFirm.getOwnerIncome() if i >=0])) / self.p.green_energy_owners * (1 - self.p.incomeTaxRate)
-        self.totalTaxes += (sum([i for i in self.greenEFirm.getOwnerIncome() if i >=0])) / self.p.green_energy_owners * self.p.incomeTaxRate
-        #print("green income", self.greenEnergyOwnersIncome)
-        self.brownEnergyOwnersIncome = (sum([i for i in self.brownEFirm.getOwnerIncome() if i >=0])) / self.p.brown_energy_owners * (1 - self.p.incomeTaxRate)
-        #print("brown income", self.brownEnergyOwnersIncome)
-        self.totalTaxes += (sum([i for i in self.brownEFirm.getOwnerIncome() if i >=0])) / self.p.brown_energy_owners * self.p.incomeTaxRate 
+        self.capitalistsIncome = (
+            (
+                sum([i for i in self.cpfirm_agents.getOwnerIncome() if i >= 0])
+                + sum([i for i in self.csfirm_agents.getOwnerIncome() if i >= 0])
+            )
+            / self.p.capitalists
+            * (1 - self.p.incomeTaxRate)
+        )
+        # print("capitalist income", self.capitalistsIncome)
+        self.totalTaxes += (
+            (
+                sum([i for i in self.cpfirm_agents.getOwnerIncome() if i >= 0])
+                + sum([i for i in self.csfirm_agents.getOwnerIncome() if i >= 0])
+            )
+            / self.p.capitalists
+            * self.p.incomeTaxRate
+        )
+        self.greenEnergyOwnersIncome = (
+            (sum([i for i in self.greenEFirm.getOwnerIncome() if i >= 0]))
+            / self.p.green_energy_owners
+            * (1 - self.p.incomeTaxRate)
+        )
+        self.totalTaxes += (
+            (sum([i for i in self.greenEFirm.getOwnerIncome() if i >= 0]))
+            / self.p.green_energy_owners
+            * self.p.incomeTaxRate
+        )
+        # print("green income", self.greenEnergyOwnersIncome)
+        self.brownEnergyOwnersIncome = (
+            (sum([i for i in self.brownEFirm.getOwnerIncome() if i >= 0]))
+            / self.p.brown_energy_owners
+            * (1 - self.p.incomeTaxRate)
+        )
+        # print("brown income", self.brownEnergyOwnersIncome)
+        self.totalTaxes += (
+            (sum([i for i in self.brownEFirm.getOwnerIncome() if i >= 0]))
+            / self.p.brown_energy_owners
+            * self.p.incomeTaxRate
+        )
 
         ## Climate progression
         if self.p.climateModuleFlag:
@@ -386,16 +558,22 @@ class EconModel(ap.Model):
         for i in self.workingAgeConsumers:
             if self.aliveConsumers[i].getConsumerType() == "capitalists":
                 self.aliveConsumers[i].setDiv(self.capitalistsIncome)
-            elif self.p.energySectorFlag and self.aliveConsumers[i].getConsumerType() == "green_energy_owners":
+            elif (
+                self.p.energySectorFlag
+                and self.aliveConsumers[i].getConsumerType() == "green_energy_owners"
+            ):
                 self.aliveConsumers[i].setDiv(self.greenEnergyOwnersIncome)
-            elif self.p.energySectorFlag and self.aliveConsumers[i].getConsumerType() == "brown_energy_owners":
+            elif (
+                self.p.energySectorFlag
+                and self.aliveConsumers[i].getConsumerType() == "brown_energy_owners"
+            ):
                 self.aliveConsumers[i].setDiv(self.brownEnergyOwnersIncome)
-        self.aliveConsumers.update_wealth() #this might be wrong, pay attention
+        self.aliveConsumers.update_wealth()  # this might be wrong, pay attention
 
     def stepwise_termination(self):
-        '''
+        """
         This internal function of the model is used to clean up and summarize stepwise variables
-        '''
+        """
 
         self.bankrupt_count = 0
         ## Check firms insolvency and update firms after bankruptcy, and bank injection
@@ -405,7 +583,7 @@ class EconModel(ap.Model):
             self.cpfirm_agents.setBankruptcy()
 
         if len(self.bankrupt_list) > 11:
-                self.bankrupt_list.pop(0)
+            self.bankrupt_list.pop(0)
         self.bankrupt_list.append(self.bankrupt_count)
         self.bankrupt_total_count = np.sum(self.bankrupt_list)
         print(self.bankrupt_total_count)
@@ -413,178 +591,328 @@ class EconModel(ap.Model):
         ## Bank and Government accounting
         self.expenditure = self.government_agents.E_Gov()
         self.ue_gov = self.government_agents.UE_Gov()
-        
+
         self.GDP = 0
         self.cssale = 0
         self.ksale = 0
 
         for firm in self.totalFirms:
-            self.GDP += np.sum([firm.getSoldProducts()*firm.getPrice()])
+            self.GDP += np.sum([firm.getSoldProducts() * firm.getPrice()])
         for firm in self.csfirm_agents:
-            self.cssale += np.sum([firm.getSoldProducts()*firm.getPrice()])
+            self.cssale += np.sum([firm.getSoldProducts() * firm.getPrice()])
         for firm in self.cpfirm_agents:
-            self.ksale += np.sum([firm.getSoldProducts()*firm.getPrice()])
+            self.ksale += np.sum([firm.getSoldProducts() * firm.getPrice()])
 
         self.GDP += np.sum([self.expenditure])
-        self.gini = gini(np.array([(self.aliveConsumers.getWage())+(self.aliveConsumers.getIncome())]))
+        self.gini = gini(
+            np.array(
+                [(self.aliveConsumers.getWage()) + (self.aliveConsumers.getIncome())]
+            )
+        )
         self.consumption_gini = gini(np.array(self.aliveConsumers.getConsumption()))
         self.csfirm_agents.resetLockDown()
         self.cpfirm_agents.resetLockDown()
 
     def update(self, eps=1e-8):
-        if int(str(self.tomorrow).split('-')[-1]) == 1:
-            self.record('date', listToArray(self.today))
-            self.record('GDP', listToArray(self.GDP))
-            self.record('Gini', self.gini)
-            self.record('People', listToArray(len(self.aliveConsumers)))
-            self.record('Gini Consumption', self.consumption_gini)
-            self.record('UnemplDole', listToArray(self.aliveConsumers.getWage())[self.aliveConsumers.getWage() == self.p.unemploymentDole])
-            self.record('Unemployment Expenditure', listToArray(self.ue_gov))
-            self.record('Owners Income', listToArray(self.aliveConsumers.getDiv()))
-            self.record('Wage', listToArray(self.aliveConsumers.getWage()))
-            #self.record('Average Income', listToArray( np.mean(self.aliveConsumers.getIncome())))
-            self.record('Employed', listToArray(self.aliveConsumers.isEmployed()))
-            self.record('Consumer Type', listToArray(self.aliveConsumers.getConsumerType()))
-            self.record('UnemploymentRate', np.sum(listToArray(self.aliveConsumers.getUnemploymentState()),axis=0) / (self.p.c_agents - self.num_owner))
-            self.record('Consumption', listToArray(self.aliveConsumers.getConsumption()))
-            self.record('Desired Consumption', listToArray(self.aliveConsumers.get_desired_consumption()))
-            self.record('Loans', listToArray(self.bank_agents.loans))
-            self.record('Bank totalLoanSupply', listToArray(self.bank_agents.totalLoanSupply))
-            self.record('Bank Equity', listToArray(self.bank_agents.equity))
-            self.record('Bank Deposits', listToArray(self.bank_agents.deposits))
-            self.record('Bank LDR', listToArray(self.bank_agents.loans / (self.bank_agents.deposits + eps)))
-            self.record('Bank Loan Demands', listToArray(self.bank_agents.totalLoanDemands))
-            self.record('Bank Loan Over Equity', listToArray(self.bank_agents.actualSuppliedLoan / (self.bank_agents.equity + eps)))
-            self.record('Bank DTE', listToArray(self.bank_agents.DTE))
-            self.record('Non Performing Loan', listToArray(self.bank_agents.NPL))
-            #self.record('Expected Inflation Rate', listToArray(self.expectedInflationRateList))
-            self.record('Inflation Rate', listToArray(self.inflationRateList))
-            self.record('Total Loan Demand', listToArray(self.bank_agents.totalLoanDemands))
-            self.record('CS Num Bankrupt', listToArray(self.numCSFirmBankrupt))
-            self.record('CS V Cost', listToArray(self.csfirm_agents.get_average_production_cost()))
-            self.record('CS U Cost', listToArray(self.csfirm_agents.get_average_production_cost()))
-            self.record('CS Firm Loans', listToArray(self.csfirm_agents.loanObtained))
-            self.record('CS Net Profits', listToArray(self.csfirm_agents.net_profit))
-            self.record('CS Capital', listToArray(self.csfirm_agents.get_capital()))
-            self.record('CS Net Profits', listToArray(self.csfirm_agents.net_profit))
-            self.record('CS Net Worth', listToArray(self.csfirm_agents.getNetWorth()))
-            self.record('CS Number of Workers', listToArray(self.csfirm_agents.countWorkers))
-            self.record('CS Number of Consumers', listToArray(self.csfirm_agents.countConsumers))
-            self.record('CS Price', listToArray(self.csfirm_agents.getPrice()))
-            self.record('CS Sold Products', listToArray(self.csfirm_agents.getSoldProducts()))
-            self.record('CS Sale', listToArray(self.cssale))
-            self.record('CS iL', listToArray(self.csfirm_agents.iL))
-            self.record('CS iF', listToArray(self.csfirm_agents.iF))
-            self.record('CS Loan Obtained', listToArray(self.csfirm_agents.loanObtained))
-            self.record('CS Deposit', listToArray(self.csfirm_agents.getDeposit()))
-            self.record('CS Margin', listToArray(self.csfirm_agents.profit_margin))
-            self.record('CS Capital Investment', listToArray(self.csfirm_agents.get_capital_investment()))
-            self.record('CS Production Cost', listToArray(self.csfirm_agents.get_average_production_cost() * self.csfirm_agents.get_actual_production()))
-            self.record('CS Capacity', listToArray(self.csfirm_agents.get_actual_production()))
-            self.record('CS Wage Bill', listToArray(self.csfirm_agents.wage_bill))
-            self.record('CS Loan Payment', listToArray(self.csfirm_agents.payback))
-            self.record('CS Credit Default Risk', listToArray(self.csfirm_agents.defaultProb))
-            self.record('CP Credit Default Risk', listToArray(self.cpfirm_agents.defaultProb))
-            self.record('CP Num Bankrupt', listToArray(self.numCPFirmBankrupt))
-            self.record('CP Firm Loans', listToArray(self.cpfirm_agents.loanObtained))
-            self.record('CP Net Profits', listToArray(self.cpfirm_agents.net_profit))
-            self.record('CP Net Worth', listToArray(self.cpfirm_agents.getNetWorth()))
-            self.record('CP Capital', listToArray(self.cpfirm_agents.get_capital()))
-            self.record('CP Price', listToArray(self.cpfirm_agents.getPrice()))
-            self.record('CP Sold Products', listToArray(self.cpfirm_agents.getSoldProducts()))
-            self.record('CP Sale', listToArray(self.ksale))
-            self.record('CP Number of Workers', listToArray(self.cpfirm_agents.countWorkers))
-            self.record('CP Number of Consumers', listToArray(self.cpfirm_agents.countConsumers))
-            self.record('CP V Cost', listToArray(self.cpfirm_agents.get_average_production_cost()))
-            self.record('CP U Cost', listToArray(self.cpfirm_agents.get_average_production_cost()))
-            self.record('CP iL', listToArray(self.cpfirm_agents.iL))
-            self.record('CP iF', listToArray(self.cpfirm_agents.iF))
-            self.record('CP Loan Obtained', listToArray(self.cpfirm_agents.loanObtained))
-            self.record('CP Deposit', listToArray(self.cpfirm_agents.getDeposit()))
-            self.record('CP Production Cost', listToArray(self.cpfirm_agents.get_average_production_cost() * self.cpfirm_agents.get_actual_production()))
-            self.record('CP Capacity', listToArray(self.cpfirm_agents.get_actual_production()))
-            self.record('CP Wage Bill', listToArray(self.cpfirm_agents.wage_bill))
-            self.record('CP Loan Payment', listToArray(self.cpfirm_agents.payback))
-
-            #Governments
-            self.record('Fiscal Policy', listToArray(self.government_agents.fiscal))
-            self.record('Expenditures', listToArray(self.expenditure))
-            self.record('Total Taxes', listToArray(self.totalTaxes))
-            self.record('Budget', listToArray(self.government_agents.budget))
-            
-            #Covid
-            self.record('Deaths', listToArray(self.covid_death))
-
-            #Investments
-            greenCapitalMeanPrice = np.mean(list(self.cpfirm_agents.select(self.cpfirm_agents.getUseEnergy()=='green').getPrice()))
-            brownCapitalMeanPrice = np.mean(list(self.cpfirm_agents.select(self.cpfirm_agents.getUseEnergy()=='brown').getPrice()))
-            greenInvestment = greenCapitalMeanPrice * ( \
-                np.sum([self.csfirm_agents.select(self.csfirm_agents.getUseEnergy()=='green').get_capital_investment()]) + \
-                np.sum([self.cpfirm_agents.select(self.cpfirm_agents.getUseEnergy()=='green').get_capital_investment()]) + \
-                np.sum([self.greenEFirm.get_capital_investment()])
+        if int(str(self.tomorrow).split("-")[-1]) == 1:
+            self.record("date", listToArray(self.today))
+            self.record("GDP", listToArray(self.GDP))
+            self.record("Gini", self.gini)
+            self.record("People", listToArray(len(self.aliveConsumers)))
+            self.record("Gini Consumption", self.consumption_gini)
+            self.record(
+                "UnemplDole",
+                listToArray(self.aliveConsumers.getWage())[
+                    self.aliveConsumers.getWage() == self.p.unemploymentDole
+                ],
             )
-            brownInvestment = brownCapitalMeanPrice * ( \
-                np.sum([self.csfirm_agents.select(self.csfirm_agents.getUseEnergy()=='brown').get_capital_investment()]) + \
-                np.sum([self.cpfirm_agents.select(self.cpfirm_agents.getUseEnergy()=='brown').get_capital_investment()])+ \
-                np.sum([self.brownEFirm.get_capital_investment()])
+            self.record("Unemployment Expenditure", listToArray(self.ue_gov))
+            self.record("Owners Income", listToArray(self.aliveConsumers.getDiv()))
+            self.record("Wage", listToArray(self.aliveConsumers.getWage()))
+            # self.record('Average Income', listToArray( np.mean(self.aliveConsumers.getIncome())))
+            self.record("Employed", listToArray(self.aliveConsumers.isEmployed()))
+            self.record(
+                "Consumer Type", listToArray(self.aliveConsumers.getConsumerType())
             )
-            self.record('Green Investments', greenInvestment)
-            self.record('Brown Investments', brownInvestment)
-            self.record('Investment', greenInvestment+brownInvestment)
+            self.record(
+                "UnemploymentRate",
+                np.sum(listToArray(self.aliveConsumers.getUnemploymentState()), axis=0)
+                / (self.p.c_agents - self.num_owner),
+            )
+            self.record(
+                "Consumption", listToArray(self.aliveConsumers.getConsumption())
+            )
+            self.record(
+                "Desired Consumption",
+                listToArray(self.aliveConsumers.get_desired_consumption()),
+            )
+            self.record("Loans", listToArray(self.bank_agents.loans))
+            self.record(
+                "Bank totalLoanSupply", listToArray(self.bank_agents.totalLoanSupply)
+            )
+            self.record("Bank Equity", listToArray(self.bank_agents.equity))
+            self.record("Bank Deposits", listToArray(self.bank_agents.deposits))
+            self.record(
+                "Bank LDR",
+                listToArray(self.bank_agents.loans / (self.bank_agents.deposits + eps)),
+            )
+            self.record(
+                "Bank Loan Demands", listToArray(self.bank_agents.totalLoanDemands)
+            )
+            self.record(
+                "Bank Loan Over Equity",
+                listToArray(
+                    self.bank_agents.actualSuppliedLoan
+                    / (self.bank_agents.equity + eps)
+                ),
+            )
+            self.record("Bank DTE", listToArray(self.bank_agents.DTE))
+            self.record("Non Performing Loan", listToArray(self.bank_agents.NPL))
+            # self.record('Expected Inflation Rate', listToArray(self.expectedInflationRateList))
+            self.record("Inflation Rate", listToArray(self.inflationRateList))
+            self.record(
+                "Total Loan Demand", listToArray(self.bank_agents.totalLoanDemands)
+            )
+            self.record("CS Num Bankrupt", listToArray(self.numCSFirmBankrupt))
+            self.record(
+                "CS V Cost",
+                listToArray(self.csfirm_agents.get_average_production_cost()),
+            )
+            self.record(
+                "CS U Cost",
+                listToArray(self.csfirm_agents.get_average_production_cost()),
+            )
+            self.record("CS Firm Loans", listToArray(self.csfirm_agents.loanObtained))
+            self.record("CS Net Profits", listToArray(self.csfirm_agents.net_profit))
+            self.record("CS Capital", listToArray(self.csfirm_agents.get_capital()))
+            self.record("CS Net Profits", listToArray(self.csfirm_agents.net_profit))
+            self.record("CS Net Worth", listToArray(self.csfirm_agents.getNetWorth()))
+            self.record(
+                "CS Number of Workers", listToArray(self.csfirm_agents.countWorkers)
+            )
+            self.record(
+                "CS Number of Consumers", listToArray(self.csfirm_agents.countConsumers)
+            )
+            self.record("CS Price", listToArray(self.csfirm_agents.getPrice()))
+            self.record(
+                "CS Sold Products", listToArray(self.csfirm_agents.getSoldProducts())
+            )
+            self.record("CS Sale", listToArray(self.cssale))
+            self.record("CS iL", listToArray(self.csfirm_agents.iL))
+            self.record("CS iF", listToArray(self.csfirm_agents.iF))
+            self.record(
+                "CS Loan Obtained", listToArray(self.csfirm_agents.loanObtained)
+            )
+            self.record("CS Deposit", listToArray(self.csfirm_agents.getDeposit()))
+            self.record("CS Margin", listToArray(self.csfirm_agents.profit_margin))
+            self.record(
+                "CS Capital Investment",
+                listToArray(self.csfirm_agents.get_capital_investment()),
+            )
+            self.record(
+                "CS Production Cost",
+                listToArray(
+                    self.csfirm_agents.get_average_production_cost()
+                    * self.csfirm_agents.get_actual_production()
+                ),
+            )
+            self.record(
+                "CS Capacity", listToArray(self.csfirm_agents.get_actual_production())
+            )
+            self.record("CS Wage Bill", listToArray(self.csfirm_agents.wage_bill))
+            self.record("CS Loan Payment", listToArray(self.csfirm_agents.payback))
+            self.record(
+                "CS Credit Default Risk", listToArray(self.csfirm_agents.defaultProb)
+            )
+            self.record(
+                "CP Credit Default Risk", listToArray(self.cpfirm_agents.defaultProb)
+            )
+            self.record("CP Num Bankrupt", listToArray(self.numCPFirmBankrupt))
+            self.record("CP Firm Loans", listToArray(self.cpfirm_agents.loanObtained))
+            self.record("CP Net Profits", listToArray(self.cpfirm_agents.net_profit))
+            self.record("CP Net Worth", listToArray(self.cpfirm_agents.getNetWorth()))
+            self.record("CP Capital", listToArray(self.cpfirm_agents.get_capital()))
+            self.record("CP Price", listToArray(self.cpfirm_agents.getPrice()))
+            self.record(
+                "CP Sold Products", listToArray(self.cpfirm_agents.getSoldProducts())
+            )
+            self.record("CP Sale", listToArray(self.ksale))
+            self.record(
+                "CP Number of Workers", listToArray(self.cpfirm_agents.countWorkers)
+            )
+            self.record(
+                "CP Number of Consumers", listToArray(self.cpfirm_agents.countConsumers)
+            )
+            self.record(
+                "CP V Cost",
+                listToArray(self.cpfirm_agents.get_average_production_cost()),
+            )
+            self.record(
+                "CP U Cost",
+                listToArray(self.cpfirm_agents.get_average_production_cost()),
+            )
+            self.record("CP iL", listToArray(self.cpfirm_agents.iL))
+            self.record("CP iF", listToArray(self.cpfirm_agents.iF))
+            self.record(
+                "CP Loan Obtained", listToArray(self.cpfirm_agents.loanObtained)
+            )
+            self.record("CP Deposit", listToArray(self.cpfirm_agents.getDeposit()))
+            self.record(
+                "CP Production Cost",
+                listToArray(
+                    self.cpfirm_agents.get_average_production_cost()
+                    * self.cpfirm_agents.get_actual_production()
+                ),
+            )
+            self.record(
+                "CP Capacity", listToArray(self.cpfirm_agents.get_actual_production())
+            )
+            self.record("CP Wage Bill", listToArray(self.cpfirm_agents.wage_bill))
+            self.record("CP Loan Payment", listToArray(self.cpfirm_agents.payback))
 
-            self.record('GE Net Profits', listToArray(self.greenEFirm.net_profit))
-            self.record('GE Price', listToArray(self.greenEFirm.getPrice()))    
-            self.record('GE Capital Demand', listToArray(self.greenEFirm.get_capital_demand()))
-            self.record('GE Deposit', listToArray(self.greenEFirm.getDeposit()))
-            self.record('BE Net Profits', listToArray(self.brownEFirm.net_profit))
-            self.record('BE Price', listToArray(self.brownEFirm.getPrice()))
-            self.record('BE Capital Demand', listToArray(self.brownEFirm.get_capital_demand()))
-            self.record('BE Deposit', listToArray(self.brownEFirm.getDeposit()))
+            # Governments
+            self.record("Fiscal Policy", listToArray(self.government_agents.fiscal))
+            self.record("Expenditures", listToArray(self.expenditure))
+            self.record("Total Taxes", listToArray(self.totalTaxes))
+            self.record("Budget", listToArray(self.government_agents.budget))
+
+            # Covid
+            self.record("Deaths", listToArray(self.covid_death))
+
+            # Investments
+            greenCapitalMeanPrice = np.mean(
+                list(
+                    self.cpfirm_agents.select(
+                        self.cpfirm_agents.getUseEnergy() == "green"
+                    ).getPrice()
+                )
+            )
+            brownCapitalMeanPrice = np.mean(
+                list(
+                    self.cpfirm_agents.select(
+                        self.cpfirm_agents.getUseEnergy() == "brown"
+                    ).getPrice()
+                )
+            )
+            greenInvestment = greenCapitalMeanPrice * (
+                np.sum(
+                    [
+                        self.csfirm_agents.select(
+                            self.csfirm_agents.getUseEnergy() == "green"
+                        ).get_capital_investment()
+                    ]
+                )
+                + np.sum(
+                    [
+                        self.cpfirm_agents.select(
+                            self.cpfirm_agents.getUseEnergy() == "green"
+                        ).get_capital_investment()
+                    ]
+                )
+                + np.sum([self.greenEFirm.get_capital_investment()])
+            )
+            brownInvestment = brownCapitalMeanPrice * (
+                np.sum(
+                    [
+                        self.csfirm_agents.select(
+                            self.csfirm_agents.getUseEnergy() == "brown"
+                        ).get_capital_investment()
+                    ]
+                )
+                + np.sum(
+                    [
+                        self.cpfirm_agents.select(
+                            self.cpfirm_agents.getUseEnergy() == "brown"
+                        ).get_capital_investment()
+                    ]
+                )
+                + np.sum([self.brownEFirm.get_capital_investment()])
+            )
+            self.record("Green Investments", greenInvestment)
+            self.record("Brown Investments", brownInvestment)
+            self.record("Investment", greenInvestment + brownInvestment)
+
+            self.record("GE Net Profits", listToArray(self.greenEFirm.net_profit))
+            self.record("GE Price", listToArray(self.greenEFirm.getPrice()))
+            self.record(
+                "GE Capital Demand", listToArray(self.greenEFirm.get_capital_demand())
+            )
+            self.record("GE Deposit", listToArray(self.greenEFirm.getDeposit()))
+            self.record("BE Net Profits", listToArray(self.brownEFirm.net_profit))
+            self.record("BE Price", listToArray(self.brownEFirm.getPrice()))
+            self.record(
+                "BE Capital Demand", listToArray(self.brownEFirm.get_capital_demand())
+            )
+            self.record("BE Deposit", listToArray(self.brownEFirm.getDeposit()))
 
             if self.p.climateModuleFlag:
-                self.record('Climate C02 Taxes', listToArray(self.totalCarbonTaxes))
-                self.record('Climate C02', listToArray(self.climateModule.CO2))
-                self.record('Climate EM', listToArray(self.climateModule.EM))
-                self.record('Climate EM Stepwise', listToArray(self.climateModule.step_EM))
-                self.record('Climate C02 Concentration', listToArray(self.climateModule.conc_t))
-                self.record('Climate Radiative Forcing', listToArray(self.climateModule.RF))
-                self.record('Climate Temperature', listToArray(self.climateModule.T))
-                
+                self.record("Climate C02 Taxes", listToArray(self.totalCarbonTaxes))
+                self.record("Climate C02", listToArray(self.climateModule.CO2))
+                self.record("Climate EM", listToArray(self.climateModule.EM))
+                self.record(
+                    "Climate EM Stepwise", listToArray(self.climateModule.step_EM)
+                )
+                self.record(
+                    "Climate C02 Concentration", listToArray(self.climateModule.conc_t)
+                )
+                self.record(
+                    "Climate Radiative Forcing", listToArray(self.climateModule.RF)
+                )
+                self.record("Climate Temperature", listToArray(self.climateModule.T))
+
             try:
-                self.record('BankDataWriter', listToArray(self.bank_agents.bankDataWriter)[-1][-1])
-                self.record('CSFirmDataWriter', listToArray(self.csfirm_agents.firmDataWriter)[-1][-1])
-                self.record('CPFirmDataWriter', listToArray(self.cpfirm_agents.firmDataWriter)[-1][-1])
+                self.record(
+                    "BankDataWriter",
+                    listToArray(self.bank_agents.bankDataWriter)[-1][-1],
+                )
+                self.record(
+                    "CSFirmDataWriter",
+                    listToArray(self.csfirm_agents.firmDataWriter)[-1][-1],
+                )
+                self.record(
+                    "CPFirmDataWriter",
+                    listToArray(self.cpfirm_agents.firmDataWriter)[-1][-1],
+                )
             except:
-                self.record('BankDataWriter', listToArray(self.bank_agents.bankDataWriter))
-                self.record('CSFirmDataWriter', listToArray(self.csfirm_agents.firmDataWriter))
-                self.record('CPFirmDataWriter', listToArray(self.cpfirm_agents.firmDataWriter))
+                self.record(
+                    "BankDataWriter", listToArray(self.bank_agents.bankDataWriter)
+                )
+                self.record(
+                    "CSFirmDataWriter", listToArray(self.csfirm_agents.firmDataWriter)
+                )
+                self.record(
+                    "CPFirmDataWriter", listToArray(self.cpfirm_agents.firmDataWriter)
+                )
         elif self.p.covid_settings is not None and self.t > self.covidStartDate:
-            self.record('Covid State', listToArray(self.consumer_agents.getCovidStateAttr('state')))
-            self.record('Infection', listToArray(self.num_infection))
-            self.record('Exposed', listToArray(self.num_exposed))
-            self.record('Susceptible', listToArray(self.num_susceptible))
-            self.record('Recover', listToArray(self.num_recover))
-            self.record('Dead', listToArray(self.num_death))
-            self.record('mild', listToArray(self.num_mild))
-            self.record('severe', listToArray(self.num_severe))
-            self.record('critical', listToArray(self.num_critical))
-            
+            self.record(
+                "Covid State",
+                listToArray(self.consumer_agents.getCovidStateAttr("state")),
+            )
+            self.record("Infection", listToArray(self.num_infection))
+            self.record("Exposed", listToArray(self.num_exposed))
+            self.record("Susceptible", listToArray(self.num_susceptible))
+            self.record("Recover", listToArray(self.num_recover))
+            self.record("Dead", listToArray(self.num_death))
+            self.record("mild", listToArray(self.num_mild))
+            self.record("severe", listToArray(self.num_severe))
+            self.record("critical", listToArray(self.num_critical))
+
     def end(self):
-        """ Record evaluation measures at the end of the simulation. """
+        """Record evaluation measures at the end of the simulation."""
 
     def _csf_forecast_demand(self):
         aggregated_demand = 0
         for i in np.random.permutation(self.workingAgeConsumers):
             aConsumer = self.aliveConsumers[i]
-            #if i % 10 == 9: print("consumer demand", aConsumer.get_desired_consumption())
+            # if i % 10 == 9: print("consumer demand", aConsumer.get_desired_consumption())
             aggregated_demand += aConsumer.get_desired_consumption()
 
         for i in range(len(self.csfirm_agents)):
             chosenFirm = self.csfirm_agents[i]
             chosenFirm.prepareForecast()
             chosenFirm.set_aggregate_demand(aggregated_demand * chosenFirm.market_share)
-            #print("aggregate demand", aggregated_demand * chosenFirm.market_share)
-            #print("market share", chosenFirm.market_share)
+            # print("aggregate demand", aggregated_demand * chosenFirm.market_share)
+            # print("market share", chosenFirm.market_share)
 
     def _csf_transaction(self):
 
@@ -596,30 +924,49 @@ class EconModel(ap.Model):
             self.countConsumersPerCompanyC[i] = 0
             ordered_price[i] = self.csfirm_agents[i].getPrice()
             self.csfirm_agents[i].set_sale_record(0)
-    
+
         # lambda is mapping item to item[1]; the function indicates that we're sorting based on the price, not the name of the companies
-        ordered_price = OrderedDict(sorted(ordered_price.items(), key=lambda item: item[1]))
+        ordered_price = OrderedDict(
+            sorted(ordered_price.items(), key=lambda item: item[1])
+        )
         self.orderedCompaniesProductionC = OrderedDict()
         total_production = 0
-        for company, price in ordered_price.items(): #this will be wrong since we will reintroduce price later
-            #print("sale price", price)
+        for (
+            company,
+            price,
+        ) in (
+            ordered_price.items()
+        ):  # this will be wrong since we will reintroduce price later
+            # print("sale price", price)
             if not self.csfirm_agents[company].lockdown:
-                self.orderedCompaniesProductionC[company] = self.csfirm_agents[company].get_actual_production()
+                self.orderedCompaniesProductionC[company] = self.csfirm_agents[
+                    company
+                ].get_actual_production()
                 total_production += self.orderedCompaniesProductionC[company]
-                self.orderedCompaniesProductionC[company] *= self.demand_fluctuation ** (self.demand_fluctuation < 1)
+                self.orderedCompaniesProductionC[
+                    company
+                ] *= self.demand_fluctuation ** (self.demand_fluctuation < 1)
 
         for i in np.random.permutation(self.workingAgeConsumers):
             aConsumer = self.aliveConsumers[i]
             aConsumer.setConsumption(0)
             purchase = 0
-            desired_consumption = aConsumer.get_desired_consumption() \
-                                    * self.demand_fluctuation
+            desired_consumption = (
+                aConsumer.get_desired_consumption() * self.demand_fluctuation
+            )
 
             for company, production in self.orderedCompaniesProductionC.items():
-                chosenFirm = self.csfirm_agents.select(self.csfirm_agents.getIdentity() - self.p.c_agents - 1 - self.p.b_agents - self.p.g_agents == company)
+                chosenFirm = self.csfirm_agents.select(
+                    self.csfirm_agents.getIdentity()
+                    - self.p.c_agents
+                    - 1
+                    - self.p.b_agents
+                    - self.p.g_agents
+                    == company
+                )
                 price = ordered_price[company]
                 aConsumer.price = price
-                #if chosenFirm.lockdown:
+                # if chosenFirm.lockdown:
                 #    production *= self.lockdown_scale
 
                 if production == 0:
@@ -627,26 +974,39 @@ class EconModel(ap.Model):
                 else:
                     self.countConsumersPerCompanyC[company] += 1
                     if (production - desired_consumption) >= 0:
-                        purchase = np.max([np.min([desired_consumption, (aConsumer.deposit + aConsumer.getIncome()) / price]), 0])
-                        #if aConsumer.owner:
-                        #print("purchase amount", purchase, (aConsumer.deposit + aConsumer.getIncome()) / price, desired_consumption, aConsumer.deposit, aConsumer.getIncome(), price, aConsumer.consumerType)             
-                        self.orderedCompaniesProductionC[company] = production - purchase
+                        purchase = np.max(
+                            [
+                                np.min(
+                                    [
+                                        desired_consumption,
+                                        (aConsumer.deposit + aConsumer.getIncome())
+                                        / price,
+                                    ]
+                                ),
+                                0,
+                            ]
+                        )
+                        # if aConsumer.owner:
+                        # print("purchase amount", purchase, (aConsumer.deposit + aConsumer.getIncome()) / price, desired_consumption, aConsumer.deposit, aConsumer.getIncome(), price, aConsumer.consumerType)
+                        self.orderedCompaniesProductionC[company] = (
+                            production - purchase
+                        )
                         chosenFirm.updateSoldProducts(np.sum(purchase))
                         production -= np.sum(purchase)
                         actual_consumption = purchase
-                        self.total_good += purchase         
-                    else:                     
+                        self.total_good += purchase
+                    else:
                         self.orderedCompaniesProductionC[company] = 0
                         actual_consumption = production
                         chosenFirm.updateSoldProducts(np.sum(production))
-                        self.total_good += production 
+                        self.total_good += production
                         production = 0
-                    
+
                     aConsumer.setConsumption(actual_consumption * price)
-                    #print("consumer demand", aConsumer.desired_consumption, actual_consumption)
+                    # print("consumer demand", aConsumer.desired_consumption, actual_consumption)
                     chosenFirm.update_sale_record(actual_consumption)
                 break
-            #print("total product sale", chosenFirm.getSoldProducts())
+            # print("total product sale", chosenFirm.getSoldProducts())
         if self.p.verboseFlag:
             print("total sale", self.total_good, total_production)
 
@@ -669,10 +1029,10 @@ class EconModel(ap.Model):
         for i in range(len(self.cpfirm_agents)):
             if self.cpfirm_agents[i].useEnergy == "brown":
                 self.cpfirm_agents[i].set_aggregate_demand(b_aggregated_demand)
-                #print("capital demand", b_aggregated_demand)
+                # print("capital demand", b_aggregated_demand)
             else:
                 self.cpfirm_agents[i].set_aggregate_demand(g_aggregated_demand)
-                #print("capital demand", g_aggregated_demand)
+                # print("capital demand", g_aggregated_demand)
 
     def _cpf_transaction(self):
         self.firmsList = self.csfirm_agents + self.brownEFirm + self.greenEFirm
@@ -680,17 +1040,17 @@ class EconModel(ap.Model):
             chosenFirm = self.cpfirm_agents[i]
             price = chosenFirm.getPrice()
             chosenFirm.set_sale_record(0)
-            #print("capital price", price)
+            # print("capital price", price)
             K_production = chosenFirm.get_actual_production()
 
             for j in np.random.permutation(len(self.firmsList)):
                 aFirm = self.firmsList[j]
-                if aFirm.useEnergy ==  self.cpfirm_agents[i].useEnergy:
+                if aFirm.useEnergy == self.cpfirm_agents[i].useEnergy:
                     aFirm = self.firmsList[j]
                     K_consumption = aFirm.get_capital_demand()
-                    #print("K firm demand", K_consumption, K_production)
+                    # print("K firm demand", K_consumption, K_production)
                     aFirm.set_capital_investment(0)
-                    
+
                     if K_consumption == 0:
                         break
 
@@ -709,7 +1069,7 @@ class EconModel(ap.Model):
                     aFirm.set_capital_investment(np.sum(K_consumption * price))
                     aFirm.set_capital_price(price)
                     chosenFirm.update_sale_record(K_consumption)
-                    #print("machine sale", aFirm.capital_purchase)
+                    # print("machine sale", aFirm.capital_purchase)
 
     def _energy_demand(self):
 
@@ -729,35 +1089,57 @@ class EconModel(ap.Model):
 
     def _make_random_contacts(self):
         eps = 1e-8
-        infection_rate = self.model.num_infection / (len(self.model.aliveConsumers) + eps)
+        infection_rate = self.model.num_infection / (
+            len(self.model.aliveConsumers) + eps
+        )
         num_contacts_community = self.p.num_contacts_community
-        dist = (infection_rate > self.p.inf_threshold)*(self.p.covid_settings == 'DIST')
+        dist = (infection_rate > self.p.inf_threshold) * (
+            self.p.covid_settings == "DIST"
+        )
         lock = self.lockdown
-        if dist: num_contacts_community = self.p.num_contacts_community / 2
-        if lock: num_contacts_community = self.p.num_contacts_community / 4
+        if dist:
+            num_contacts_community = self.p.num_contacts_community / 2
+        if lock:
+            num_contacts_community = self.p.num_contacts_community / 4
         # Preprocessing
         contact_list = dict()
-        pop_size = int(len(self.aliveConsumers)) # Number of people
+        pop_size = int(len(self.aliveConsumers))  # Number of people
         if pop_size > 0:
-            p1 = [] # Initialize the "sources"
-            p2 = [] # Initialize the "targets"
+            p1 = []  # Initialize the "sources"
+            p2 = []  # Initialize the "targets"
 
             # Precalculate contacts
-            n_all_contacts  = int(pop_size*num_contacts_community*self.p.overshoot_community) # The overshoot is used so we won't run out of contacts if the Poisson draws happen to be higher than the expected value
-            all_contacts    = np.random.choice(pop_size, n_all_contacts, replace=True) # Choose people at random
+            n_all_contacts = int(
+                pop_size * num_contacts_community * self.p.overshoot_community
+            )  # The overshoot is used so we won't run out of contacts if the Poisson draws happen to be higher than the expected value
+            all_contacts = np.random.choice(
+                pop_size, n_all_contacts, replace=True
+            )  # Choose people at random
             if self.p.dispersion_community is None:
-                p_count = np.random.poisson(num_contacts_community, pop_size) # Draw the number of Poisson contacts for this person
+                p_count = np.random.poisson(
+                    num_contacts_community, pop_size
+                )  # Draw the number of Poisson contacts for this person
             else:
-                p_count = np.random.negative_binomial(n=self.p.dispersion_community, p=self.p.dispersion_community/(num_contacts_community/1 + self.p.dispersion_community), size=pop_size)*1  # Or, from a negative binomial
-            p_count = np.array((p_count/2.0).round(), dtype=np.int32)
-            
+                p_count = (
+                    np.random.negative_binomial(
+                        n=self.p.dispersion_community,
+                        p=self.p.dispersion_community
+                        / (num_contacts_community / 1 + self.p.dispersion_community),
+                        size=pop_size,
+                    )
+                    * 1
+                )  # Or, from a negative binomial
+            p_count = np.array((p_count / 2.0).round(), dtype=np.int32)
+
             # Make contacts
             count = 0
             for p in range(pop_size):
                 n_contacts = p_count[p]
-                these_contacts = all_contacts[count:count+n_contacts] # Assign people
+                these_contacts = all_contacts[
+                    count : count + n_contacts
+                ]  # Assign people
                 count += n_contacts
-                p1.extend([p]*n_contacts)
+                p1.extend([p] * n_contacts)
                 p2.extend(these_contacts)
 
             contact_list.update(_merge_edgelist(p1, p2, None))
@@ -766,87 +1148,164 @@ class EconModel(ap.Model):
 
     def _make_random_contacts_in_firms(self):
         eps = 1e-8
-        infection_rate = self.model.num_infection / (len(self.model.aliveConsumers) + eps)
+        infection_rate = self.model.num_infection / (
+            len(self.model.aliveConsumers) + eps
+        )
         num_contacts_firms = self.p.num_contacts_firms
-        dist = (infection_rate > self.p.inf_threshold)*(self.p.covid_settings == 'DIST')
-        if dist: num_contacts_firms = self.p.num_contacts_firms / 2
+        dist = (infection_rate > self.p.inf_threshold) * (
+            self.p.covid_settings == "DIST"
+        )
+        if dist:
+            num_contacts_firms = self.p.num_contacts_firms / 2
         contact_list = dict()
         for firm in self.firms:
             # Preprocessing
-            pop_size = int(len(firm.workersList)) # Number of people
+            pop_size = int(len(firm.workersList))  # Number of people
             if not firm.lockdown and pop_size > 0:
-                p1 = [] # Initialize the "sources"
-                p2 = [] # Initialize the "targets"
+                p1 = []  # Initialize the "sources"
+                p2 = []  # Initialize the "targets"
 
                 # Precalculate contacts
-                n_all_contacts  = int(pop_size*num_contacts_firms*self.p.overshoot_firms) # The overshoot is used so we won't run out of contacts if the Poisson draws happen to be higher than the expected value
-                all_contacts    = np.random.choice(pop_size, n_all_contacts, replace=True) # Choose people at random
+                n_all_contacts = int(
+                    pop_size * num_contacts_firms * self.p.overshoot_firms
+                )  # The overshoot is used so we won't run out of contacts if the Poisson draws happen to be higher than the expected value
+                all_contacts = np.random.choice(
+                    pop_size, n_all_contacts, replace=True
+                )  # Choose people at random
                 if self.p.dispersion_firms is None:
-                    p_count = np.random.poisson(num_contacts_firms, pop_size) # Draw the number of Poisson contacts for this person
+                    p_count = np.random.poisson(
+                        num_contacts_firms, pop_size
+                    )  # Draw the number of Poisson contacts for this person
                 else:
-                    p_count = np.random.negative_binomial(n=self.p.dispersion_firms, p=self.p.dispersion_firms/(num_contacts_firms/1 + self.p.dispersion_firms), size=pop_size)*1  # Or, from a negative binomial
-                p_count = np.array((p_count/2.0).round(), dtype=np.int32)
-                
+                    p_count = (
+                        np.random.negative_binomial(
+                            n=self.p.dispersion_firms,
+                            p=self.p.dispersion_firms
+                            / (num_contacts_firms / 1 + self.p.dispersion_firms),
+                            size=pop_size,
+                        )
+                        * 1
+                    )  # Or, from a negative binomial
+                p_count = np.array((p_count / 2.0).round(), dtype=np.int32)
 
                 # Make contacts
                 count = 0
                 for p in range(pop_size):
                     n_contacts = p_count[p]
-                    these_contacts = all_contacts[count:count+n_contacts] # Assign people
+                    these_contacts = all_contacts[
+                        count : count + n_contacts
+                    ]  # Assign people
                     count += n_contacts
-                    p1.extend([p]*n_contacts)
+                    p1.extend([p] * n_contacts)
                     p2.extend(these_contacts)
 
                 if len(contact_list) > 0:
-                    contact_list['p1'] = np.concatenate([contact_list['p1'],(_merge_edgelist(p1, p2, firm.workersList, 1)['p1'])])
-                    contact_list['p2'] = np.concatenate([contact_list['p2'],(_merge_edgelist(p1, p2, firm.workersList, 1)['p2'])])
+                    contact_list["p1"] = np.concatenate(
+                        [
+                            contact_list["p1"],
+                            (_merge_edgelist(p1, p2, firm.workersList, 1)["p1"]),
+                        ]
+                    )
+                    contact_list["p2"] = np.concatenate(
+                        [
+                            contact_list["p2"],
+                            (_merge_edgelist(p1, p2, firm.workersList, 1)["p2"]),
+                        ]
+                    )
                 else:
                     contact_list.update(_merge_edgelist(p1, p2, firm.workersList, 1))
             else:
                 continue
-        
+
         return contact_list
 
     def _propagate_contacts(self, contact_list_f, contact_list_c, eps=1e-8):
-        contacts_firm = np.argwhere(contact_list_f['p1'] == self.id)
-        contacts_community = np.argwhere(contact_list_c['p1'] == self.id)
-        infected_contact_firm = self.model.aliveConsumers.select([self.model.aliveConsumers.getIdentity() == contact_list_f['p2'][np.sum(el)] and self.model.aliveConsumers.getCovidStateAttr('state') in ['exposed', 'infected non-sympotomatic', 'mild', 'severe', 'critical'] for el in contacts_firm])
-        infected_contact_community = self.model.aliveConsumers.select([self.model.aliveConsumers.getIdentity() == contact_list_c['p2'][np.sum(el)] and self.model.aliveConsumers.getCovidStateAttr('state') in ['exposed', 'infected non-sympotomatic', 'mild', 'severe', 'critical'] for el in contacts_community])
-        inf_f = len(infected_contact_firm)     
+        contacts_firm = np.argwhere(contact_list_f["p1"] == self.id)
+        contacts_community = np.argwhere(contact_list_c["p1"] == self.id)
+        infected_contact_firm = self.model.aliveConsumers.select(
+            [
+                self.model.aliveConsumers.getIdentity()
+                == contact_list_f["p2"][np.sum(el)]
+                and self.model.aliveConsumers.getCovidStateAttr("state")
+                in [
+                    "exposed",
+                    "infected non-sympotomatic",
+                    "mild",
+                    "severe",
+                    "critical",
+                ]
+                for el in contacts_firm
+            ]
+        )
+        infected_contact_community = self.model.aliveConsumers.select(
+            [
+                self.model.aliveConsumers.getIdentity()
+                == contact_list_c["p2"][np.sum(el)]
+                and self.model.aliveConsumers.getCovidStateAttr("state")
+                in [
+                    "exposed",
+                    "infected non-sympotomatic",
+                    "mild",
+                    "severe",
+                    "critical",
+                ]
+                for el in contacts_community
+            ]
+        )
+        inf_f = len(infected_contact_firm)
         inf_c = len(infected_contact_community)
-        infection_rate = self.model.num_infection / (len(self.model.aliveConsumers) + eps)
-        p_firm = self.p.p_contact_firms * self.p.p_sd**((infection_rate > self.p.inf_threshold)*(self.p.covid_settings == 'DIST'))
-        p_community = self.p.p_contact_community * self.p.p_sd**((infection_rate > self.p.inf_threshold)*(self.p.covid_settings == 'DIST'))
-        #print("infection rate", infection_rate, "firm and community", p_firm, p_community)
-        self.aliveConsumers.select(self.aliveConsumers.getCovidStateAttr('state') == 'susceptible').propagateContact(inf_f, inf_c, p_firm, p_community)
+        infection_rate = self.model.num_infection / (
+            len(self.model.aliveConsumers) + eps
+        )
+        p_firm = self.p.p_contact_firms * self.p.p_sd ** (
+            (infection_rate > self.p.inf_threshold) * (self.p.covid_settings == "DIST")
+        )
+        p_community = self.p.p_contact_community * self.p.p_sd ** (
+            (infection_rate > self.p.inf_threshold) * (self.p.covid_settings == "DIST")
+        )
+        # print("infection rate", infection_rate, "firm and community", p_firm, p_community)
+        self.aliveConsumers.select(
+            self.aliveConsumers.getCovidStateAttr("state") == "susceptible"
+        ).propagateContact(inf_f, inf_c, p_firm, p_community)
 
     def _init_covid_exposure(self):
         print("start covid")
         count = 0
         for i in range(len(self.aliveConsumers)):
-            if self.aliveConsumers[i].getCovidStateAttr('state') == None:
-                self.aliveConsumers[i].setCovidState('susceptible', self.t, None, None)
+            if self.aliveConsumers[i].getCovidStateAttr("state") == None:
+                self.aliveConsumers[i].setCovidState("susceptible", self.t, None, None)
         for i in np.random.permutation(range(len(self.aliveConsumers))):
             count += 1
             if count <= self.p.initialExposer:
-                self.aliveConsumers[i].setCovidState('mild', self.t, lognormal(self.p.T_mild_severe_mean, self.p.T_mild_severe_std), 'severe')
+                self.aliveConsumers[i].setCovidState(
+                    "mild",
+                    self.t,
+                    lognormal(self.p.T_mild_severe_mean, self.p.T_mild_severe_std),
+                    "severe",
+                )
             else:
                 break
 
-    def _propagate_covid(self, eps = 1e-8):
-        #print("propagate covid")
-        if self.p.covid_settings == 'LOCK':
-            if (self.num_infection / len(self.aliveConsumers) + eps) > self.p.p_lockdown and not self.lockdown:
+    def _propagate_covid(self, eps=1e-8):
+        # print("propagate covid")
+        if self.p.covid_settings == "LOCK":
+            if (
+                self.num_infection / len(self.aliveConsumers) + eps
+            ) > self.p.p_lockdown and not self.lockdown:
                 self.lockdownCount = 1
                 self.lockdown = True
                 count_C = 0
                 count_K = 0
                 for csfirm in np.random.permutation(self.csfirm_agents):
-                    if (count_C / len(self.csfirm_agents) + eps) < self.p.num_C_firms_LD:
+                    if (
+                        count_C / len(self.csfirm_agents) + eps
+                    ) < self.p.num_C_firms_LD:
                         csfirm.setLockDown()
 
                 for cpfirm in np.random.permutation(self.cpfirm_agents):
-                    if (count_K / len(self.cpfirm_agents) + eps) < self.p.num_K_firms_LD:
+                    if (
+                        count_K / len(self.cpfirm_agents) + eps
+                    ) < self.p.num_K_firms_LD:
                         cpfirm.setLockDown()
             else:
                 if self.lockdown:
@@ -866,7 +1325,6 @@ class EconModel(ap.Model):
 
         self.aliveConsumers.progressCovid()
 
-
     def _carbon_tax_policy(self, eps=1e-8):
         self.totalCarbonTaxes += np.sum([firm.carbonTax for firm in self.totalFirms])
         self.totalTaxes += np.sum(list(self.csfirm_agents.getTax()))
@@ -876,32 +1334,153 @@ class EconModel(ap.Model):
 
         if self.p.settings.find("CTRa") != -1:
             sharedCO2Tax = self.totalCarbonTaxes / (self.p.c_agents)
-            self.capitalistsIncome += np.sum(sharedCO2Tax) * (self.p.capitalists - len(self.aliveConsumers.select(self.aliveConsumers.getConsumerType() == "capitalists")))
-            self.greenEnergyOwnersIncome += np.sum(sharedCO2Tax) * (self.p.green_energy_owners - len(self.aliveConsumers.select(self.aliveConsumers.getConsumerType() == "green_energy_owners")))
-            self.brownEnergyOwnersIncome += np.sum(sharedCO2Tax) * (self.p.brown_energy_owners - len(self.aliveConsumers.select(self.aliveConsumers.getConsumerType() == "brown_energy_owners")))
+            self.capitalistsIncome += np.sum(sharedCO2Tax) * (
+                self.p.capitalists
+                - len(
+                    self.aliveConsumers.select(
+                        self.aliveConsumers.getConsumerType() == "capitalists"
+                    )
+                )
+            )
+            self.greenEnergyOwnersIncome += np.sum(sharedCO2Tax) * (
+                self.p.green_energy_owners
+                - len(
+                    self.aliveConsumers.select(
+                        self.aliveConsumers.getConsumerType() == "green_energy_owners"
+                    )
+                )
+            )
+            self.brownEnergyOwnersIncome += np.sum(sharedCO2Tax) * (
+                self.p.brown_energy_owners
+                - len(
+                    self.aliveConsumers.select(
+                        self.aliveConsumers.getConsumerType() == "brown_energy_owners"
+                    )
+                )
+            )
         elif self.p.settings.find("CTR") != -1:
-            redistributive_policy = (np.sum(self.totalCarbonTaxes) * self.p.co2_tax) / (self.GDP + eps)
+            redistributive_policy = (np.sum(self.totalCarbonTaxes) * self.p.co2_tax) / (
+                self.GDP + eps
+            )
             if self.p.settings.find("CTRb") != -1:
-                self.capitalistsIncome += np.sum(self.capitalistsIncome *  redistributive_policy) * (self.p.capitalists - len(self.aliveConsumers.select(self.aliveConsumers.getConsumerType() == "capitalists")))
-                self.greenEnergyOwnersIncome += np.sum(self.greenEnergyOwnersIncome *  redistributive_policy) * (self.p.green_energy_owners - len(self.aliveConsumers.select(self.aliveConsumers.getConsumerType() == "green_energy_owners")))
-                self.brownEnergyOwnersIncome += np.sum(self.brownEnergyOwnersIncome *  redistributive_policy) * (self.p.brown_energy_owners - len(self.aliveConsumers.select(self.aliveConsumers.getConsumerType() == "brown_energy_owners")))
+                self.capitalistsIncome += np.sum(
+                    self.capitalistsIncome * redistributive_policy
+                ) * (
+                    self.p.capitalists
+                    - len(
+                        self.aliveConsumers.select(
+                            self.aliveConsumers.getConsumerType() == "capitalists"
+                        )
+                    )
+                )
+                self.greenEnergyOwnersIncome += np.sum(
+                    self.greenEnergyOwnersIncome * redistributive_policy
+                ) * (
+                    self.p.green_energy_owners
+                    - len(
+                        self.aliveConsumers.select(
+                            self.aliveConsumers.getConsumerType()
+                            == "green_energy_owners"
+                        )
+                    )
+                )
+                self.brownEnergyOwnersIncome += np.sum(
+                    self.brownEnergyOwnersIncome * redistributive_policy
+                ) * (
+                    self.p.brown_energy_owners
+                    - len(
+                        self.aliveConsumers.select(
+                            self.aliveConsumers.getConsumerType()
+                            == "brown_energy_owners"
+                        )
+                    )
+                )
             elif self.p.settings.find("CTRc") != -1:
-                self.capitalistsIncome += np.sum(redistributive_policy * np.mean([self.aliveConsumers.getWage(), self.aliveConsumers.getIncome()])) * (self.p.capitalists - len(self.aliveConsumers.select(self.aliveConsumers.getConsumerType() == "capitalists")))
-                self.greenEnergyOwnersIncome += np.sum(redistributive_policy * np.mean([self.aliveConsumers.getWage(), self.aliveConsumers.getIncome()])) * (self.p.green_energy_owners - len(self.aliveConsumers.select(self.aliveConsumers.getConsumerType() == "green_energy_owners")))
-                self.brownEnergyOwnersIncome += np.sum(redistributive_policy * np.mean([self.aliveConsumers.getWage(), self.aliveConsumers.getIncome()])) * (self.p.brown_energy_owners - len(self.aliveConsumers.select(self.aliveConsumers.getConsumerType() == "brown_energy_owners")))
+                self.capitalistsIncome += np.sum(
+                    redistributive_policy
+                    * np.mean(
+                        [self.aliveConsumers.getWage(), self.aliveConsumers.getIncome()]
+                    )
+                ) * (
+                    self.p.capitalists
+                    - len(
+                        self.aliveConsumers.select(
+                            self.aliveConsumers.getConsumerType() == "capitalists"
+                        )
+                    )
+                )
+                self.greenEnergyOwnersIncome += np.sum(
+                    redistributive_policy
+                    * np.mean(
+                        [self.aliveConsumers.getWage(), self.aliveConsumers.getIncome()]
+                    )
+                ) * (
+                    self.p.green_energy_owners
+                    - len(
+                        self.aliveConsumers.select(
+                            self.aliveConsumers.getConsumerType()
+                            == "green_energy_owners"
+                        )
+                    )
+                )
+                self.brownEnergyOwnersIncome += np.sum(
+                    redistributive_policy
+                    * np.mean(
+                        [self.aliveConsumers.getWage(), self.aliveConsumers.getIncome()]
+                    )
+                ) * (
+                    self.p.brown_energy_owners
+                    - len(
+                        self.aliveConsumers.select(
+                            self.aliveConsumers.getConsumerType()
+                            == "brown_energy_owners"
+                        )
+                    )
+                )
             elif self.p.settings.find("CTRd") != -1:
-                self.capitalistsIncome += np.sum(1/(self.capitalistsIncome + eps) *  redistributive_policy) * (self.p.capitalists - len(self.aliveConsumers.select(self.aliveConsumers.getConsumerType() == "capitalists")))
-                self.greenEnergyOwnersIncome += np.sum(1/(self.greenEnergyOwnersIncome + eps) *  redistributive_policy) * (self.p.green_energy_owners - len(self.aliveConsumers.select(self.aliveConsumers.getConsumerType() == "green_energy_owners")))
-                self.brownEnergyOwnersIncome += np.sum(1/(self.brownEnergyOwnersIncome + eps) *  redistributive_policy) * (self.p.brown_energy_owners - len(self.aliveConsumers.select(self.aliveConsumers.getConsumerType() == "brown_energy_owners")))
+                self.capitalistsIncome += np.sum(
+                    1 / (self.capitalistsIncome + eps) * redistributive_policy
+                ) * (
+                    self.p.capitalists
+                    - len(
+                        self.aliveConsumers.select(
+                            self.aliveConsumers.getConsumerType() == "capitalists"
+                        )
+                    )
+                )
+                self.greenEnergyOwnersIncome += np.sum(
+                    1 / (self.greenEnergyOwnersIncome + eps) * redistributive_policy
+                ) * (
+                    self.p.green_energy_owners
+                    - len(
+                        self.aliveConsumers.select(
+                            self.aliveConsumers.getConsumerType()
+                            == "green_energy_owners"
+                        )
+                    )
+                )
+                self.brownEnergyOwnersIncome += np.sum(
+                    1 / (self.brownEnergyOwnersIncome + eps) * redistributive_policy
+                ) * (
+                    self.p.brown_energy_owners
+                    - len(
+                        self.aliveConsumers.select(
+                            self.aliveConsumers.getConsumerType()
+                            == "brown_energy_owners"
+                        )
+                    )
+                )
         else:
             self.totalTaxes += self.totalCarbonTaxes
 
     def _hire(self):
-        self.workingConsumers = self.aliveConsumers.select(self.aliveConsumers.isWorker() == True)
+        self.workingConsumers = self.aliveConsumers.select(
+            self.aliveConsumers.isWorker() == True
+        )
         for worker in self.workingConsumers:
             if worker.isEmployed() != True:
                 suitable_firm_found = False
-                
+
                 for firm in np.random.permutation(self.firms):
                     labour_demand = firm.labour_demand
                     if firm.getNumberOfLabours() < labour_demand:
@@ -916,7 +1495,16 @@ class EconModel(ap.Model):
     def _fiscal_policy(self):
 
         if self.scenario == "1":
-            [self.aliveConsumers.gov_transfer(self.alpha_h * np.mean(self.aliveConsumers.select(self.aliveConsumers.getConsumerType() == "workers").getIncome()))]
+            [
+                self.aliveConsumers.gov_transfer(
+                    self.alpha_h
+                    * np.mean(
+                        self.aliveConsumers.select(
+                            self.aliveConsumers.getConsumerType() == "workers"
+                        ).getIncome()
+                    )
+                )
+            ]
         if self.scenario == "1":
             for firm in self.firms:
                 revenue = firm.soldProducts * firm.getPrice()
@@ -924,15 +1512,22 @@ class EconModel(ap.Model):
                 if revenue < transfer_threshold * firm.fix_cost:
                     self.firms.gov_transfer(self.alpha_f * firm.fix_cost)
 
-
     def _induce_climate_shock(self):
         print(self.climateModule.flood_prob[0])
         if self.month_no > self.climateModule.climate_shock_start[0]:
             print("shock time start!")
-            if self.climateModule.flood_prob[0] > np.random.uniform(0,1):
+            if self.climateModule.flood_prob[0] > np.random.uniform(0, 1):
                 print("shock happen")
                 for i in self.workingAgeConsumers:
                     aConsumer = self.aliveConsumers[i]
-                    aConsumer.set_deposit(self.climateModule.climate_damage_household(aConsumer.deposit)[0])
+                    aConsumer.set_deposit(
+                        self.climateModule.climate_damage_household(aConsumer.deposit)[
+                            0
+                        ]
+                    )
                 for aFirm in self.firms:
-                    aFirm.set_capital(self.climateModule.climate_damage_firm(float(aFirm.get_capital()), aFirm.getUseEnergy())[0])
+                    aFirm.set_capital(
+                        self.climateModule.climate_damage_firm(
+                            float(aFirm.get_capital()), aFirm.getUseEnergy()
+                        )[0]
+                    )

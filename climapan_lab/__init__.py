@@ -5,7 +5,7 @@ A comprehensive agent-based economic modeling framework that integrates
 climate change and pandemic dynamics.
 """
 
-__version__ = "1.0.0"
+__version__ = "0.0.1"
 __author__ = "CliMaPan-Lab Team"
 __email__ = "contact@climapan-lab.org"
 
@@ -13,7 +13,8 @@ __email__ = "contact@climapan-lab.org"
 try:
     from .model import EconModel
     from .base_params import economic_params
+
     __all__ = ["EconModel", "economic_params"]
 except ImportError:
     # Handle case where dependencies are not yet installed
-    __all__ = [] 
+    __all__ = []

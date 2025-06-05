@@ -16,7 +16,7 @@ params = {
     "wageAdjustmentRate": (0.1, 0.9),
     "shareOfWageInConsumption": (0.1, 0.8),
     "shareOfIncomeInConsumption": (0.1, 0.8),
-    "shareOfWealthInConsumption": (0.0, 0.8), #0.2
+    "shareOfWealthInConsumption": (0.0, 0.8),  # 0.2
     "ownerProportionFromProfits": (0.1, 0.5),
     "repayProportionFromProfits": (0.01, 0.1),
     "wageDividendFromProfits": (0.1, 0.3),
@@ -25,5 +25,5 @@ params = {
     "rho_labour": (0.1, 0.9),
     "rho_energy": (0.1, 0.9),
     "rho_labour_K": (0.1, 0.9),
-    "rho_energy_K": (0.1, 0.9)
+    "rho_energy_K": (0.1, 0.9),
 }

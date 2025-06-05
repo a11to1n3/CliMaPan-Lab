@@ -10,7 +10,7 @@ import sys
 import numpy as np
 
 # Add the climapan_lab package to the path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from climapan_lab.src.consumers.Consumer import Consumer
 from climapan_lab.src.firms.ConsumerGoodsFirm import ConsumerGoodsFirm
@@ -26,16 +26,18 @@ class TestBasicFunctionality(unittest.TestCase):
         """Set up test fixtures."""
         self.params = economic_params.copy()
         # Use small numbers for testing
-        self.params.update({
-            'c_agents': 10,
-            'capitalists': 3,
-            'csf_agents': 2,
-            'cpf_agents': 2,  # Need at least 2 for energy type diversity
-            'steps': 5,
-            'verboseFlag': False,
-            'climateModuleFlag': False,  # Disable for faster testing
-            'covid_settings': None  # Disable COVID for testing
-        })
+        self.params.update(
+            {
+                "c_agents": 10,
+                "capitalists": 3,
+                "csf_agents": 2,
+                "cpf_agents": 2,  # Need at least 2 for energy type diversity
+                "steps": 5,
+                "verboseFlag": False,
+                "climateModuleFlag": False,  # Disable for faster testing
+                "covid_settings": None,  # Disable COVID for testing
+            }
+        )
 
     def test_model_creation(self):
         """Test that we can create a model instance."""
@@ -43,7 +45,7 @@ class TestBasicFunctionality(unittest.TestCase):
         self.assertIsInstance(model, EconModel)
         # Model needs to be set up before agents are created
         model.setup()
-        self.assertEqual(len(model.consumer_agents), self.params['c_agents'])
+        self.assertEqual(len(model.consumer_agents), self.params["c_agents"])
 
     def test_model_step(self):
         """Test that we can run a single step of the model."""
@@ -61,40 +63,40 @@ class TestBasicFunctionality(unittest.TestCase):
         """Test that agents can be created with proper attributes."""
         model = EconModel(self.params)
         model.setup()
-        
+
         # Test consumer creation
         consumer = model.consumer_agents[0]
         self.assertIsInstance(consumer, Consumer)
-        self.assertTrue(hasattr(consumer, 'deposit'))
-        
+        self.assertTrue(hasattr(consumer, "deposit"))
+
         # Test firm creation
         if len(model.csfirm_agents) > 0:
             firm = model.csfirm_agents[0]
             self.assertIsInstance(firm, ConsumerGoodsFirm)
-            self.assertTrue(hasattr(firm, 'netWorth'))
+            self.assertTrue(hasattr(firm, "netWorth"))
 
     def test_parameters_validation(self):
         """Test that parameters can be loaded and models created."""
         # Test that model creation with valid parameters works
         model = EconModel(self.params)
         self.assertIsInstance(model, EconModel)
-        
+
         # Test that model can access parameters
-        self.assertTrue(hasattr(model, 'p'))
-        self.assertEqual(model.p.c_agents, self.params['c_agents'])
+        self.assertTrue(hasattr(model, "p"))
+        self.assertEqual(model.p.c_agents, self.params["c_agents"])
 
     def test_model_run_short(self):
         """Test that we can run the model for a few steps."""
         model = EconModel(self.params)
         model.run()
-        
+
         # Check that the model ran for the expected number of steps
-        self.assertEqual(model.t, self.params['steps'])
-        
+        self.assertEqual(model.t, self.params["steps"])
+
         # Check that data collection works (AgentPy stores in model.output.variables)
-        self.assertTrue(hasattr(model, 'output'))
-        if hasattr(model, 'output'):
-            self.assertTrue(hasattr(model.output, 'variables'))
+        self.assertTrue(hasattr(model, "output"))
+        if hasattr(model, "output"):
+            self.assertTrue(hasattr(model.output, "variables"))
 
 
 class TestDataStructures(unittest.TestCase):
@@ -103,13 +105,16 @@ class TestDataStructures(unittest.TestCase):
     def test_parameter_structure(self):
         """Test that economic parameters have expected structure."""
         params = economic_params
-        
+
         # Check for essential parameters
         essential_keys = [
-            'c_agents', 'steps', 'taxRate', 'unemploymentDole',
-            'subsistenceLevelOfConsumption'
+            "c_agents",
+            "steps",
+            "taxRate",
+            "unemploymentDole",
+            "subsistenceLevelOfConsumption",
         ]
-        
+
         for key in essential_keys:
             self.assertIn(key, params, f"Missing essential parameter: {key}")
 
@@ -120,5 +125,5 @@ class TestDataStructures(unittest.TestCase):
         self.assertEqual(test_array.sum(), 15)
 
 
-if __name__ == '__main__':
-    unittest.main() 
+if __name__ == "__main__":
+    unittest.main()
