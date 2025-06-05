@@ -12,6 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from .params import parameters
 import math
+import random
 
 def listToArray(x):
     return np.array(x)
