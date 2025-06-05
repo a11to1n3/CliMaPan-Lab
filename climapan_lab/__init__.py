@@ -1,7 +1,7 @@
 """
 CliMaPan-Lab: Climate-Pandemic Economic Modeling Laboratory
 
-A comprehensive agent-based economic modeling framework that integrates 
+A comprehensive agent-based economic modeling framework that integrates
 climate change and pandemic dynamics.
 """
 
