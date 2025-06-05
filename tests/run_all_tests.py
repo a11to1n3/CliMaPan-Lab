@@ -17,11 +17,17 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 # Import all test modules
 from test_basic_functionality import TestBasicFunctionality, TestDataStructures
 from test_examples import TestAnalysisScripts, TestExamples
-from test_integration import (TestCommandLineInterface,
-                              TestDataAnalysisWorkflow, TestErrorRecovery,
-                              TestIntegrationWorkflows)
-from test_model_components import (TestErrorHandling, TestModelComponents,
-                                   TestParameterStructure)
+from test_integration import (
+    TestCommandLineInterface,
+    TestDataAnalysisWorkflow,
+    TestErrorRecovery,
+    TestIntegrationWorkflows,
+)
+from test_model_components import (
+    TestErrorHandling,
+    TestModelComponents,
+    TestParameterStructure,
+)
 from test_performance import TestPerformance, TestScalability, TestStressTest
 
 

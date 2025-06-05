@@ -290,8 +290,7 @@ class TestDataAnalysisWorkflow(unittest.TestCase):
     def test_analysis_functions_import(self):
         """Test that analysis functions can be imported."""
         try:
-            from climapan_lab.examples.Load_data import (load_hdf5_file,
-                                                         load_json_file)
+            from climapan_lab.examples.Load_data import load_hdf5_file, load_json_file
             from climapan_lab.examples.scenario import load_data
 
             # Should be able to import these classes/functions

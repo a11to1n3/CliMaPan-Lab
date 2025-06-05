@@ -23,13 +23,18 @@ from joblib import Parallel, delayed
 warnings.filterwarnings("ignore")
 from .base_params import economic_params as parameters
 from .src.models import EconModel
-from .src.utils import (plotBankSummary, plotClimateModuleEffects,
-                        plotConsumersSummary, plotConsumptionInflationSummary,
-                        plotCovidStatistics, plotEnergyFirmsDemands,
-                        plotGoodsFirmSalesSummary,
-                        plotGoodsFirmsDemandsSummary,
-                        plotGoodsFirmsProfitSummary,
-                        plotGoodsFirmWorkersSummary)
+from .src.utils import (
+    plotBankSummary,
+    plotClimateModuleEffects,
+    plotConsumersSummary,
+    plotConsumptionInflationSummary,
+    plotCovidStatistics,
+    plotEnergyFirmsDemands,
+    plotGoodsFirmSalesSummary,
+    plotGoodsFirmsDemandsSummary,
+    plotGoodsFirmsProfitSummary,
+    plotGoodsFirmWorkersSummary,
+)
 
 
 def single_run(

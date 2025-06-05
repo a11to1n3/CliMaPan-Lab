@@ -20,6 +20,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from ..base_params import economic_params
+
 # Import the economic model and parameters
 from ..model import EconModel
 from ..run_sim import single_run
