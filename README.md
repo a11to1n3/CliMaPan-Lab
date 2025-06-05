@@ -139,6 +139,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ```bibtex
 @software{climapan_lab,
   title={CliMaPan-Lab: Climate-Pandemic Economic Modeling Laboratory},
+  author={D'Orazio, Paola and Pham, Anh-Duy and Nguyen, Hong Son},
   year={2024},
   url={https://github.com/your-username/CliMaPan-Lab}
 }
