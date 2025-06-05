@@ -4,12 +4,13 @@ Script to update documentation automatically.
 This script can be run locally or as part of CI/CD to ensure documentation is up to date.
 """
 
-import os
-import sys
-import subprocess
 import argparse
-import requests
+import os
+import subprocess
+import sys
 from pathlib import Path
+
+import requests
 
 
 def run_command(cmd, cwd=None, check=True):
