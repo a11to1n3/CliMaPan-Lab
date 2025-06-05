@@ -1,0 +1,142 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., v1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  test-before-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+        pip install -e .
+
+    - name: Run full test suite
+      run: |
+        cd tests
+        python run_all_tests.py --fast
+
+    - name: Build and test package
+      run: |
+        pip install build twine
+        python -m build
+        twine check dist/*
+
+  release:
+    needs: test-before-release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+
+    - name: Build package
+      run: |
+        python -m build
+
+    - name: Generate changelog
+      run: |
+        # Get the tag name
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          TAG_NAME="${{ github.event.inputs.version }}"
+        else
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+        fi
+        
+        echo "## Release ${TAG_NAME}" > RELEASE_NOTES.md
+        echo "" >> RELEASE_NOTES.md
+        
+        # Get commits since last tag
+        LAST_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+        if [ -n "$LAST_TAG" ]; then
+          echo "### Changes since ${LAST_TAG}:" >> RELEASE_NOTES.md
+          git log --pretty=format:"- %s" ${LAST_TAG}..HEAD >> RELEASE_NOTES.md
+        else
+          echo "### Initial release" >> RELEASE_NOTES.md
+          echo "First release of CliMaPan-Lab - A comprehensive agent-based economic modeling framework." >> RELEASE_NOTES.md
+        fi
+        
+        echo "" >> RELEASE_NOTES.md
+        echo "### Package Contents:" >> RELEASE_NOTES.md
+        echo "- Agent-based climate-pandemic economic models" >> RELEASE_NOTES.md
+        echo "- Comprehensive test suite with 60+ tests" >> RELEASE_NOTES.md
+        echo "- Examples and documentation" >> RELEASE_NOTES.md
+        echo "- Command-line tools: \`climapan-run\`, \`climapan-example\`" >> RELEASE_NOTES.md
+
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name || github.event.inputs.version }}
+        release_name: Release ${{ github.ref_name || github.event.inputs.version }}
+        body_path: RELEASE_NOTES.md
+        draft: false
+        prerelease: ${{ contains(github.ref_name || github.event.inputs.version, 'rc') || contains(github.ref_name || github.event.inputs.version, 'beta') || contains(github.ref_name || github.event.inputs.version, 'alpha') }}
+
+    - name: Upload Release Assets
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: dist/
+        asset_name: dist-files
+        asset_content_type: application/zip
+
+    # Optional: Publish to PyPI (uncomment and add PyPI API token as secret)
+    # - name: Publish to PyPI
+    #   env:
+    #     TWINE_USERNAME: __token__
+    #     TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+    #   run: |
+    #     twine upload dist/*
+
+  post-release:
+    needs: release
+    runs-on: ubuntu-latest
+    if: always() && needs.release.result == 'success'
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Create post-release PR for version bump
+      run: |
+        echo "Post-release tasks completed"
+        echo "Consider:"
+        echo "1. Updating version in setup.py/pyproject.toml for next development cycle"
+        echo "2. Creating announcement in discussions or issues"
+        echo "3. Updating documentation if needed" 

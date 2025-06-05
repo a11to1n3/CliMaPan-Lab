@@ -42,6 +42,10 @@ venv.bak/
 *Users*
 *Personal Documents*
 
+# But allow GitHub workflow files
+!.github/workflows/*.yml
+!.github/workflows/*.yaml
+
 # Test results and temporary analysis
 tests/test_results/
 analysis_temp/
