@@ -6,13 +6,15 @@ This module contains utility functions for data processing, statistical calculat
 and visualization of simulation results.
 """
 
-import os
-import sys
-import numpy as np
-import matplotlib.pyplot as plt
-from .params import parameters
 import math
+import os
 import random
+import sys
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+from .params import parameters
 
 
 def listToArray(x):

@@ -1,4 +1,5 @@
 import copy
+
 import agentpy as ap
 import numpy as np
 

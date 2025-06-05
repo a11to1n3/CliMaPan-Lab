@@ -1,8 +1,9 @@
+import copy
+from collections import OrderedDict
+
+import agentpy as ap
 import numpy as np
 import numpy.random as random
-from collections import OrderedDict
-import agentpy as ap
-import copy
 import pandas as pd
 
 

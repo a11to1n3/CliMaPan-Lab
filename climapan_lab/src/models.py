@@ -6,21 +6,23 @@ This module contains the core EconModel class that orchestrates the agent-based
 simulation with climate and pandemic dynamics.
 """
 
-import numpy as np
 import copy
 import math
-import agentpy as ap
 from collections import OrderedDict
 from datetime import date, timedelta
+
+import agentpy as ap
+import numpy as np
+
 from .banks.Bank import Bank
-from .consumers.Consumer import Consumer
-from .firms.ConsumerGoodsFirm import ConsumerGoodsFirm
-from .firms.CapitalGoodsFirm import CapitalGoodsFirm
-from .firms.GreenEnergyFirm import GreenEnergyFirm
-from .firms.BrownEnergyFirm import BrownEnergyFirm
 from .climate import Climate
-from .utils import gini, _merge_edgelist, listToArray, lognormal, normal
+from .consumers.Consumer import Consumer
+from .firms.BrownEnergyFirm import BrownEnergyFirm
+from .firms.CapitalGoodsFirm import CapitalGoodsFirm
+from .firms.ConsumerGoodsFirm import ConsumerGoodsFirm
+from .firms.GreenEnergyFirm import GreenEnergyFirm
 from .governments.Goverment import Government
+from .utils import _merge_edgelist, gini, listToArray, lognormal, normal
 
 
 class EconModel(ap.Model):

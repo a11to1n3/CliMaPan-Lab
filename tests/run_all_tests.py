@@ -5,10 +5,10 @@ Comprehensive test runner for CliMaPan-Lab.
 This script runs all tests with proper categorization and reporting.
 """
 
-import unittest
-import sys
 import os
+import sys
 import time
+import unittest
 from io import StringIO
 
 # Add the climapan_lab package to the path
@@ -16,18 +16,12 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 # Import all test modules
 from test_basic_functionality import TestBasicFunctionality, TestDataStructures
-from test_examples import TestExamples, TestAnalysisScripts
-from test_model_components import (
-    TestModelComponents,
-    TestParameterStructure,
-    TestErrorHandling,
-)
-from test_integration import (
-    TestIntegrationWorkflows,
-    TestCommandLineInterface,
-    TestDataAnalysisWorkflow,
-    TestErrorRecovery,
-)
+from test_examples import TestAnalysisScripts, TestExamples
+from test_integration import (TestCommandLineInterface,
+                              TestDataAnalysisWorkflow, TestErrorRecovery,
+                              TestIntegrationWorkflows)
+from test_model_components import (TestErrorHandling, TestModelComponents,
+                                   TestParameterStructure)
 from test_performance import TestPerformance, TestScalability, TestStressTest
 
 

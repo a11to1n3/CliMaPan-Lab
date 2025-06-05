@@ -3,18 +3,19 @@
 Tests for individual model components in CliMaPan-Lab.
 """
 
-import unittest
-import sys
 import os
+import sys
+import unittest
+
 import numpy as np
 
 # Add the climapan_lab package to the path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 try:
+    from climapan_lab.base_params import economic_params
     from climapan_lab.src.models import EconModel
     from climapan_lab.src.params import parameters
-    from climapan_lab.base_params import economic_params
 
     IMPORTS_AVAILABLE = True
 except ImportError as e:

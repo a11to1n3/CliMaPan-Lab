@@ -1,16 +1,17 @@
+import itertools
+import json
+import math
+import os
+
+import h5py
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import plotly.express as px
-import itertools
 import plotly.graph_objects as go
 import plotly.io as pio
 from scipy.interpolate import griddata
 from statsmodels.tsa.filters.hp_filter import hpfilter
-import os
-import h5py
-import json
-import math
 
 tick = pd.date_range("2018-1-1", "2021-12-31", freq="MS").strftime("%b%Y").tolist()
 

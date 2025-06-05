@@ -7,19 +7,20 @@ using autocorrelation analysis and parameter calibration.
 """
 
 import argparse
+import warnings
+
 import agentpy as ap
-from tqdm.contrib.concurrent import thread_map
-from joblib import Parallel, delayed
 import numpy as np
 import pandas as pd
-import statsmodels.api as sm
 import sobol_seq
-import warnings
+import statsmodels.api as sm
+from joblib import Parallel, delayed
+from tqdm.contrib.concurrent import thread_map
 
 warnings.filterwarnings("ignore")
 from src.models import EconModel
-from validation_params import params
 from src.params import parameters
+from validation_params import params
 
 
 class Validator:

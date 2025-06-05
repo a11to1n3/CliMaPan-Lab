@@ -3,20 +3,21 @@
 Basic functionality tests for CliMaPan-Lab.
 """
 
-import unittest
-import tempfile
 import os
 import sys
+import tempfile
+import unittest
+
 import numpy as np
 
 # Add the climapan_lab package to the path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from climapan_lab.src.consumers.Consumer import Consumer
-from climapan_lab.src.firms.ConsumerGoodsFirm import ConsumerGoodsFirm
-from climapan_lab.src.firms.CapitalGoodsFirm import CapitalGoodsFirm
 from climapan_lab.base_params import economic_params
 from climapan_lab.model import EconModel
+from climapan_lab.src.consumers.Consumer import Consumer
+from climapan_lab.src.firms.CapitalGoodsFirm import CapitalGoodsFirm
+from climapan_lab.src.firms.ConsumerGoodsFirm import ConsumerGoodsFirm
 
 
 class TestBasicFunctionality(unittest.TestCase):

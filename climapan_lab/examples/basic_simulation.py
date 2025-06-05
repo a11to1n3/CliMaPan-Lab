@@ -14,13 +14,14 @@ Usage:
 
 import argparse
 import os
-import numpy as np
-import matplotlib.pyplot as plt
 from datetime import datetime
 
+import matplotlib.pyplot as plt
+import numpy as np
+
+from ..base_params import economic_params
 # Import the economic model and parameters
 from ..model import EconModel
-from ..base_params import economic_params
 from ..run_sim import single_run
 
 

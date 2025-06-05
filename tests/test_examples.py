@@ -3,11 +3,12 @@
 Tests for example scripts to ensure they work and are generic.
 """
 
-import unittest
-import tempfile
+import importlib.util
 import os
 import sys
-import importlib.util
+import tempfile
+import unittest
+
 import numpy as np
 
 # Add the climapan_lab package to the path

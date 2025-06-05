@@ -1,8 +1,9 @@
-import numpy as np
 import copy
-import numpy.random as random
-import agentpy as ap
 from collections import OrderedDict
+
+import agentpy as ap
+import numpy as np
+import numpy.random as random
 
 
 class EnergyFirmBase(ap.Agent):

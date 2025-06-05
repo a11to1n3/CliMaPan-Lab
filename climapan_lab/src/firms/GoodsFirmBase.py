@@ -1,10 +1,12 @@
-import numpy as np
 import copy
-import agentpy as ap
-import numpy.random as random
 from collections import OrderedDict
-from ..utils import days_in_month
+
+import agentpy as ap
+import numpy as np
+import numpy.random as random
 from scipy.optimize import minimize
+
+from ..utils import days_in_month
 
 
 class GoodsFirmBase(ap.Agent):

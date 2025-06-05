@@ -3,9 +3,9 @@
 Inspect the structure of simulation results.
 """
 
+import argparse
 import pickle
 import sys
-import argparse
 
 
 def inspect_results(results_path):

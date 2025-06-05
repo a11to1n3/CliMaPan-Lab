@@ -3,12 +3,12 @@
 Performance and scalability tests for CliMaPan-Lab.
 """
 
-import unittest
-import time
-import sys
 import os
-import tempfile
 import shutil
+import sys
+import tempfile
+import time
+import unittest
 
 # Add the climapan_lab package to the path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -144,8 +144,9 @@ class TestPerformance(unittest.TestCase):
 
     def test_memory_efficiency(self):
         """Test that model doesn't use excessive memory."""
-        import psutil
         import os
+
+        import psutil
 
         params = self.base_params.copy()
         params.update(

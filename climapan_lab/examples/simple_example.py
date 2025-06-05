@@ -4,18 +4,18 @@ CliMaPan-Lab Simple Example
 A basic example showing how to run a simulation with CliMaPan-Lab.
 """
 
-import sys
 import os
+import sys
 
 # Import CliMaPan-Lab components
 try:
-    from ..model import EconModel
     from ..base_params import economic_params
+    from ..model import EconModel
 except ImportError:
     # Fallback for when running as standalone script
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-    from climapan_lab.model import EconModel
     from climapan_lab.base_params import economic_params
+    from climapan_lab.model import EconModel
 
 
 def run_simple_simulation():

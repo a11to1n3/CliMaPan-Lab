@@ -6,34 +6,30 @@ This script runs the economic model simulations with various scenarios and setti
 Supports single runs, multiple runs, and sensitivity analysis.
 """
 
-import os
-import copy
 import argparse
-from itertools import product
-from datetime import datetime
-import agentpy as ap
-import pickle
+import copy
 import json
+import os
+import pickle
+import warnings
+from datetime import datetime
+from itertools import product
+
+import agentpy as ap
 import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed
-import warnings
 
 warnings.filterwarnings("ignore")
-from .src.models import EconModel
-from .src.utils import (
-    plotConsumersSummary,
-    plotConsumptionInflationSummary,
-    plotBankSummary,
-    plotGoodsFirmsProfitSummary,
-    plotGoodsFirmsDemandsSummary,
-    plotEnergyFirmsDemands,
-    plotGoodsFirmWorkersSummary,
-    plotGoodsFirmSalesSummary,
-    plotClimateModuleEffects,
-    plotCovidStatistics,
-)
 from .base_params import economic_params as parameters
+from .src.models import EconModel
+from .src.utils import (plotBankSummary, plotClimateModuleEffects,
+                        plotConsumersSummary, plotConsumptionInflationSummary,
+                        plotCovidStatistics, plotEnergyFirmsDemands,
+                        plotGoodsFirmSalesSummary,
+                        plotGoodsFirmsDemandsSummary,
+                        plotGoodsFirmsProfitSummary,
+                        plotGoodsFirmWorkersSummary)
 
 
 def single_run(

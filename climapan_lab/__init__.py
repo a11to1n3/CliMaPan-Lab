@@ -11,8 +11,8 @@ __email__ = "contact@climapan-lab.org"
 
 # Import main components for easy access
 try:
-    from .model import EconModel
     from .base_params import economic_params
+    from .model import EconModel
 
     __all__ = ["EconModel", "economic_params"]
 except ImportError:

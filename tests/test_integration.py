@@ -3,12 +3,12 @@
 Integration tests for CliMaPan-Lab complete workflows.
 """
 
-import unittest
-import tempfile
 import os
-import sys
 import shutil
 import subprocess
+import sys
+import tempfile
+import unittest
 
 # Add the climapan_lab package to the path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -290,8 +290,9 @@ class TestDataAnalysisWorkflow(unittest.TestCase):
     def test_analysis_functions_import(self):
         """Test that analysis functions can be imported."""
         try:
+            from climapan_lab.examples.Load_data import (load_hdf5_file,
+                                                         load_json_file)
             from climapan_lab.examples.scenario import load_data
-            from climapan_lab.examples.Load_data import load_json_file, load_hdf5_file
 
             # Should be able to import these classes/functions
             self.assertTrue(callable(load_data))

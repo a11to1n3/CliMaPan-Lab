@@ -1,7 +1,8 @@
-import os
 import json
-import numpy as np
+import os
+
 import h5py
+import numpy as np
 
 
 class NumpyEncoder(json.JSONEncoder):
