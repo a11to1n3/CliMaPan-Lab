@@ -93,6 +93,10 @@ multi_run_results*/
 *.csv.gz
 *.npy
 
+# Documentation build artifacts
+docs/_build/
+docs/_static/interrogate_badge.svg
+
 # Data files (except sample data)
 data/*.csv
 !data/sample_real_data.csv
