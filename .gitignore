@@ -42,9 +42,10 @@ venv.bak/
 *Users*
 *Personal Documents*
 
-# But allow GitHub workflow files
+# But allow GitHub workflow files and Read the Docs config
 !.github/workflows/*.yml
 !.github/workflows/*.yaml
+!.readthedocs.yaml
 
 # Test results and temporary analysis
 tests/test_results/
