@@ -1,0 +1,484 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>climapan_lab.src.firms.ConsumerGoodsFirm &mdash; CliMaPan-Lab 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            CliMaPan-Lab
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#dependencies">Dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../installation.html#core-dependencies">Core Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#installation-methods">Installation Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../installation.html#install-from-source-recommended">Install from Source (Recommended)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../installation.html#install-from-github">Install from GitHub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../installation.html#install-in-development-mode">Install in Development Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../installation.html#virtual-environment-recommended">Virtual Environment (Recommended)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#verify-installation">Verify Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../installation.html#common-issues">Common Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../installation.html#system-specific-notes">System-specific Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#basic-simulation">Basic Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#running-different-scenarios">Running Different Scenarios</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#business-as-usual-bau">Business as Usual (BAU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#carbon-tax-scenario">Carbon Tax Scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#pandemic-scenario">Pandemic Scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#combined-climate-and-pandemic">Combined Climate and Pandemic</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#command-line-interface">Command Line Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#basic-run">Basic Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#with-visualization">With Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#multiple-runs">Multiple Runs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#custom-parameters">Custom Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#analyzing-results">Analyzing Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#basic-visualization">Basic Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#key-parameters">Key Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#economic-settings">Economic Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#covid-settings">COVID Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#climate-settings">Climate Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#simulation-settings">Simulation Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model.html">Economic Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel"><code class="docutils literal notranslate"><span class="pre">EconModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.setup"><code class="docutils literal notranslate"><span class="pre">EconModel.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.step"><code class="docutils literal notranslate"><span class="pre">EconModel.step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.initiate_step"><code class="docutils literal notranslate"><span class="pre">EconModel.initiate_step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.stepwise_forecast"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_forecast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.stepwise_produce"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_produce()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.stepwise_after_production"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_after_production()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.stepwise_termination"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_termination()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.update"><code class="docutils literal notranslate"><span class="pre">EconModel.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.end"><code class="docutils literal notranslate"><span class="pre">EconModel.end()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model.html#model-components">Model Components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model.html#key-methods">Key Methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.__init__"><code class="docutils literal notranslate"><span class="pre">EconModel.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#id0"><code class="docutils literal notranslate"><span class="pre">EconModel.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#id1"><code class="docutils literal notranslate"><span class="pre">EconModel.step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/agents.html">Economic Agents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/agents.html#consumers">Consumers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer"><code class="docutils literal notranslate"><span class="pre">Consumer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/agents.html#firms">Firms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/agents.html#consumer-goods-firms">Consumer Goods Firms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/agents.html#capital-goods-firms">Capital Goods Firms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/agents.html#energy-firms">Energy Firms</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/agents.html#banks">Banks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/agents.html#climapan_lab.src.banks.Bank"><code class="docutils literal notranslate"><span class="pre">Bank</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/agents.html#government">Government</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/agents.html#climapan_lab.src.governments.Government"><code class="docutils literal notranslate"><span class="pre">Government</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/agents.html#climate-module">Climate Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/agents.html#climapan_lab.src.climate.Climate"><code class="docutils literal notranslate"><span class="pre">Climate</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/index.html#main-model">Main Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel"><code class="docutils literal notranslate"><span class="pre">EconModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.setup"><code class="docutils literal notranslate"><span class="pre">EconModel.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.step"><code class="docutils literal notranslate"><span class="pre">EconModel.step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.initiate_step"><code class="docutils literal notranslate"><span class="pre">EconModel.initiate_step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.stepwise_forecast"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_forecast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.stepwise_produce"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_produce()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.stepwise_after_production"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_after_production()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.stepwise_termination"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_termination()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.update"><code class="docutils literal notranslate"><span class="pre">EconModel.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.end"><code class="docutils literal notranslate"><span class="pre">EconModel.end()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/index.html#module-climapan_lab.base_params">Core Parameters</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing to CliMaPan-Lab</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#development-setup">Development Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#code-style">Code Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#submitting-changes">Submitting Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#reporting-issues">Reporting Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#version-0-0-1-2024-12-05">Version 0.0.1 (2024-12-05)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../license.html">License</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../license.html#mit-license">MIT License</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CliMaPan-Lab</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">climapan_lab.src.firms.ConsumerGoodsFirm</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for climapan_lab.src.firms.ConsumerGoodsFirm</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">agentpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ap</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy.random</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">days_in_month</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.GoodsFirmBase</span><span class="w"> </span><span class="kn">import</span> <span class="n">GoodsFirmBase</span>
+
+
+<div class="viewcode-block" id="ConsumerGoodsFirm">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.firms.ConsumerGoodsFirm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConsumerGoodsFirm</span><span class="p">(</span><span class="n">GoodsFirmBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A ConsumerGoodsFirm agent&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ConsumerGoodsFirm.setup">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.firms.ConsumerGoodsFirm.setup">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+        <span class="c1"># Main variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wages</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capital</span> <span class="o">=</span> <span class="mi">10000</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labour</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">equity</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># parameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta_capital</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">beta_capital</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta_labour</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">beta_labour</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta_energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">beta_energy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eta_production</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">ETA_PRODUCTION</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rho_labour</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">rho_labour</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rho_energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">rho_energy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capital_growth_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">capital_growth_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mark_up</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">mark_up_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mark_up_adjustment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">mark_up_adjustment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mark_up_alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">mark_up_alpha</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mark_up_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">mark_up_beta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">carbon_tax_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;CT&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">div_ratio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">ownerProportionFromProfits</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capital_depreciation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">depreciationRate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecast_discount_factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">forecast_discount_factor</span>
+
+        <span class="c1"># transitory variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actual_production</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">planned_production</span> <span class="o">=</span> <span class="mi">1100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utilization</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labour_demand</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aggregate_demand</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">brown_firm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">useEnergy</span> <span class="o">==</span> <span class="s2">&quot;brown&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capital_investment</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># value variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capital_increase</span> <span class="o">=</span> <span class="mi">616</span>  <span class="c1"># physical variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capital_price</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capital_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capital</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">capital_price</span>  <span class="c1"># value variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost_of_capital</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># value variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capital_purchase</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># physical vaariable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capital_demand</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capital</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">capital_growth_rate</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">capital_depreciation</span>
+        <span class="p">)</span>  <span class="c1"># physical variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">average_production_cost</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">market_share</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">csf_agents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">market_shareList</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="ConsumerGoodsFirm.prepareForecast">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.firms.ConsumerGoodsFirm.prepareForecast">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepareForecast</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;if self.model.t &gt; 31:</span>
+<span class="sd">            print(&quot;total sale&quot;, self.model.total_good)</span>
+<span class="sd">            self.market_share = self.getSoldProducts() / self.model.total_good</span>
+
+<span class="sd">        self.market_shareList.append(self.market_share)&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_aggregate_demand</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">soldProducts</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">consumersList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">aliveConsumers</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">aliveConsumers</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;dead&quot;</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">aliveConsumers</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;working&quot;</span>
+        <span class="p">)</span></div>
+
+        <span class="c1"># market share</span>
+
+<div class="viewcode-block" id="ConsumerGoodsFirm.calculate_input_demand">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.firms.ConsumerGoodsFirm.calculate_input_demand">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_input_demand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast_discount_factor</span>
+        <span class="c1"># This function is used to calculate all inputs and related demands</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">old_demand</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_aggregate_demand</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">planned_production</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">beta</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sale_record</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_aggregate_demand</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utilization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sale_record</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">old_demand</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labour_demand</span> <span class="o">=</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">num_worker</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">csf_agents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimize_energy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labour_demand</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">capital</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capital_demand</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_capital</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">capital_growth_rate</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">capital_depreciation</span>
+        <span class="p">)</span></div>
+
+        <span class="c1"># print(&quot;good firm capital demand&quot;, self.capital_demand, self.capital, self.capital* (1 - self.capital_depreciation) +self.capital_demand)</span>
+
+<div class="viewcode-block" id="ConsumerGoodsFirm.produce">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.firms.ConsumerGoodsFirm.produce">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">produce</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># This function is to calculate the actual production value based on the inputs of current period</span>
+        <span class="c1"># Check production function in GoodsFirmBase</span>
+
+        <span class="n">aggSickLeaves</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">aConsumer</span><span class="o">.</span><span class="n">getSickLeaves</span><span class="p">())</span>
+                <span class="k">for</span> <span class="n">aConsumer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">consumersList</span>
+                <span class="k">if</span> <span class="n">aConsumer</span><span class="o">.</span><span class="n">getBelongToFirm</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">verboseFlag</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sick leave&quot;</span><span class="p">,</span> <span class="n">aggSickLeaves</span><span class="p">)</span>
+        <span class="n">sick_ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span>
+            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">aggSickLeaves</span> <span class="o">/</span> <span class="p">(</span><span class="mi">30</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workersList</span><span class="p">))])]</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">verboseFlag</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sick ratio&quot;</span><span class="p">,</span> <span class="n">sick_ratio</span><span class="p">)</span>
+
+        <span class="n">labour_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labour_demand</span>
+        <span class="n">capital_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_capital</span><span class="p">()</span>
+        <span class="n">energy_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_energy</span><span class="p">()</span>
+        <span class="c1"># print(&quot;input&quot;, labour_input, capital_input, energy_input)</span>
+        <span class="c1"># print(&quot;energy type&quot;, self.useEnergy)</span>
+
+        <span class="n">production_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">production_function</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">capital_input</span><span class="p">,</span> <span class="n">labour_input</span><span class="p">,</span> <span class="n">energy_input</span><span class="p">)</span>
+        <span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">sick_ratio</span><span class="p">)</span>
+        <span class="c1"># print(&quot;production value&quot;, production_value, self.planned_production)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_actual_production</span><span class="p">(</span><span class="n">production_value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConsumerGoodsFirm.price_setting">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.firms.ConsumerGoodsFirm.price_setting">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">price_setting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to set price base on mark up over cost&quot;&quot;&quot;</span>
+
+        <span class="c1">## calculate cost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calculate_average_production_cost</span><span class="p">()</span>
+
+        <span class="c1">## set price</span>
+        <span class="n">energy_price</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">brownEFirm</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getPrice</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">brown_firm</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">greenEFirm</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getPrice</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_average_production_cost</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="mi">1</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">mark_up</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mark_up_alpha</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">mark_up_beta</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">utilization</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="c1"># print(&quot;price &quot;, self.price, self.id, self.getUseEnergy(), energy_price, &quot; utilization: &quot;, self.utilization, self.profits)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">priceList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">getPrice</span><span class="p">()]))</span></div>
+
+
+<div class="viewcode-block" id="ConsumerGoodsFirm.compute_net_profit">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.firms.ConsumerGoodsFirm.compute_net_profit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_net_profit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">):</span>
+        <span class="c1"># function to calculate profit</span>
+        <span class="c1"># Wage component</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wage_bill</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unitWageBill</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wage_bill</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getNumberOfLabours</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unitWageBill</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1">##if firm demand 0 labour it means it shut down?</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">countWorkers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getNumberOfLabours</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">verboseFlag</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Number of workers in Capital Goods Firm no. </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">c_agents</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">csf_agents</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">countWorkers</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># determint loan payback</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progressPayback</span><span class="p">()</span>
+
+        <span class="c1"># printint firm report</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">verboseFlag</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Activity Report for firm&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;........................................&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Calculating Profit</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">verboseFlag</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;loan payback&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">payback</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">deposit</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_average_production_cost</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_actual_production</span><span class="p">(),</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">profits</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">bankID</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">deposit</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSoldProducts</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPrice</span><span class="p">()</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_average_production_cost</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_actual_production</span><span class="p">()</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">payback</span>
+        <span class="p">)</span>  <span class="c1"># - self.inn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profit_margin</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">getSoldProducts</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPrice</span><span class="p">()</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_average_production_cost</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_actual_production</span><span class="p">()</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getSoldProducts</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPrice</span><span class="p">())</span>
+        <span class="c1"># Net Profit after Tax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updateProfitsAfterTax</span><span class="p">(</span><span class="n">isC02Taxed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">carbon_tax_state</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">brown_firm</span><span class="p">)</span>
+        <span class="c1"># pay income to firm owner</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ownerIncome</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">net_profit</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">div_ratio</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">verboseFlag</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;deposit before&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">deposit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updateDeposit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">net_profit</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ownerIncome</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">verboseFlag</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;deposit after&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">deposit</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;networth&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">netWorth</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;production and sale&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">actual_production</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sale_record</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;profit&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">profits</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">net_profit</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;owner income&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ownerIncome</span><span class="p">,</span>
+                <span class="s2">&quot;deposit&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">deposit</span><span class="p">,</span>
+                <span class="s2">&quot;total cost&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_average_production_cost</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_actual_production</span><span class="p">(),</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DTE&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DTE</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;loan list&quot;</span><span class="p">,</span>
+                <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loanList</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loanList</span><span class="p">,</span>
+                <span class="s2">&quot;loan demand&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loan_demand</span><span class="p">,</span>
+                <span class="s2">&quot;loan granted&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loanObtained</span><span class="p">,</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConsumerGoodsFirm.update_capital_growth">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.firms.ConsumerGoodsFirm.update_capital_growth">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_capital_growth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capital_growth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capital_purchase</span></div>
+</div>
+
+        <span class="c1"># print(&quot;consumer capital growth&quot;, self.capital_growth)</span>
+        <span class="c1"># for consumer firm, capital growth is what they purchase</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Paola D&#39;Orazio, Anh-Duy Pham, Hong Son Nguyen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,996 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>climapan_lab.src.consumers.Consumer &mdash; CliMaPan-Lab 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            CliMaPan-Lab
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#dependencies">Dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../installation.html#core-dependencies">Core Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#installation-methods">Installation Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../installation.html#install-from-source-recommended">Install from Source (Recommended)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../installation.html#install-from-github">Install from GitHub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../installation.html#install-in-development-mode">Install in Development Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../installation.html#virtual-environment-recommended">Virtual Environment (Recommended)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#verify-installation">Verify Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../installation.html#common-issues">Common Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../installation.html#system-specific-notes">System-specific Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#basic-simulation">Basic Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#running-different-scenarios">Running Different Scenarios</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#business-as-usual-bau">Business as Usual (BAU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#carbon-tax-scenario">Carbon Tax Scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#pandemic-scenario">Pandemic Scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#combined-climate-and-pandemic">Combined Climate and Pandemic</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#command-line-interface">Command Line Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#basic-run">Basic Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#with-visualization">With Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#multiple-runs">Multiple Runs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#custom-parameters">Custom Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#analyzing-results">Analyzing Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#basic-visualization">Basic Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#key-parameters">Key Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#economic-settings">Economic Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#covid-settings">COVID Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#climate-settings">Climate Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#simulation-settings">Simulation Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model.html">Economic Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel"><code class="docutils literal notranslate"><span class="pre">EconModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.setup"><code class="docutils literal notranslate"><span class="pre">EconModel.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.step"><code class="docutils literal notranslate"><span class="pre">EconModel.step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.initiate_step"><code class="docutils literal notranslate"><span class="pre">EconModel.initiate_step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.stepwise_forecast"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_forecast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.stepwise_produce"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_produce()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.stepwise_after_production"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_after_production()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.stepwise_termination"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_termination()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.update"><code class="docutils literal notranslate"><span class="pre">EconModel.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.end"><code class="docutils literal notranslate"><span class="pre">EconModel.end()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model.html#model-components">Model Components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model.html#key-methods">Key Methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#climapan_lab.src.models.EconModel.__init__"><code class="docutils literal notranslate"><span class="pre">EconModel.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#id0"><code class="docutils literal notranslate"><span class="pre">EconModel.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model.html#id1"><code class="docutils literal notranslate"><span class="pre">EconModel.step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/agents.html">Economic Agents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/agents.html#consumers">Consumers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer"><code class="docutils literal notranslate"><span class="pre">Consumer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/agents.html#firms">Firms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/agents.html#consumer-goods-firms">Consumer Goods Firms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/agents.html#capital-goods-firms">Capital Goods Firms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/agents.html#energy-firms">Energy Firms</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/agents.html#banks">Banks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/agents.html#climapan_lab.src.banks.Bank"><code class="docutils literal notranslate"><span class="pre">Bank</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/agents.html#government">Government</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/agents.html#climapan_lab.src.governments.Government"><code class="docutils literal notranslate"><span class="pre">Government</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/agents.html#climate-module">Climate Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/agents.html#climapan_lab.src.climate.Climate"><code class="docutils literal notranslate"><span class="pre">Climate</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/index.html#main-model">Main Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel"><code class="docutils literal notranslate"><span class="pre">EconModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.setup"><code class="docutils literal notranslate"><span class="pre">EconModel.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.step"><code class="docutils literal notranslate"><span class="pre">EconModel.step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.initiate_step"><code class="docutils literal notranslate"><span class="pre">EconModel.initiate_step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.stepwise_forecast"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_forecast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.stepwise_produce"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_produce()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.stepwise_after_production"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_after_production()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.stepwise_termination"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_termination()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.update"><code class="docutils literal notranslate"><span class="pre">EconModel.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/index.html#climapan_lab.EconModel.end"><code class="docutils literal notranslate"><span class="pre">EconModel.end()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/index.html#module-climapan_lab.base_params">Core Parameters</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing to CliMaPan-Lab</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#development-setup">Development Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#code-style">Code Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#submitting-changes">Submitting Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#reporting-issues">Reporting Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#version-0-0-1-2024-12-05">Version 0.0.1 (2024-12-05)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../license.html">License</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../license.html#mit-license">MIT License</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CliMaPan-Lab</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">climapan_lab.src.consumers.Consumer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for climapan_lab.src.consumers.Consumer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">agentpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ap</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy.random</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">lognormal</span>
+
+
+<div class="viewcode-block" id="Consumer">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Consumer</span><span class="p">(</span><span class="n">ap</span><span class="o">.</span><span class="n">Agent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A consumer agent&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Consumer.setup">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.setup">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># parameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">consumptionSubsistenceLevel</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">subsistenceLevelOfConsumption</span>
+        <span class="p">)</span>  <span class="c1"># physical good</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker_additional_consumption</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">worker_additional_consumption</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">owner_additional_consumption</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">owner_additional_consumption</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">bankID</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">consumption_growth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">consumption_growth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">employed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">covidState</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;nextState&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">deposit</span> <span class="o">=</span> <span class="mi">1500</span>  <span class="c1"># total wealth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">growth_factor</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">consumerType</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># 4 (5) options after setup: workers, capitalists, green_energy_owners, brown_energy_owners, (None)</span></div>
+
+
+        <span class="c1"># what else do I need</span>
+
+    <span class="c1"># reborn inherit</span>
+<div class="viewcode-block" id="Consumer.reset">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.reset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">memoryLengthForUnemplymentRate</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">memoryLengthForEmplymentState</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">minimumWage</span>  <span class="c1"># wage from firm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">income</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># income from all source</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">div</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># capital income</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wealthList</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desired_consumption</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">consumptionSubsistenceLevel</span>  <span class="c1"># physical good</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">consumption</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># value variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">employmentStateStorage</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unemploymentRateStorage</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">employed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">belongToFirm</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dead</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sickLeaves</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="Consumer.desired_C">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.desired_C">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">desired_C</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sick_reduction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">sick_reduction</span>
+        <span class="n">sick</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">covidState</span>
+        <span class="n">base_consumption</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">consumptionSubsistenceLevel</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">employed</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker_additional_consumption</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">owner</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">owner_additional_consumption</span><span class="p">,</span>
+                <span class="mf">0.8</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">deposit</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">price</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">growth_factor</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">consumption_growth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desired_consumption</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">growth_factor</span> <span class="o">*</span> <span class="n">base_consumption</span> <span class="o">-</span> <span class="n">sick_reduction</span> <span class="o">*</span> <span class="n">sick</span>
+        <span class="p">)</span></div>
+
+        <span class="c1"># if sick == True:</span>
+        <span class="c1"># print(&quot;sick reduction&quot;, sick, sick_reduction)</span>
+
+<div class="viewcode-block" id="Consumer.update_wealth">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.update_wealth">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_wealth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">income</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">deposit</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">iD</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">isWorker</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">getWage</span><span class="p">()</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">owner</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">minimumWage</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiv</span><span class="p">())</span>
+        <span class="p">)</span>
+        <span class="c1"># if self.owner: print(&quot;owner income&quot;, self.income)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deposit</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">income</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">consumption</span>
+        <span class="p">)</span>  <span class="c1"># consumption is value variable, updated in transaction</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wealthList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deposit</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Consumer.receiveHiring">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.receiveHiring">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">receiveHiring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">firmID</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getConsumerType</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;workers&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setEmployment</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setWage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">minimumWage</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">belongToFirm</span> <span class="o">=</span> <span class="n">firmID</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateMemoryAfterHiringFiring</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Consumer.receiveFiring">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.receiveFiring">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">receiveFiring</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getConsumerType</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;workers&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setEmployment</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setWage</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">belongToFirm</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateMemoryAfterHiringFiring</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Consumer.updateMemoryAfterHiringFiring">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.updateMemoryAfterHiringFiring">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">updateMemoryAfterHiringFiring</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">employed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">employmentStateStorage</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">employmentStateStorage</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">employmentStateStorage</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">memoryLengthForEmplymentState</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">employmentStateStorage</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Consumer.updateMemory">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.updateMemory">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">updateMemory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unemplRate</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unemploymentRateStorage</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unemplRate</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unemploymentRateStorage</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">memoryLengthForUnemplymentRate</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unemploymentRateStorage</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+    <span class="c1"># use to set level of consumption</span>
+<div class="viewcode-block" id="Consumer.setConsumption">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.setConsumption">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setConsumption</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">consumption</span> <span class="o">=</span> <span class="n">value</span></div>
+
+
+    <span class="c1"># use to retrieve level of consumption</span>
+<div class="viewcode-block" id="Consumer.getConsumption">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getConsumption">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getConsumption</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">consumption</span></div>
+
+
+<div class="viewcode-block" id="Consumer.get_desired_consumption">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.get_desired_consumption">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_desired_consumption</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">desired_consumption</span></div>
+
+
+    <span class="c1"># use to adjust level of wealth</span>
+<div class="viewcode-block" id="Consumer.update_deposit">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.update_deposit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_deposit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deposit</span> <span class="o">+=</span> <span class="n">amount</span></div>
+
+
+    <span class="c1"># use to set level of wealth</span>
+<div class="viewcode-block" id="Consumer.set_deposit">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.set_deposit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_deposit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deposit</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deposit</span> <span class="o">=</span> <span class="n">deposit</span></div>
+
+
+<div class="viewcode-block" id="Consumer.wealth_loss">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.wealth_loss">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wealth_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loss_percentage</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deposit</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">loss_percentage</span></div>
+
+
+    <span class="c1"># use to retrieve level of wealth</span>
+<div class="viewcode-block" id="Consumer.get_deposit">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.get_deposit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_deposit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">deposit</span></div>
+
+
+<div class="viewcode-block" id="Consumer.getEmploymentState">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getEmploymentState">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getEmploymentState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">employed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">consumerType</span> <span class="o">==</span> <span class="s2">&quot;workers&quot;</span></div>
+
+
+<div class="viewcode-block" id="Consumer.getUnemploymentState">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getUnemploymentState">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getUnemploymentState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">employed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">consumerType</span> <span class="o">==</span> <span class="s2">&quot;workers&quot;</span></div>
+
+
+<div class="viewcode-block" id="Consumer.setEmployment">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.setEmployment">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setEmployment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">employed</span> <span class="o">=</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="Consumer.isWorker">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.isWorker">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">isWorker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">consumerType</span> <span class="o">==</span> <span class="s2">&quot;workers&quot;</span></div>
+
+
+<div class="viewcode-block" id="Consumer.getSumEmploymentState">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getSumEmploymentState">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getSumEmploymentState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sumEmploymentState</span></div>
+
+
+<div class="viewcode-block" id="Consumer.getIdentity">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getIdentity">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getIdentity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span></div>
+
+
+<div class="viewcode-block" id="Consumer.getFinancialDifficultyIndicator">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getFinancialDifficultyIndicator">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getFinancialDifficultyIndicator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">financialDifficultyIndicator</span></div>
+
+
+<div class="viewcode-block" id="Consumer.setWage">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.setWage">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setWage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wage</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">employed</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span> <span class="o">&lt;</span> <span class="mi">32</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">minimumWage</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">unemploymentRateStorage</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">wage</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">unemploymentDole</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">wage</span> <span class="o">=</span> <span class="n">wage</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">wage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">unemploymentDole</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">unemploymentDole</span></div>
+
+
+<div class="viewcode-block" id="Consumer.getIncome">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getIncome">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getIncome</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">income</span></div>
+
+
+<div class="viewcode-block" id="Consumer.getWage">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getWage">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getWage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wage</span></div>
+
+
+<div class="viewcode-block" id="Consumer.setConsumerType">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.setConsumerType">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setConsumerType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">consumerType</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">consumerType</span> <span class="o">=</span> <span class="n">consumerType</span></div>
+
+
+<div class="viewcode-block" id="Consumer.getConsumerType">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getConsumerType">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getConsumerType</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">consumerType</span></div>
+
+
+<div class="viewcode-block" id="Consumer.getBelongToFirm">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getBelongToFirm">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getBelongToFirm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">belongToFirm</span></div>
+
+
+<div class="viewcode-block" id="Consumer.setDiv">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.setDiv">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setDiv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">div</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">owner</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">div</span> <span class="o">=</span> <span class="n">div</span></div>
+
+
+<div class="viewcode-block" id="Consumer.getDiv">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getDiv">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getDiv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">div</span></div>
+
+
+<div class="viewcode-block" id="Consumer.gov_transfer">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.gov_transfer">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gov_transfer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deposit</span> <span class="o">+=</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="Consumer.setAgeGroup">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.setAgeGroup">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setAgeGroup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ageGroup</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ageGroup</span> <span class="o">=</span> <span class="n">ageGroup</span></div>
+
+
+<div class="viewcode-block" id="Consumer.getAgeGroup">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getAgeGroup">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getAgeGroup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ageGroup</span></div>
+
+
+<div class="viewcode-block" id="Consumer.setCovidState">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.setCovidState">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setCovidState</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nextState</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">covidState</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">covidState</span><span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">covidState</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">duration</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">covidState</span><span class="p">[</span><span class="s2">&quot;nextState&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nextState</span>
+        <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;susceptible&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">covidState</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;susceptible&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;nextState&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">covidState</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;nextState&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="Consumer.getCovidState">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getCovidState">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCovidState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">covidState</span></div>
+
+
+<div class="viewcode-block" id="Consumer.getCovidStateAttr">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getCovidStateAttr">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCovidStateAttr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">covidState</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">covidState</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span>
+                <span class="s2">&quot;No such attribute. Please select from: state, t, duration, nextState&quot;</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Consumer.propagateContact">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.propagateContact">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">propagateContact</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inf_f</span><span class="p">,</span> <span class="n">inf_c</span><span class="p">,</span> <span class="n">p_firm</span><span class="p">,</span> <span class="n">p_community</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">inf_f</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">inf_c</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">p_infection</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p_firm</span><span class="p">)</span> <span class="o">**</span> <span class="n">inf_f</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p_community</span><span class="p">)</span> <span class="o">**</span> <span class="n">inf_c</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">p_infection</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                    <span class="s2">&quot;exposed&quot;</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                    <span class="n">lognormal</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_susceptible_mild_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_susceptible_mild_std</span>
+                    <span class="p">),</span>
+                    <span class="s2">&quot;mild&quot;</span><span class="p">,</span>
+                <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_progressCovidExposedState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSickLeaves</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">today</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;duration&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;young&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_exposed_mild_young</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;exposed&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">),</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_exposed_mild_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_exposed_mild_std</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;mild&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;infected non-sympotomatic&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">),</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_nonsym_recovered_mean</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_nonsym_recovered_std</span><span class="p">,</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;recovered&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;working&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_exposed_mild_working</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;exposed&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">),</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_exposed_mild_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_exposed_mild_std</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;mild&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;infected non-sympotomatic&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">),</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_nonsym_recovered_mean</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_nonsym_recovered_std</span><span class="p">,</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;recovered&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;elderly&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_exposed_mild_elderly</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;exposed&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">),</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_exposed_mild_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_exposed_mild_std</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;mild&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;infected non-sympotomatic&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">),</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_nonsym_recovered_mean</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_nonsym_recovered_std</span><span class="p">,</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;recovered&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span>
+                <span class="s2">&quot;duration&quot;</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;nextState&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_progressCovidInfectedNonsympotomaticState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSickLeaves</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">today</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span>
+            <span class="s2">&quot;duration&quot;</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;nextState&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_progressCovidMildState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSickLeaves</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">today</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;duration&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;young&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_mild_severe_young</span> <span class="o">*</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_vax</span><span class="p">)</span> <span class="o">**</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">covid_settings</span> <span class="o">==</span> <span class="s2">&quot;VAX&quot;</span><span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;mild&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_mild_severe_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_mild_severe_std</span><span class="p">),</span>
+                        <span class="s2">&quot;severe&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;infected non-sympotomatic&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_mild_recovered_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_mild_recovered_std</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;recovered&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;working&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_mild_severe_working</span> <span class="o">*</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_vax</span><span class="p">)</span> <span class="o">**</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">covid_settings</span> <span class="o">==</span> <span class="s2">&quot;VAX&quot;</span><span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;mild&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_mild_severe_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_mild_severe_std</span><span class="p">),</span>
+                        <span class="s2">&quot;severe&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;infected non-sympotomatic&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_mild_recovered_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_mild_recovered_std</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;recovered&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;elderly&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_mild_severe_elderly</span> <span class="o">*</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_vax</span><span class="p">)</span> <span class="o">**</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">covid_settings</span> <span class="o">==</span> <span class="s2">&quot;VAX&quot;</span><span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;mild&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_mild_severe_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_mild_severe_std</span><span class="p">),</span>
+                        <span class="s2">&quot;severe&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;infected non-sympotomatic&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_mild_recovered_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_mild_recovered_std</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;recovered&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span>
+                <span class="s2">&quot;duration&quot;</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;nextState&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_progressCovidSevereState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSickLeaves</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">today</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;duration&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;young&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_severe_critical_young</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;severe&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_severe_critical_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_severe_critical_std</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;critical&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;severe&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_severe_recovered_mean</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_severe_recovered_std</span><span class="p">,</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;recovered&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;working&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_severe_critical_working</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;severe&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_severe_critical_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_severe_critical_std</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;critical&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;severe&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_severe_recovered_mean</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_severe_recovered_std</span><span class="p">,</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;recovered&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;elderly&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_severe_critical_elderly</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;severe&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_severe_critical_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_severe_critical_std</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;critical&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;severe&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_severe_recovered_mean</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_severe_recovered_std</span><span class="p">,</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;recovered&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span>
+                <span class="s2">&quot;duration&quot;</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;nextState&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_progressCovidCriticalState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSickLeaves</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">today</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;duration&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;young&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_critical_death_young</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;critical&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_critical_death_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_critical_death_std</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;dead&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;critical&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_critical_recovered_mean</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_critical_recovered_std</span><span class="p">,</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;recovered&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;working&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_critical_death_working</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;critical&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_critical_death_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_critical_death_std</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;dead&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;critical&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_critical_recovered_mean</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_critical_recovered_std</span><span class="p">,</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;recovered&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;elderly&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_critical_death_elderly</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;critical&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_critical_death_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_critical_death_std</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;dead&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span>
+                        <span class="s2">&quot;critical&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span>
+                        <span class="n">lognormal</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_critical_recovered_mean</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">T_critical_recovered_std</span><span class="p">,</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;recovered&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span>
+                <span class="s2">&quot;duration&quot;</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;nextState&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_progressCovidRecoveredState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;young&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_recovered_immun_young</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span><span class="s2">&quot;immunized&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;working&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_recovered_immun_working</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span><span class="s2">&quot;immunized&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAgeGroup</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;elderly&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_recovered_immun_elderly</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span><span class="s2">&quot;immunized&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_progressCovidImmunizedState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span>
+            <span class="s2">&quot;duration&quot;</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_progressCovidDeadState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">covid_death</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Consumer.progressCovid">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.progressCovid">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">progressCovid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;exposed&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_progressCovidExposedState</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;infected non-sympotomatic&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_progressCovidInfectedNonsympotomaticState</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;mild&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_progressCovidMildState</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;severe&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_progressCovidSevereState</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;critical&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_progressCovidCriticalState</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;recovered&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_progressCovidRecoveredState</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resetSickLeaves</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;immunized&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_mutation</span> <span class="o">*</span> <span class="p">(</span>
+                <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">p_vax</span><span class="p">)</span> <span class="o">**</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">covid_settings</span> <span class="o">==</span> <span class="s2">&quot;VAX&quot;</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setCovidState</span><span class="p">(</span><span class="s2">&quot;exposed&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_progressCovidImmunizedState</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCovidStateAttr</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;dead&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_progressCovidDeadState</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Consumer.setSickLeaves">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.setSickLeaves">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setSickLeaves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sickLeaves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">date</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Consumer.getSickLeaves">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getSickLeaves">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getSickLeaves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sickLeaves</span></div>
+
+
+<div class="viewcode-block" id="Consumer.resetSickLeaves">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.resetSickLeaves">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resetSickLeaves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sickLeaves</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="Consumer.isDead">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.isDead">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">isDead</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dead</span></div>
+
+
+<div class="viewcode-block" id="Consumer.isEmployed">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.isEmployed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">isEmployed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">employed</span></div>
+
+
+<div class="viewcode-block" id="Consumer.setObtainedCredit">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.setObtainedCredit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setObtainedCredit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obtainedCredit</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obtainedCredit</span> <span class="o">=</span> <span class="n">obtainedCredit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obtainedCreditList</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">obtainedCredit</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="Consumer.getObtainedCredit">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.getObtainedCredit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getObtainedCredit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obtainedCredit</span></div>
+
+
+<div class="viewcode-block" id="Consumer.setDead">
+<a class="viewcode-back" href="../../../../api/agents.html#climapan_lab.src.consumers.Consumer.setDead">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setDead</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deposit</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">div</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wealthList</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desired_consumption</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">consumption</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">employed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">belongToFirm</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wage</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">income</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dead</span> <span class="o">=</span> <span class="kc">True</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Paola D&#39;Orazio, Anh-Duy Pham, Hong Son Nguyen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

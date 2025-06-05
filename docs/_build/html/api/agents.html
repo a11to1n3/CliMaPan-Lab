@@ -1,0 +1,735 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Economic Agents &mdash; CliMaPan-Lab 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Contributing to CliMaPan-Lab" href="../contributing.html" />
+    <link rel="prev" title="Economic Model" href="model.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            CliMaPan-Lab
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#dependencies">Dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#core-dependencies">Core Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installation-methods">Installation Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#install-from-source-recommended">Install from Source (Recommended)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#install-from-github">Install from GitHub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#install-in-development-mode">Install in Development Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#virtual-environment-recommended">Virtual Environment (Recommended)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#verify-installation">Verify Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#common-issues">Common Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#system-specific-notes">System-specific Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#basic-simulation">Basic Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#running-different-scenarios">Running Different Scenarios</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#business-as-usual-bau">Business as Usual (BAU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#carbon-tax-scenario">Carbon Tax Scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#pandemic-scenario">Pandemic Scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#combined-climate-and-pandemic">Combined Climate and Pandemic</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#command-line-interface">Command Line Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#basic-run">Basic Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#with-visualization">With Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#multiple-runs">Multiple Runs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#custom-parameters">Custom Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#analyzing-results">Analyzing Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#basic-visualization">Basic Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#key-parameters">Key Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#economic-settings">Economic Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#covid-settings">COVID Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#climate-settings">Climate Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#simulation-settings">Simulation Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="model.html">Economic Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="model.html#climapan_lab.src.models.EconModel"><code class="docutils literal notranslate"><span class="pre">EconModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="model.html#climapan_lab.src.models.EconModel.setup"><code class="docutils literal notranslate"><span class="pre">EconModel.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#climapan_lab.src.models.EconModel.step"><code class="docutils literal notranslate"><span class="pre">EconModel.step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#climapan_lab.src.models.EconModel.initiate_step"><code class="docutils literal notranslate"><span class="pre">EconModel.initiate_step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#climapan_lab.src.models.EconModel.stepwise_forecast"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_forecast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#climapan_lab.src.models.EconModel.stepwise_produce"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_produce()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#climapan_lab.src.models.EconModel.stepwise_after_production"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_after_production()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#climapan_lab.src.models.EconModel.stepwise_termination"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_termination()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#climapan_lab.src.models.EconModel.update"><code class="docutils literal notranslate"><span class="pre">EconModel.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#climapan_lab.src.models.EconModel.end"><code class="docutils literal notranslate"><span class="pre">EconModel.end()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#model-components">Model Components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#key-methods">Key Methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="model.html#climapan_lab.src.models.EconModel.__init__"><code class="docutils literal notranslate"><span class="pre">EconModel.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#id0"><code class="docutils literal notranslate"><span class="pre">EconModel.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#id1"><code class="docutils literal notranslate"><span class="pre">EconModel.step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Economic Agents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#consumers">Consumers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#climapan_lab.src.consumers.Consumer"><code class="docutils literal notranslate"><span class="pre">Consumer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#firms">Firms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#consumer-goods-firms">Consumer Goods Firms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#capital-goods-firms">Capital Goods Firms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#energy-firms">Energy Firms</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#banks">Banks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#climapan_lab.src.banks.Bank"><code class="docutils literal notranslate"><span class="pre">Bank</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#government">Government</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#climapan_lab.src.governments.Government"><code class="docutils literal notranslate"><span class="pre">Government</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#climate-module">Climate Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#climapan_lab.src.climate.Climate"><code class="docutils literal notranslate"><span class="pre">Climate</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#main-model">Main Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#climapan_lab.EconModel"><code class="docutils literal notranslate"><span class="pre">EconModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.setup"><code class="docutils literal notranslate"><span class="pre">EconModel.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.step"><code class="docutils literal notranslate"><span class="pre">EconModel.step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.initiate_step"><code class="docutils literal notranslate"><span class="pre">EconModel.initiate_step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.stepwise_forecast"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_forecast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.stepwise_produce"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_produce()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.stepwise_after_production"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_after_production()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.stepwise_termination"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_termination()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.update"><code class="docutils literal notranslate"><span class="pre">EconModel.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.end"><code class="docutils literal notranslate"><span class="pre">EconModel.end()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-climapan_lab.base_params">Core Parameters</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing to CliMaPan-Lab</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#development-setup">Development Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#code-style">Code Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#submitting-changes">Submitting Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#reporting-issues">Reporting Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-0-0-1-2024-12-05">Version 0.0.1 (2024-12-05)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../license.html#mit-license">MIT License</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CliMaPan-Lab</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Economic Agents</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/agents.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="economic-agents">
+<h1>Economic Agents<a class="headerlink" href="#economic-agents" title="Link to this heading"></a></h1>
+<p>CliMaPan-Lab includes several types of economic agents that interact within the model.</p>
+<section id="consumers">
+<h2>Consumers<a class="headerlink" href="#consumers" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">climapan_lab.src.consumers.</span></span><span class="sig-name descname"><span class="pre">Consumer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Agent</span></code></p>
+<p>A consumer agent</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.setup" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.reset" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.desired_C">
+<span class="sig-name descname"><span class="pre">desired_C</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.desired_C"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.desired_C" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.update_wealth">
+<span class="sig-name descname"><span class="pre">update_wealth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.update_wealth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.update_wealth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.receiveHiring">
+<span class="sig-name descname"><span class="pre">receiveHiring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">firmID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.receiveHiring"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.receiveHiring" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.receiveFiring">
+<span class="sig-name descname"><span class="pre">receiveFiring</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.receiveFiring"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.receiveFiring" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.updateMemoryAfterHiringFiring">
+<span class="sig-name descname"><span class="pre">updateMemoryAfterHiringFiring</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.updateMemoryAfterHiringFiring"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.updateMemoryAfterHiringFiring" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.updateMemory">
+<span class="sig-name descname"><span class="pre">updateMemory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unemplRate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.updateMemory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.updateMemory" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.setConsumption">
+<span class="sig-name descname"><span class="pre">setConsumption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.setConsumption"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.setConsumption" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getConsumption">
+<span class="sig-name descname"><span class="pre">getConsumption</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getConsumption"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getConsumption" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.get_desired_consumption">
+<span class="sig-name descname"><span class="pre">get_desired_consumption</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.get_desired_consumption"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.get_desired_consumption" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.update_deposit">
+<span class="sig-name descname"><span class="pre">update_deposit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amount</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.update_deposit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.update_deposit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.set_deposit">
+<span class="sig-name descname"><span class="pre">set_deposit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deposit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.set_deposit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.set_deposit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.wealth_loss">
+<span class="sig-name descname"><span class="pre">wealth_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss_percentage</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.wealth_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.wealth_loss" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.get_deposit">
+<span class="sig-name descname"><span class="pre">get_deposit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.get_deposit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.get_deposit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getEmploymentState">
+<span class="sig-name descname"><span class="pre">getEmploymentState</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getEmploymentState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getEmploymentState" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getUnemploymentState">
+<span class="sig-name descname"><span class="pre">getUnemploymentState</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getUnemploymentState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getUnemploymentState" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.setEmployment">
+<span class="sig-name descname"><span class="pre">setEmployment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.setEmployment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.setEmployment" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.isWorker">
+<span class="sig-name descname"><span class="pre">isWorker</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.isWorker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.isWorker" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getSumEmploymentState">
+<span class="sig-name descname"><span class="pre">getSumEmploymentState</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getSumEmploymentState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getSumEmploymentState" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getIdentity">
+<span class="sig-name descname"><span class="pre">getIdentity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getIdentity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getIdentity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getFinancialDifficultyIndicator">
+<span class="sig-name descname"><span class="pre">getFinancialDifficultyIndicator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getFinancialDifficultyIndicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getFinancialDifficultyIndicator" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.setWage">
+<span class="sig-name descname"><span class="pre">setWage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.setWage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.setWage" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getIncome">
+<span class="sig-name descname"><span class="pre">getIncome</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getIncome"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getIncome" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getWage">
+<span class="sig-name descname"><span class="pre">getWage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getWage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getWage" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.setConsumerType">
+<span class="sig-name descname"><span class="pre">setConsumerType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">consumerType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.setConsumerType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.setConsumerType" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getConsumerType">
+<span class="sig-name descname"><span class="pre">getConsumerType</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getConsumerType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getConsumerType" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getBelongToFirm">
+<span class="sig-name descname"><span class="pre">getBelongToFirm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getBelongToFirm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getBelongToFirm" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.setDiv">
+<span class="sig-name descname"><span class="pre">setDiv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">div</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.setDiv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.setDiv" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getDiv">
+<span class="sig-name descname"><span class="pre">getDiv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getDiv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getDiv" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.gov_transfer">
+<span class="sig-name descname"><span class="pre">gov_transfer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.gov_transfer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.gov_transfer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.setAgeGroup">
+<span class="sig-name descname"><span class="pre">setAgeGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ageGroup</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.setAgeGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.setAgeGroup" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getAgeGroup">
+<span class="sig-name descname"><span class="pre">getAgeGroup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getAgeGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getAgeGroup" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.setCovidState">
+<span class="sig-name descname"><span class="pre">setCovidState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nextState</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.setCovidState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.setCovidState" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getCovidState">
+<span class="sig-name descname"><span class="pre">getCovidState</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getCovidState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getCovidState" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getCovidStateAttr">
+<span class="sig-name descname"><span class="pre">getCovidStateAttr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getCovidStateAttr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getCovidStateAttr" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.propagateContact">
+<span class="sig-name descname"><span class="pre">propagateContact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inf_f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inf_c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_firm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_community</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.propagateContact"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.propagateContact" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.progressCovid">
+<span class="sig-name descname"><span class="pre">progressCovid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.progressCovid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.progressCovid" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.setSickLeaves">
+<span class="sig-name descname"><span class="pre">setSickLeaves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.setSickLeaves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.setSickLeaves" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getSickLeaves">
+<span class="sig-name descname"><span class="pre">getSickLeaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getSickLeaves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getSickLeaves" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.resetSickLeaves">
+<span class="sig-name descname"><span class="pre">resetSickLeaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.resetSickLeaves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.resetSickLeaves" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.isDead">
+<span class="sig-name descname"><span class="pre">isDead</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.isDead"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.isDead" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.isEmployed">
+<span class="sig-name descname"><span class="pre">isEmployed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.isEmployed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.isEmployed" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.setObtainedCredit">
+<span class="sig-name descname"><span class="pre">setObtainedCredit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obtainedCredit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.setObtainedCredit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.setObtainedCredit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.getObtainedCredit">
+<span class="sig-name descname"><span class="pre">getObtainedCredit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.getObtainedCredit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.getObtainedCredit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.consumers.Consumer.setDead">
+<span class="sig-name descname"><span class="pre">setDead</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/consumers/Consumer.html#Consumer.setDead"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.consumers.Consumer.setDead" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="firms">
+<h2>Firms<a class="headerlink" href="#firms" title="Link to this heading"></a></h2>
+<section id="consumer-goods-firms">
+<h3>Consumer Goods Firms<a class="headerlink" href="#consumer-goods-firms" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.ConsumerGoodsFirm">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">climapan_lab.src.firms.</span></span><span class="sig-name descname"><span class="pre">ConsumerGoodsFirm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/ConsumerGoodsFirm.html#ConsumerGoodsFirm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.ConsumerGoodsFirm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">GoodsFirmBase</span></code></p>
+<p>A ConsumerGoodsFirm agent</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.ConsumerGoodsFirm.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/ConsumerGoodsFirm.html#ConsumerGoodsFirm.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.ConsumerGoodsFirm.setup" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.ConsumerGoodsFirm.prepareForecast">
+<span class="sig-name descname"><span class="pre">prepareForecast</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/ConsumerGoodsFirm.html#ConsumerGoodsFirm.prepareForecast"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.ConsumerGoodsFirm.prepareForecast" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.ConsumerGoodsFirm.calculate_input_demand">
+<span class="sig-name descname"><span class="pre">calculate_input_demand</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/ConsumerGoodsFirm.html#ConsumerGoodsFirm.calculate_input_demand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.ConsumerGoodsFirm.calculate_input_demand" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.ConsumerGoodsFirm.produce">
+<span class="sig-name descname"><span class="pre">produce</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/ConsumerGoodsFirm.html#ConsumerGoodsFirm.produce"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.ConsumerGoodsFirm.produce" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.ConsumerGoodsFirm.price_setting">
+<span class="sig-name descname"><span class="pre">price_setting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/ConsumerGoodsFirm.html#ConsumerGoodsFirm.price_setting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.ConsumerGoodsFirm.price_setting" title="Link to this definition"></a></dt>
+<dd><p>Function to set price base on mark up over cost</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.ConsumerGoodsFirm.compute_net_profit">
+<span class="sig-name descname"><span class="pre">compute_net_profit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/ConsumerGoodsFirm.html#ConsumerGoodsFirm.compute_net_profit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.ConsumerGoodsFirm.compute_net_profit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.ConsumerGoodsFirm.update_capital_growth">
+<span class="sig-name descname"><span class="pre">update_capital_growth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/ConsumerGoodsFirm.html#ConsumerGoodsFirm.update_capital_growth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.ConsumerGoodsFirm.update_capital_growth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="capital-goods-firms">
+<h3>Capital Goods Firms<a class="headerlink" href="#capital-goods-firms" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.CapitalGoodsFirm">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">climapan_lab.src.firms.</span></span><span class="sig-name descname"><span class="pre">CapitalGoodsFirm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/CapitalGoodsFirm.html#CapitalGoodsFirm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.CapitalGoodsFirm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">GoodsFirmBase</span></code></p>
+<p>A CapitalGoodsFirm agent</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.CapitalGoodsFirm.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/CapitalGoodsFirm.html#CapitalGoodsFirm.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.CapitalGoodsFirm.setup" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.CapitalGoodsFirm.prepareForecast">
+<span class="sig-name descname"><span class="pre">prepareForecast</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/CapitalGoodsFirm.html#CapitalGoodsFirm.prepareForecast"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.CapitalGoodsFirm.prepareForecast" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.CapitalGoodsFirm.calculate_input_demand">
+<span class="sig-name descname"><span class="pre">calculate_input_demand</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/CapitalGoodsFirm.html#CapitalGoodsFirm.calculate_input_demand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.CapitalGoodsFirm.calculate_input_demand" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.CapitalGoodsFirm.produce">
+<span class="sig-name descname"><span class="pre">produce</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/CapitalGoodsFirm.html#CapitalGoodsFirm.produce"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.CapitalGoodsFirm.produce" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.CapitalGoodsFirm.price_setting">
+<span class="sig-name descname"><span class="pre">price_setting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/CapitalGoodsFirm.html#CapitalGoodsFirm.price_setting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.CapitalGoodsFirm.price_setting" title="Link to this definition"></a></dt>
+<dd><p>Function to set price base on mark up over cost</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.CapitalGoodsFirm.compute_net_profit">
+<span class="sig-name descname"><span class="pre">compute_net_profit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/CapitalGoodsFirm.html#CapitalGoodsFirm.compute_net_profit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.CapitalGoodsFirm.compute_net_profit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.CapitalGoodsFirm.update_capital_growth">
+<span class="sig-name descname"><span class="pre">update_capital_growth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/CapitalGoodsFirm.html#CapitalGoodsFirm.update_capital_growth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.CapitalGoodsFirm.update_capital_growth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="energy-firms">
+<h3>Energy Firms<a class="headerlink" href="#energy-firms" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.GreenEnergyFirm">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">climapan_lab.src.firms.</span></span><span class="sig-name descname"><span class="pre">GreenEnergyFirm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/GreenEnergyFirm.html#GreenEnergyFirm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.GreenEnergyFirm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">EnergyFirmBase</span></code></p>
+<p>A GreenEnergyFirm agent</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.GreenEnergyFirm.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/GreenEnergyFirm.html#GreenEnergyFirm.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.GreenEnergyFirm.setup" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.BrownEnergyFirm">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">climapan_lab.src.firms.</span></span><span class="sig-name descname"><span class="pre">BrownEnergyFirm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/BrownEnergyFirm.html#BrownEnergyFirm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.BrownEnergyFirm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">EnergyFirmBase</span></code></p>
+<p>A BrownEnergyFirm agent</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.firms.BrownEnergyFirm.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/firms/BrownEnergyFirm.html#BrownEnergyFirm.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.firms.BrownEnergyFirm.setup" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="banks">
+<h2>Banks<a class="headerlink" href="#banks" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="climapan_lab.src.banks.Bank">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">climapan_lab.src.banks.</span></span><span class="sig-name descname"><span class="pre">Bank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/banks/Bank.html#Bank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.banks.Bank" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Agent</span></code></p>
+<p>A bank agent</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.banks.Bank.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/banks/Bank.html#Bank.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.banks.Bank.setup" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.banks.Bank.agentAssign">
+<span class="sig-name descname"><span class="pre">agentAssign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/banks/Bank.html#Bank.agentAssign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.banks.Bank.agentAssign" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.banks.Bank.sommaW">
+<span class="sig-name descname"><span class="pre">sommaW</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/banks/Bank.html#Bank.sommaW"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.banks.Bank.sommaW" title="Link to this definition"></a></dt>
+<dd><p>This internal function of the Bank class is used to propagate the main functions of the bank</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.banks.Bank.reset_bank">
+<span class="sig-name descname"><span class="pre">reset_bank</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/banks/Bank.html#Bank.reset_bank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.banks.Bank.reset_bank" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="government">
+<h2>Government<a class="headerlink" href="#government" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="climapan_lab.src.governments.Government">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">climapan_lab.src.governments.</span></span><span class="sig-name descname"><span class="pre">Government</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/governments/Goverment.html#Government"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.governments.Government" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Agent</span></code></p>
+<p>A government agent</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.governments.Government.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/governments/Goverment.html#Government.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.governments.Government.setup" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.governments.Government.checkConsistency">
+<span class="sig-name descname"><span class="pre">checkConsistency</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/governments/Goverment.html#Government.checkConsistency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.governments.Government.checkConsistency" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.governments.Government.agentAssign">
+<span class="sig-name descname"><span class="pre">agentAssign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/governments/Goverment.html#Government.agentAssign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.governments.Government.agentAssign" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.governments.Government.transfer_expenditure">
+<span class="sig-name descname"><span class="pre">transfer_expenditure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/governments/Goverment.html#Government.transfer_expenditure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.governments.Government.transfer_expenditure" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.governments.Government.E_Gov">
+<span class="sig-name descname"><span class="pre">E_Gov</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/governments/Goverment.html#Government.E_Gov"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.governments.Government.E_Gov" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.governments.Government.UE_Gov">
+<span class="sig-name descname"><span class="pre">UE_Gov</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/governments/Goverment.html#Government.UE_Gov"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.governments.Government.UE_Gov" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.governments.Government.update_budget">
+<span class="sig-name descname"><span class="pre">update_budget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/governments/Goverment.html#Government.update_budget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.governments.Government.update_budget" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.governments.Government.issue_bond">
+<span class="sig-name descname"><span class="pre">issue_bond</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/governments/Goverment.html#Government.issue_bond"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.governments.Government.issue_bond" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="climate-module">
+<h2>Climate Module<a class="headerlink" href="#climate-module" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="climapan_lab.src.climate.Climate">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">climapan_lab.src.climate.</span></span><span class="sig-name descname"><span class="pre">Climate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/climate/Climate.html#Climate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.climate.Climate" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Agent</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.climate.Climate.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/climate/Climate.html#Climate.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.climate.Climate.setup" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.climate.Climate.initGDP">
+<span class="sig-name descname"><span class="pre">initGDP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">GDP</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/climate/Climate.html#Climate.initGDP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.climate.Climate.initGDP" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.climate.Climate.initAggregatedIncome">
+<span class="sig-name descname"><span class="pre">initAggregatedIncome</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/climate/Climate.html#Climate.initAggregatedIncome"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.climate.Climate.initAggregatedIncome" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.climate.Climate.progress">
+<span class="sig-name descname"><span class="pre">progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_firm</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/climate/Climate.html#Climate.progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.climate.Climate.progress" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.climate.Climate.process_aggregate_damage">
+<span class="sig-name descname"><span class="pre">process_aggregate_damage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/climate/Climate.html#Climate.process_aggregate_damage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.climate.Climate.process_aggregate_damage" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.climate.Climate.getPM">
+<span class="sig-name descname"><span class="pre">getPM</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/climate/Climate.html#Climate.getPM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.climate.Climate.getPM" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.climate.Climate.getAliveConsumersPostShock">
+<span class="sig-name descname"><span class="pre">getAliveConsumersPostShock</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/climate/Climate.html#Climate.getAliveConsumersPostShock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.climate.Climate.getAliveConsumersPostShock" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="model.html" class="btn btn-neutral float-left" title="Economic Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../contributing.html" class="btn btn-neutral float-right" title="Contributing to CliMaPan-Lab" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Paola D&#39;Orazio, Anh-Duy Pham, Hong Son Nguyen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Economic Model &mdash; CliMaPan-Lab 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Economic Agents" href="agents.html" />
+    <link rel="prev" title="API Reference" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            CliMaPan-Lab
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#dependencies">Dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#core-dependencies">Core Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installation-methods">Installation Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#install-from-source-recommended">Install from Source (Recommended)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#install-from-github">Install from GitHub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#install-in-development-mode">Install in Development Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#virtual-environment-recommended">Virtual Environment (Recommended)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#verify-installation">Verify Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#common-issues">Common Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#system-specific-notes">System-specific Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#basic-simulation">Basic Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#running-different-scenarios">Running Different Scenarios</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#business-as-usual-bau">Business as Usual (BAU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#carbon-tax-scenario">Carbon Tax Scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#pandemic-scenario">Pandemic Scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#combined-climate-and-pandemic">Combined Climate and Pandemic</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#command-line-interface">Command Line Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#basic-run">Basic Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#with-visualization">With Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#multiple-runs">Multiple Runs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#custom-parameters">Custom Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#analyzing-results">Analyzing Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#basic-visualization">Basic Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#key-parameters">Key Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#economic-settings">Economic Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#covid-settings">COVID Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#climate-settings">Climate Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#simulation-settings">Simulation Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Economic Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#climapan_lab.src.models.EconModel"><code class="docutils literal notranslate"><span class="pre">EconModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#climapan_lab.src.models.EconModel.setup"><code class="docutils literal notranslate"><span class="pre">EconModel.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#climapan_lab.src.models.EconModel.step"><code class="docutils literal notranslate"><span class="pre">EconModel.step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#climapan_lab.src.models.EconModel.initiate_step"><code class="docutils literal notranslate"><span class="pre">EconModel.initiate_step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#climapan_lab.src.models.EconModel.stepwise_forecast"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_forecast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#climapan_lab.src.models.EconModel.stepwise_produce"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_produce()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#climapan_lab.src.models.EconModel.stepwise_after_production"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_after_production()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#climapan_lab.src.models.EconModel.stepwise_termination"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_termination()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#climapan_lab.src.models.EconModel.update"><code class="docutils literal notranslate"><span class="pre">EconModel.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#climapan_lab.src.models.EconModel.end"><code class="docutils literal notranslate"><span class="pre">EconModel.end()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#model-components">Model Components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-methods">Key Methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#climapan_lab.src.models.EconModel.__init__"><code class="docutils literal notranslate"><span class="pre">EconModel.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">EconModel.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">EconModel.step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="agents.html">Economic Agents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="agents.html#consumers">Consumers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="agents.html#climapan_lab.src.consumers.Consumer"><code class="docutils literal notranslate"><span class="pre">Consumer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="agents.html#firms">Firms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="agents.html#consumer-goods-firms">Consumer Goods Firms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="agents.html#capital-goods-firms">Capital Goods Firms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="agents.html#energy-firms">Energy Firms</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="agents.html#banks">Banks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="agents.html#climapan_lab.src.banks.Bank"><code class="docutils literal notranslate"><span class="pre">Bank</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="agents.html#government">Government</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="agents.html#climapan_lab.src.governments.Government"><code class="docutils literal notranslate"><span class="pre">Government</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="agents.html#climate-module">Climate Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="agents.html#climapan_lab.src.climate.Climate"><code class="docutils literal notranslate"><span class="pre">Climate</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#main-model">Main Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#climapan_lab.EconModel"><code class="docutils literal notranslate"><span class="pre">EconModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.setup"><code class="docutils literal notranslate"><span class="pre">EconModel.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.step"><code class="docutils literal notranslate"><span class="pre">EconModel.step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.initiate_step"><code class="docutils literal notranslate"><span class="pre">EconModel.initiate_step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.stepwise_forecast"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_forecast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.stepwise_produce"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_produce()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.stepwise_after_production"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_after_production()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.stepwise_termination"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_termination()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.update"><code class="docutils literal notranslate"><span class="pre">EconModel.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#climapan_lab.EconModel.end"><code class="docutils literal notranslate"><span class="pre">EconModel.end()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-climapan_lab.base_params">Core Parameters</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing to CliMaPan-Lab</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#development-setup">Development Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#code-style">Code Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#submitting-changes">Submitting Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#reporting-issues">Reporting Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-0-0-1-2024-12-05">Version 0.0.1 (2024-12-05)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../license.html#mit-license">MIT License</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CliMaPan-Lab</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Economic Model</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/model.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="economic-model">
+<h1>Economic Model<a class="headerlink" href="#economic-model" title="Link to this heading"></a></h1>
+<p>The main economic model class that orchestrates the agent-based simulation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="climapan_lab.src.models.EconModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">climapan_lab.src.models.</span></span><span class="sig-name descname"><span class="pre">EconModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/models.html#EconModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.models.EconModel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.models.EconModel.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/models.html#EconModel.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.models.EconModel.setup" title="Link to this definition"></a></dt>
+<dd><p>Initialize the agents and network of the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.models.EconModel.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/models.html#EconModel.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.models.EconModel.step" title="Link to this definition"></a></dt>
+<dd><p>Define the models’ events per simulation step.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.models.EconModel.initiate_step">
+<span class="sig-name descname"><span class="pre">initiate_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/models.html#EconModel.initiate_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.models.EconModel.initiate_step" title="Link to this definition"></a></dt>
+<dd><p>This internal function of the model is used to reset temporary variables or
+to accumulate variable every step</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.models.EconModel.stepwise_forecast">
+<span class="sig-name descname"><span class="pre">stepwise_forecast</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/models.html#EconModel.stepwise_forecast"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.models.EconModel.stepwise_forecast" title="Link to this definition"></a></dt>
+<dd><p>This internal function of the model is used to make forecast for some of the
+agents for the upcoming time step, if neccessary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.models.EconModel.stepwise_produce">
+<span class="sig-name descname"><span class="pre">stepwise_produce</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/models.html#EconModel.stepwise_produce"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.models.EconModel.stepwise_produce" title="Link to this definition"></a></dt>
+<dd><p>This internal function of the model is used to propagate the production of the firm
+agents</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.models.EconModel.stepwise_after_production">
+<span class="sig-name descname"><span class="pre">stepwise_after_production</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/models.html#EconModel.stepwise_after_production"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.models.EconModel.stepwise_after_production" title="Link to this definition"></a></dt>
+<dd><p>This internal function of the model is used to do jobs after production</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.models.EconModel.stepwise_termination">
+<span class="sig-name descname"><span class="pre">stepwise_termination</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/models.html#EconModel.stepwise_termination"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.models.EconModel.stepwise_termination" title="Link to this definition"></a></dt>
+<dd><p>This internal function of the model is used to clean up and summarize stepwise variables</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.models.EconModel.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/models.html#EconModel.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.models.EconModel.update" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.models.EconModel.end">
+<span class="sig-name descname"><span class="pre">end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/models.html#EconModel.end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#climapan_lab.src.models.EconModel.end" title="Link to this definition"></a></dt>
+<dd><p>Record evaluation measures at the end of the simulation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<section id="model-components">
+<h2>Model Components<a class="headerlink" href="#model-components" title="Link to this heading"></a></h2>
+<p>The EconModel integrates several key components:</p>
+<ul class="simple">
+<li><p><strong>Agents</strong>: Consumers, firms, banks, government</p></li>
+<li><p><strong>Climate Module</strong>: Environmental effects and climate policies</p></li>
+<li><p><strong>COVID Module</strong>: Pandemic dynamics and interventions</p></li>
+<li><p><strong>Economic Mechanisms</strong>: Markets, pricing, employment</p></li>
+</ul>
+</section>
+<section id="key-methods">
+<h2>Key Methods<a class="headerlink" href="#key-methods" title="Link to this heading"></a></h2>
+<dl class="py method">
+<dt class="sig sig-object py" id="climapan_lab.src.models.EconModel.__init__">
+<span class="sig-prename descclassname"><span class="pre">EconModel.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#climapan_lab.src.models.EconModel.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-prename descclassname"><span class="pre">EconModel.</span></span><span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/models.html#EconModel.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>Initialize the agents and network of the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-prename descclassname"><span class="pre">EconModel.</span></span><span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/climapan_lab/src/models.html#EconModel.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd><p>Define the models’ events per simulation step.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="agents.html" class="btn btn-neutral float-right" title="Economic Agents" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Paola D&#39;Orazio, Anh-Duy Pham, Hong Son Nguyen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
