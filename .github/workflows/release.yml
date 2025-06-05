@@ -97,25 +97,28 @@ jobs:
         echo "- Command-line tools: \`climapan-run\`, \`climapan-example\`" >> RELEASE_NOTES.md
 
     - name: Create GitHub Release
-      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref_name || github.event.inputs.version }}
-        release_name: Release ${{ github.ref_name || github.event.inputs.version }}
-        body_path: RELEASE_NOTES.md
-        draft: false
-        prerelease: ${{ contains(github.ref_name || github.event.inputs.version, 'rc') || contains(github.ref_name || github.event.inputs.version, 'beta') || contains(github.ref_name || github.event.inputs.version, 'alpha') }}
-
-    - name: Upload Release Assets
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: dist/
-        asset_name: dist-files
-        asset_content_type: application/zip
+      run: |
+        # Get the tag name
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          TAG_NAME="${{ github.event.inputs.version }}"
+        else
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+        fi
+        
+        # Check if it's a prerelease
+        PRERELEASE_FLAG=""
+        if [[ "$TAG_NAME" == *"rc"* ]] || [[ "$TAG_NAME" == *"beta"* ]] || [[ "$TAG_NAME" == *"alpha"* ]]; then
+          PRERELEASE_FLAG="--prerelease"
+        fi
+        
+        # Create release with assets
+        gh release create "$TAG_NAME" \
+          --title "Release $TAG_NAME" \
+          --notes-file RELEASE_NOTES.md \
+          $PRERELEASE_FLAG \
+          dist/*
 
     # Optional: Publish to PyPI (uncomment and add PyPI API token as secret)
     # - name: Publish to PyPI
