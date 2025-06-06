@@ -167,7 +167,7 @@ package "Economic Simulation Model" {
         + CO2: float
         + T: float
         + EM: float
-        + flood_prob: list
+        
         --
         + initGDP(): void
         + progress(): void

@@ -1515,21 +1515,5 @@ class EconModel(ap.Model):
                     self.firms.gov_transfer(self.alpha_f * firm.fix_cost)
 
     def _induce_climate_shock(self):
-        print(self.climateModule.flood_prob[0])
-        if self.month_no > self.climateModule.climate_shock_start[0]:
-            print("shock time start!")
-            if self.climateModule.flood_prob[0] > np.random.uniform(0, 1):
-                print("shock happen")
-                for i in self.workingAgeConsumers:
-                    aConsumer = self.aliveConsumers[i]
-                    aConsumer.set_deposit(
-                        self.climateModule.climate_damage_household(aConsumer.deposit)[
-                            0
-                        ]
-                    )
-                for aFirm in self.firms:
-                    aFirm.set_capital(
-                        self.climateModule.climate_damage_firm(
-                            float(aFirm.get_capital()), aFirm.getUseEnergy()
-                        )[0]
-                    )
+        # Climate shock functionality removed - flood-related code was here
+        pass

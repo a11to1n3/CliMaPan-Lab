@@ -266,7 +266,7 @@ if __name__ == "__main__":
         help="situation settings: BAU, DIST, LOCK, VAX",
     )
     parser.add_argument(
-        "-d", "--climateDamage", type=str, default="Flood", help="no situation"
+        "-d", "--climateDamage", type=str, default="AggPop", help="Climate damage type: AggPop, Idiosyncratic, or None"
     )
     parser.add_argument(
         "-l",
@@ -395,7 +395,7 @@ if __name__ == "__main__":
             overall_dict = {}
             timestamp = datetime.timestamp(datetime.now())
             if args.climateDamage:
-                save_folder = f"./results/multi_run_results_{parameters['settings']}_{parameters['covid_settings']}_FLOOD_{timestamp}"
+                save_folder = f"./results/multi_run_results_{parameters['settings']}_{parameters['covid_settings']}_CLIMATE_{timestamp}"
             else:
                 parameters["climateShockMode"] = None
                 save_folder = f"./results/multi_run_results_{parameters['settings']}_{parameters['covid_settings']}_{timestamp}"
@@ -445,7 +445,7 @@ def main():
         help="situation settings: BAU, DIST, LOCK, VAX",
     )
     parser.add_argument(
-        "-d", "--climateDamage", type=str, default="Flood", help="no situation"
+        "-d", "--climateDamage", type=str, default="AggPop", help="Climate damage type: AggPop, Idiosyncratic, or None"
     )
     parser.add_argument(
         "-l",
@@ -573,7 +573,7 @@ def main():
             overall_dict = {}
             timestamp = datetime.timestamp(datetime.now())
             if args.climateDamage:
-                save_folder = f"./results/multi_run_results_{parameters['settings']}_{parameters['covid_settings']}_FLOOD_{timestamp}"
+                save_folder = f"./results/multi_run_results_{parameters['settings']}_{parameters['covid_settings']}_CLIMATE_{timestamp}"
             else:
                 parameters["climateShockMode"] = None
                 save_folder = f"./results/multi_run_results_{parameters['settings']}_{parameters['covid_settings']}_{timestamp}"
