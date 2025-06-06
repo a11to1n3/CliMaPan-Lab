@@ -36,6 +36,10 @@ from .src.utils import (
     plotGoodsFirmWorkersSummary,
 )
 
+# Initialize global variables for variable extraction
+varListNpy = []
+varListCsv = []
+
 
 def single_run(
     parameters, idx=0, parent_folder=None, make_stats=False, var_dict=None, args=None
@@ -167,7 +171,7 @@ def single_run(
         f"{save_folder}/single_run.csv.gz", compression="gzip"
     )
 
-    if make_stats:
+    if make_stats and var_dict is not None:
         var_dict[idx] = results.variables.EconModel
 
     # with open(f'{save_folder}/model.pickle', 'wb') as handle:
@@ -179,6 +183,8 @@ def single_run(
     if multi_params:
         with open(f"{save_folder}/varying_params.txt", "w") as params_file:
             params_file.write(json.dumps(varying_var))
+    
+    return results
 
 
 def multi_run(overall_dict, i, save_folder):

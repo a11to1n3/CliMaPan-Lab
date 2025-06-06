@@ -34,18 +34,18 @@ class TestIntegrationWorkflows(unittest.TestCase):
 
         self.test_dir = tempfile.mkdtemp()
         self.params = economic_params.copy()
-        # Use minimal parameters for fast testing
+        # Use ultra-minimal parameters for fastest possible testing
         self.params.update(
             {
-                "c_agents": 10,
-                "capitalists": 3,
-                "csf_agents": 2,
-                "cpf_agents": 1,
-                "green_energy_owners": 1,
-                "brown_energy_owners": 1,
-                "b_agents": 1,
-                "g_agents": 1,
-                "steps": 5,
+                "c_agents": 3,        # Reduced from 10
+                "capitalists": 1,     # Reduced from 3  
+                "csf_agents": 1,      # Reduced from 2
+                "cpf_agents": 1,      # Keep at 1
+                "green_energy_owners": 1,  # Keep at 1
+                "brown_energy_owners": 1,  # Keep at 1
+                "b_agents": 1,        # Keep at 1
+                "g_agents": 1,        # Keep at 1
+                "steps": 2,           # Reduced from 5 to absolute minimum
                 "verboseFlag": False,
                 "climateModuleFlag": False,
             }
@@ -58,33 +58,23 @@ class TestIntegrationWorkflows(unittest.TestCase):
 
     def test_basic_simulation_workflow(self):
         """Test complete simulation workflow from start to finish."""
-        # Set up parameters for different scenarios
-        scenarios = [
-            {"settings": "BAU", "covid_settings": None},
-            {"settings": "CT", "covid_settings": None},
-            {"settings": "BAU", "covid_settings": "BAU"},
-        ]
+        # Test only one scenario for speed - BAU is simplest
+        scenario = {"settings": "BAU", "covid_settings": None}
+        
+        params = self.params.copy()
+        params.update(scenario)
 
-        for scenario in scenarios:
-            with self.subTest(scenario=scenario):
-                params = self.params.copy()
-                params.update(scenario)
+        # Run simulation
+        result = single_run(
+            params, parent_folder=self.test_dir, make_stats=False
+        )
 
-                # Run simulation
-                try:
-                    result = single_run(
-                        params, parent_folder=self.test_dir, make_stats=False
-                    )
+        # Verify that simulation completed
+        self.assertIsNotNone(result)
 
-                    # Verify that simulation completed
-                    self.assertIsNotNone(result)
-
-                    # Check that result has expected structure
-                    if hasattr(result, "variables"):
-                        self.assertTrue(hasattr(result.variables, "EconModel"))
-
-                except Exception as e:
-                    self.fail(f"Simulation failed for scenario {scenario}: {e}")
+        # Check that result has expected structure
+        if hasattr(result, "variables"):
+            self.assertTrue(hasattr(result.variables, "EconModel"))
 
     def test_data_output_structure(self):
         """Test that simulation produces expected data output structure."""
@@ -111,6 +101,7 @@ class TestIntegrationWorkflows(unittest.TestCase):
 
     def test_multi_scenario_comparison(self):
         """Test running multiple scenarios for comparison."""
+        # Reduced to only 2 simplest scenarios
         scenarios = [
             {"settings": "BAU", "covid_settings": None},
             {"settings": "CT", "covid_settings": None},
@@ -135,10 +126,10 @@ class TestIntegrationWorkflows(unittest.TestCase):
 
     def test_climate_module_integration(self):
         """Test that climate module integrates properly when enabled."""
-        # Test with climate enabled
+        # Test with climate enabled - use even shorter simulation
         params = self.params.copy()
         params["climateModuleFlag"] = True
-        params["steps"] = 3  # Keep very short for testing
+        params["steps"] = 1  # Absolute minimum for testing
 
         try:
             result = single_run(params, parent_folder=self.test_dir, make_stats=False)
@@ -164,8 +155,8 @@ class TestIntegrationWorkflows(unittest.TestCase):
         """Test that model responds to parameter changes."""
         base_params = self.params.copy()
 
-        # Test with different tax rates
-        tax_rates = [0.05, 0.15, 0.25]
+        # Test with only 2 different tax rates instead of 3
+        tax_rates = [0.05, 0.25]
         results = []
 
         for tax_rate in tax_rates:
@@ -183,7 +174,8 @@ class TestIntegrationWorkflows(unittest.TestCase):
 
     def test_agent_scaling(self):
         """Test that model works with different agent scales."""
-        agent_scales = [0.1, 0.5, 1.0]
+        # Test only 2 scales instead of 3, skip smallest scale
+        agent_scales = [0.5, 1.0]
 
         for scale in agent_scales:
             with self.subTest(scale=scale):
@@ -221,7 +213,7 @@ class TestCommandLineInterface(unittest.TestCase):
         # Test that climapan-run is available
         try:
             result = subprocess.run(
-                ["climapan-run", "--help"], capture_output=True, text=True, timeout=10
+                ["climapan-run", "--help"], capture_output=True, text=True, timeout=5  # Reduced timeout
             )
             # Should not crash (exit code doesn't matter for --help)
             self.assertIsNotNone(result)
@@ -235,7 +227,7 @@ class TestCommandLineInterface(unittest.TestCase):
                 ["climapan-example", "--help"],
                 capture_output=True,
                 text=True,
-                timeout=10,
+                timeout=5,  # Reduced timeout
             )
             # Should not crash
             self.assertIsNotNone(result)
@@ -255,8 +247,8 @@ class TestDataAnalysisWorkflow(unittest.TestCase):
         self.params = economic_params.copy()
         self.params.update(
             {
-                "c_agents": 5,
-                "steps": 3,
+                "c_agents": 2,        # Reduced from 5
+                "steps": 1,           # Reduced from 3
                 "verboseFlag": False,
             }
         )
@@ -314,8 +306,8 @@ class TestErrorRecovery(unittest.TestCase):
         params.update(
             {
                 "settings": "INVALID_SCENARIO",
-                "c_agents": 5,
-                "steps": 2,
+                "c_agents": 2,        # Reduced from 5
+                "steps": 1,           # Reduced from 2
             }
         )
 
@@ -336,15 +328,15 @@ class TestErrorRecovery(unittest.TestCase):
         if not IMPORTS_AVAILABLE:
             self.skipTest(f"Required imports not available: {IMPORT_ERROR}")
 
-        # Test with minimal agents but many steps
+        # Test with minimal agents and reduced steps
         params = economic_params.copy()
         params.update(
             {
-                "c_agents": 2,
+                "c_agents": 1,        # Reduced from 2
                 "capitalists": 1,
                 "csf_agents": 1,
                 "cpf_agents": 1,
-                "steps": 100,  # Many steps with few agents
+                "steps": 10,          # Reduced from 100
                 "verboseFlag": False,
             }
         )

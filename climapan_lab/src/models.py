@@ -148,40 +148,62 @@ class EconModel(ap.Model):
         ## Initiate firm agents
         ### Consumption goods firms
         self.csfirm_agents = ap.AgentList(self, self.p.csf_agents, ConsumerGoodsFirm)
-        while (
-            not "green" in self.csfirm_agents.getUseEnergy()
-            or not "brown" in self.csfirm_agents.getUseEnergy()
-        ):
+        # Ensure we have at least one of each energy type if we have multiple firms
+        if len(self.csfirm_agents) >= 2:
+            # Assign first firm to brown, second to green, rest randomly
+            self.csfirm_agents[0].useEnergyType("brown")
+            self.csfirm_agents[0].brown_firm = True
+            self.csfirm_agents[1].useEnergyType("green")
+            self.csfirm_agents[1].brown_firm = False
+            
+            for i in range(2, len(self.csfirm_agents)):
+                if np.random.uniform(0, 1) < 0.5:
+                    self.csfirm_agents[i].useEnergyType("brown")
+                    self.csfirm_agents[i].brown_firm = True
+                else:
+                    self.csfirm_agents[i].useEnergyType("green")
+                    self.csfirm_agents[i].brown_firm = False
+        else:
+            # If only one firm, assign randomly
             for i in range(len(self.csfirm_agents)):
                 if np.random.uniform(0, 1) < 0.5:
                     self.csfirm_agents[i].useEnergyType("brown")
-                    self.csfirm_agents[i].brown_firm = (
-                        self.csfirm_agents[i].useEnergy == "brown"
-                    )
+                    self.csfirm_agents[i].brown_firm = True
                 else:
                     self.csfirm_agents[i].useEnergyType("green")
-                    self.csfirm_agents[i].brown_firm = (
-                        self.csfirm_agents[i].useEnergy == "brown"
-                    )
+                    self.csfirm_agents[i].brown_firm = False
         ### Capital goods firms
         self.cpfirm_agents = ap.AgentList(self, self.p.cpf_agents, CapitalGoodsFirm)
-        while (
-            not "green" in self.cpfirm_agents.getUseEnergy()
-            or not "brown" in self.cpfirm_agents.getUseEnergy()
-        ):
+        # Ensure we have at least one of each energy type if we have multiple firms
+        if len(self.cpfirm_agents) >= 2:
+            # Assign first firm to brown, second to green, rest randomly
+            self.cpfirm_agents[0].useEnergyType("brown")
+            self.cpfirm_agents[0].capital = 5000
+            self.cpfirm_agents[0].brown_firm = True
+            self.cpfirm_agents[1].useEnergyType("green")
+            self.cpfirm_agents[1].capital = 4200
+            self.cpfirm_agents[1].brown_firm = False
+            
+            for i in range(2, len(self.cpfirm_agents)):
+                if np.random.beta(3, 7) < 0.5:
+                    self.cpfirm_agents[i].useEnergyType("brown")
+                    self.cpfirm_agents[i].capital = 5000
+                    self.cpfirm_agents[i].brown_firm = True
+                else:
+                    self.cpfirm_agents[i].useEnergyType("green")
+                    self.cpfirm_agents[i].capital = 4200
+                    self.cpfirm_agents[i].brown_firm = False
+        else:
+            # If only one firm, assign randomly
             for i in range(len(self.cpfirm_agents)):
                 if np.random.beta(3, 7) < 0.5:
                     self.cpfirm_agents[i].useEnergyType("brown")
                     self.cpfirm_agents[i].capital = 5000
-                    self.cpfirm_agents[i].brown_firm = (
-                        self.cpfirm_agents[i].useEnergy == "brown"
-                    )
+                    self.cpfirm_agents[i].brown_firm = True
                 else:
                     self.cpfirm_agents[i].useEnergyType("green")
                     self.cpfirm_agents[i].capital = 4200
-                    self.cpfirm_agents[i].brown_firm = (
-                        self.cpfirm_agents[i].useEnergy == "brown"
-                    )
+                    self.cpfirm_agents[i].brown_firm = False
 
         ### Energy firms
         self.greenEFirm = ap.AgentList(self, 1, GreenEnergyFirm)
