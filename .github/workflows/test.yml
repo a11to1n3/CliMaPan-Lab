@@ -10,6 +10,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       matrix:
         python-version: ['3.8', '3.9', '3.10', '3.11']
@@ -55,23 +56,23 @@ jobs:
 
     - name: Run basic functionality tests
       run: |
-        python -m pytest tests/test_basic_functionality.py -v --tb=short
+        timeout 300 python -m pytest tests/test_basic_functionality.py -v --tb=short --timeout=60
 
     - name: Run model component tests
       run: |
-        python -m pytest tests/test_model_components.py -v --tb=short
+        timeout 300 python -m pytest tests/test_model_components.py -v --tb=short --timeout=60
 
     - name: Run example tests
       run: |
-        python -m pytest tests/test_examples.py -v --tb=short
+        timeout 300 python -m pytest tests/test_examples.py -v --tb=short --timeout=60
 
     - name: Run integration tests
       run: |
-        python -m pytest tests/test_integration.py -v --tb=short
+        timeout 300 python -m pytest tests/test_integration.py -v --tb=short --timeout=60
 
     - name: Run all tests with coverage
       run: |
-        python -m pytest tests/ --cov=climapan_lab --cov-report=xml --cov-report=html -v
+        timeout 600 python -m pytest tests/ --cov=climapan_lab --cov-report=xml --cov-report=html -v --timeout=60 --maxfail=10
 
     - name: Upload coverage to Codecov
       if: matrix.python-version == '3.10'
@@ -89,6 +90,7 @@ jobs:
 
   performance-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
@@ -117,15 +119,16 @@ jobs:
 
     - name: Run performance tests
       run: |
-        python -m pytest tests/test_performance.py -v --tb=short -x
+        timeout 600 python -m pytest tests/test_performance.py -v --tb=short -x --timeout=120
 
     - name: Run full test suite with custom runner
       run: |
         cd tests
-        python run_all_tests.py
+        timeout 300 python run_all_tests.py --fast
 
   package-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: test
 
     steps:
@@ -157,6 +160,7 @@ jobs:
 
   examples-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: test
 
     steps:
