@@ -72,6 +72,7 @@
 <li class="toctree-l3"><a class="reference internal" href="quickstart.html#carbon-tax-scenario">Carbon Tax Scenario</a></li>
 <li class="toctree-l3"><a class="reference internal" href="quickstart.html#pandemic-scenario">Pandemic Scenario</a></li>
 <li class="toctree-l3"><a class="reference internal" href="quickstart.html#combined-climate-and-pandemic">Combined Climate and Pandemic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#climate-damage-scenarios">Climate Damage Scenarios</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#command-line-interface">Command Line Interface</a><ul>
@@ -79,6 +80,7 @@
 <li class="toctree-l3"><a class="reference internal" href="quickstart.html#with-visualization">With Visualization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="quickstart.html#multiple-runs">Multiple Runs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="quickstart.html#custom-parameters">Custom Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#climate-damage-options">Climate Damage Options</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#analyzing-results">Analyzing Results</a></li>
@@ -91,6 +93,26 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="climate.html">Climate Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#climate-damage-types">Climate Damage Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="climate.html#aggpop-aggregate-population">AggPop (Aggregate Population)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="climate.html#idiosyncratic">Idiosyncratic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="climate.html#none">None</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#climate-parameters">Climate Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#climate-variables">Climate Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#command-line-usage">Command Line Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#integration-with-economic-scenarios">Integration with Economic Scenarios</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="climate.html#carbon-tax-scenarios">Carbon Tax Scenarios</a></li>
+<li class="toctree-l3"><a class="reference internal" href="climate.html#covid-climate-interactions">COVID-Climate Interactions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#historical-context">Historical Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#best-practices">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#example-analysis">Example Analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -175,6 +197,7 @@
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-0-2-2024-12-05">Version 0.0.2 (2024-12-05)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-0-0-1-2024-12-05">Version 0.0.1 (2024-12-05)</a></li>
 </ul>
 </li>
@@ -210,6 +233,36 @@
              
   <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
+<section id="version-0-0-2-2024-12-05">
+<h2>Version 0.0.2 (2024-12-05)<a class="headerlink" href="#version-0-0-2-2024-12-05" title="Link to this heading"></a></h2>
+<p><strong>Breaking Changes:</strong></p>
+<ul class="simple">
+<li><p>Removed flood-specific climate damage mechanisms</p></li>
+<li><p>Deleted Climate_Flood.py module and related parameters</p></li>
+<li><p>Cleaned up legacy Bank_revise*.py and Climate_old.py files</p></li>
+</ul>
+<p><strong>Climate Module Updates:</strong></p>
+<ul class="simple">
+<li><p>Streamlined climate damage to three options: AggPop, Idiosyncratic, None</p></li>
+<li><p>Updated default climate damage from “Flood” to “AggPop”</p></li>
+<li><p>Removed flood parameters: climate_flood_omega, flood_delta</p></li>
+<li><p>Enhanced climate documentation with comprehensive usage guide</p></li>
+</ul>
+<p><strong>Documentation:</strong></p>
+<ul class="simple">
+<li><p>Added dedicated climate module documentation</p></li>
+<li><p>Updated quickstart guide with current climate damage options</p></li>
+<li><p>Enhanced CLI documentation with accurate parameter descriptions</p></li>
+<li><p>Added climate damage examples and best practices</p></li>
+</ul>
+<p><strong>Codebase Cleanup:</strong></p>
+<ul class="simple">
+<li><p>Removed unused revision files (Bank_revise*.py)</p></li>
+<li><p>Removed outdated backup files (Climate_old.py)</p></li>
+<li><p>Simplified climate shock implementation in models.py</p></li>
+<li><p>Updated result folder naming from “FLOOD” to “CLIMATE”</p></li>
+</ul>
+</section>
 <section id="version-0-0-1-2024-12-05">
 <h2>Version 0.0.1 (2024-12-05)<a class="headerlink" href="#version-0-0-1-2024-12-05" title="Link to this heading"></a></h2>
 <p>Initial release of CliMaPan-Lab.</p>

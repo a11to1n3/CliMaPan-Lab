@@ -77,9 +77,34 @@ Combined Climate and Pandemic
    params['settings'] = 'CT'
    params['covid_settings'] = 'DIST'  # Social distancing
    params['climateModuleFlag'] = True
+   params['climateShockMode'] = 'AggPop'  # Climate damage type
    params['co2_tax'] = 0.03
    params['steps'] = 120
    
+   model = EconModel(params)
+   results = model.run()
+
+Climate Damage Scenarios
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+   # Aggregate population-level climate damage
+   params = economic_params.copy()
+   params['climateModuleFlag'] = True
+   params['climateShockMode'] = 'AggPop'
+   params['steps'] = 120
+   
+   model = EconModel(params)
+   results = model.run()
+
+   # Individual-level climate damage variation
+   params['climateShockMode'] = 'Idiosyncratic'
+   model = EconModel(params)
+   results = model.run()
+
+   # No climate damage effects
+   params['climateShockMode'] = 'None'
    model = EconModel(params)
    results = model.run()
 
@@ -115,6 +140,20 @@ Custom Parameters
 .. code-block:: bash
 
    climapan-run --settings CT --steps 240 --plot
+
+Climate Damage Options
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+   # Aggregate population-level climate damage
+   climapan-run --settings CT --climateDamage AggPop --plot
+
+   # Individual-level climate damage variation
+   climapan-run --settings CT --climateDamage Idiosyncratic --plot
+
+   # No climate damage effects
+   climapan-run --settings CT --climateDamage None --plot
 
 Analyzing Results
 -----------------
@@ -212,6 +251,7 @@ Climate Settings
 ~~~~~~~~~~~~~~~~
 
 * **climateModuleFlag** - Enable/disable climate module
+* **climateShockMode** - Climate damage type: 'AggPop', 'Idiosyncratic', or 'None'
 * **co2_tax** - Carbon tax rate (e.g., 0.05 for 5%)
 
 Simulation Settings

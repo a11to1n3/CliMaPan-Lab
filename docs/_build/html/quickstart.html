@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API Reference" href="api/index.html" />
+    <link rel="next" title="Climate Module" href="climate.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
@@ -72,6 +72,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#carbon-tax-scenario">Carbon Tax Scenario</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pandemic-scenario">Pandemic Scenario</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#combined-climate-and-pandemic">Combined Climate and Pandemic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#climate-damage-scenarios">Climate Damage Scenarios</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#command-line-interface">Command Line Interface</a><ul>
@@ -79,6 +80,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#with-visualization">With Visualization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#multiple-runs">Multiple Runs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#custom-parameters">Custom Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#climate-damage-options">Climate Damage Options</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#analyzing-results">Analyzing Results</a></li>
@@ -91,6 +93,26 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="climate.html">Climate Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#climate-damage-types">Climate Damage Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="climate.html#aggpop-aggregate-population">AggPop (Aggregate Population)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="climate.html#idiosyncratic">Idiosyncratic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="climate.html#none">None</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#climate-parameters">Climate Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#climate-variables">Climate Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#command-line-usage">Command Line Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#integration-with-economic-scenarios">Integration with Economic Scenarios</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="climate.html#carbon-tax-scenarios">Carbon Tax Scenarios</a></li>
+<li class="toctree-l3"><a class="reference internal" href="climate.html#covid-climate-interactions">COVID-Climate Interactions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#historical-context">Historical Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#best-practices">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#example-analysis">Example Analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -175,6 +197,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-0-2-2024-12-05">Version 0.0.2 (2024-12-05)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-0-1-2024-12-05">Version 0.0.1 (2024-12-05)</a></li>
 </ul>
 </li>
@@ -276,9 +299,33 @@
 <span class="n">params</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;CT&#39;</span>
 <span class="n">params</span><span class="p">[</span><span class="s1">&#39;covid_settings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;DIST&#39;</span>  <span class="c1"># Social distancing</span>
 <span class="n">params</span><span class="p">[</span><span class="s1">&#39;climateModuleFlag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">params</span><span class="p">[</span><span class="s1">&#39;climateShockMode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;AggPop&#39;</span>  <span class="c1"># Climate damage type</span>
 <span class="n">params</span><span class="p">[</span><span class="s1">&#39;co2_tax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.03</span>
 <span class="n">params</span><span class="p">[</span><span class="s1">&#39;steps&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">120</span>
 
+<span class="n">model</span> <span class="o">=</span> <span class="n">EconModel</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="climate-damage-scenarios">
+<h3>Climate Damage Scenarios<a class="headerlink" href="#climate-damage-scenarios" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Aggregate population-level climate damage</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">economic_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">params</span><span class="p">[</span><span class="s1">&#39;climateModuleFlag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">params</span><span class="p">[</span><span class="s1">&#39;climateShockMode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;AggPop&#39;</span>
+<span class="n">params</span><span class="p">[</span><span class="s1">&#39;steps&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">120</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">EconModel</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+<span class="c1"># Individual-level climate damage variation</span>
+<span class="n">params</span><span class="p">[</span><span class="s1">&#39;climateShockMode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Idiosyncratic&#39;</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">EconModel</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+<span class="c1"># No climate damage effects</span>
+<span class="n">params</span><span class="p">[</span><span class="s1">&#39;climateShockMode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">EconModel</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
@@ -309,6 +356,19 @@
 <section id="custom-parameters">
 <h3>Custom Parameters<a class="headerlink" href="#custom-parameters" title="Link to this heading"></a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>climapan-run<span class="w"> </span>--settings<span class="w"> </span>CT<span class="w"> </span>--steps<span class="w"> </span><span class="m">240</span><span class="w"> </span>--plot
+</pre></div>
+</div>
+</section>
+<section id="climate-damage-options">
+<h3>Climate Damage Options<a class="headerlink" href="#climate-damage-options" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Aggregate population-level climate damage</span>
+climapan-run<span class="w"> </span>--settings<span class="w"> </span>CT<span class="w"> </span>--climateDamage<span class="w"> </span>AggPop<span class="w"> </span>--plot
+
+<span class="c1"># Individual-level climate damage variation</span>
+climapan-run<span class="w"> </span>--settings<span class="w"> </span>CT<span class="w"> </span>--climateDamage<span class="w"> </span>Idiosyncratic<span class="w"> </span>--plot
+
+<span class="c1"># No climate damage effects</span>
+climapan-run<span class="w"> </span>--settings<span class="w"> </span>CT<span class="w"> </span>--climateDamage<span class="w"> </span>None<span class="w"> </span>--plot
 </pre></div>
 </div>
 </section>
@@ -405,6 +465,7 @@
 <h3>Climate Settings<a class="headerlink" href="#climate-settings" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p><strong>climateModuleFlag</strong> - Enable/disable climate module</p></li>
+<li><p><strong>climateShockMode</strong> - Climate damage type: ‘AggPop’, ‘Idiosyncratic’, or ‘None’</p></li>
 <li><p><strong>co2_tax</strong> - Carbon tax rate (e.g., 0.05 for 5%)</p></li>
 </ul>
 </section>
@@ -431,7 +492,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="api/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="climate.html" class="btn btn-neutral float-right" title="Climate Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

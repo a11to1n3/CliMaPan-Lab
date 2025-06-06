@@ -26,6 +26,7 @@ about installation, usage, API reference, and examples.
 
    installation
    quickstart
+   climate
 
 .. toctree::
    :maxdepth: 2

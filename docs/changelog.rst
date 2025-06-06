@@ -1,6 +1,36 @@
 Changelog
 =========
 
+Version 0.0.2 (2024-12-05)
+---------------------------
+
+**Breaking Changes:**
+
+* Removed flood-specific climate damage mechanisms
+* Deleted Climate_Flood.py module and related parameters
+* Cleaned up legacy Bank_revise*.py and Climate_old.py files
+
+**Climate Module Updates:**
+
+* Streamlined climate damage to three options: AggPop, Idiosyncratic, None
+* Updated default climate damage from "Flood" to "AggPop" 
+* Removed flood parameters: climate_flood_omega, flood_delta
+* Enhanced climate documentation with comprehensive usage guide
+
+**Documentation:**
+
+* Added dedicated climate module documentation
+* Updated quickstart guide with current climate damage options
+* Enhanced CLI documentation with accurate parameter descriptions
+* Added climate damage examples and best practices
+
+**Codebase Cleanup:**
+
+* Removed unused revision files (Bank_revise*.py)
+* Removed outdated backup files (Climate_old.py)
+* Simplified climate shock implementation in models.py
+* Updated result folder naming from "FLOOD" to "CLIMATE"
+
 Version 0.0.1 (2024-12-05)
 ---------------------------
 
