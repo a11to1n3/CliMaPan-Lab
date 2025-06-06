@@ -45,6 +45,8 @@ python climapan_lab/examples/simple_example.py
 
 ### Command Line Interface
 
+#### Basic Usage
+
 ```bash
 # Basic simulation
 climapan-run --settings BAU
@@ -57,6 +59,75 @@ climapan-run --noOfRuns 5
 
 # Help
 climapan-run --help
+```
+
+#### Complete Command Line Arguments
+
+The `run_sim` script supports the following arguments:
+
+| Argument | Short | Type | Default | Description |
+|----------|-------|------|---------|-------------|
+| `--noOfRuns` | `-n` | int | 1 | Number of simulation runs to execute |
+| `--settings` | `-s` | str | "BAU" | Economic scenario: `BAU`, `CT`, `CTRa`, `CTRb`, `CTRc`, `CTRd` |
+| `--covidSettings` | `-c` | str | None | COVID scenario: `BAU`, `DIST`, `LOCK`, `VAX` |
+| `--climateDamage` | `-d` | str | "Flood" | Climate damage type |
+| `--extractedVarListPathNpy` | `-l` | str | None | Path to text file with variables to extract as numpy files |
+| `--extractedVarListPathCsv` | `-v` | str | None | Path to text file with variables to extract as CSV files |
+| `--plot` | `-p` | flag | False | Generate plots of simulation results |
+
+#### Advanced Examples
+
+```bash
+# Single run with carbon tax and plotting
+climapan-run -s CT -p
+
+# Multiple runs with COVID lockdown scenario
+climapan-run -n 10 -s BAU -c LOCK
+
+# Full scenario with climate damage and plotting
+climapan-run -s CTRa -c VAX -d Flood -p
+
+# Extract specific variables to separate files
+climapan-run -s CT -l variables_list.txt -v output_vars.txt -p
+
+# Complex multi-parameter scenario
+climapan-run -n 5 -s CTRb -c DIST -d Flood -p
+```
+
+#### Scenario Descriptions
+
+**Economic Settings (`--settings`)**:
+- `BAU`: Business as usual (baseline scenario)
+- `CT`: Carbon tax implementation
+- `CTRa`: Carbon tax with revenue recycling option A
+- `CTRb`: Carbon tax with revenue recycling option B  
+- `CTRc`: Carbon tax with revenue recycling option C
+- `CTRd`: Carbon tax with revenue recycling option D
+
+**COVID Settings (`--covidSettings`)**:
+- `BAU`: COVID baseline scenario
+- `DIST`: Social distancing measures
+- `LOCK`: Lockdown implementation
+- `VAX`: Vaccination rollout scenario
+
+#### Variable Extraction
+
+To extract specific model variables to separate files, create a text file with variable names (one per line):
+
+```bash
+# variables_list.txt
+GDP
+UnemploymentRate
+InflationRate
+Consumption
+Wage
+TotalTaxes
+BankDataWriter
+```
+
+Then use:
+```bash
+climapan-run -s CT -l variables_list.txt -v variables_list.txt -p
 ```
 
 ## Key Parameters
