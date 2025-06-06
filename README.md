@@ -2,7 +2,7 @@
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![CI](https://github.com/your-username/CliMaPan-Lab/workflows/CI/badge.svg)](https://github.com/your-username/CliMaPan-Lab/actions)
+[![Tests](https://github.com/a11to1n3/CliMaPan-Lab/workflows/Tests/badge.svg)](https://github.com/a11to1n3/CliMaPan-Lab/actions)
 
 CliMaPan-Lab is an agent-based economic modeling framework for studying interactions between climate change, pandemic dynamics, and economic systems.
 
@@ -10,12 +10,12 @@ CliMaPan-Lab is an agent-based economic modeling framework for studying interact
 
 ```bash
 # Install from source
-git clone https://github.com/your-username/CliMaPan-Lab.git
+git clone https://github.com/a11to1n3/CliMaPan-Lab.git
 cd CliMaPan-Lab
 pip install -e .
 
 # Or install directly from GitHub
-pip install git+https://github.com/your-username/CliMaPan-Lab.git
+pip install git+https://github.com/a11to1n3/CliMaPan-Lab.git
 ```
 
 ## Quick Start
