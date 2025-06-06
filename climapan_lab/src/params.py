@@ -113,7 +113,6 @@ parameters = {
     "climateBeta_d": 0.05,  # Benchmark mortality
     "climateEps_etm": -0.501,  # income elasticity of storm mortality and is calibrated following Toya and Skidmore 2007
     "climateGamnma_etm": 1,
-
     "psi_h": 0.1,
     "psi_f_g": 0.15,
     "psi_f_b": 0.25,

@@ -155,7 +155,7 @@ class EconModel(ap.Model):
             self.csfirm_agents[0].brown_firm = True
             self.csfirm_agents[1].useEnergyType("green")
             self.csfirm_agents[1].brown_firm = False
-            
+
             for i in range(2, len(self.csfirm_agents)):
                 if np.random.uniform(0, 1) < 0.5:
                     self.csfirm_agents[i].useEnergyType("brown")
@@ -183,7 +183,7 @@ class EconModel(ap.Model):
             self.cpfirm_agents[1].useEnergyType("green")
             self.cpfirm_agents[1].capital = 4200
             self.cpfirm_agents[1].brown_firm = False
-            
+
             for i in range(2, len(self.cpfirm_agents)):
                 if np.random.beta(3, 7) < 0.5:
                     self.cpfirm_agents[i].useEnergyType("brown")

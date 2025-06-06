@@ -4016,7 +4016,15 @@ def sensitivity_3d(
 
 
 def scatter_3d(
-    name, data, length, dataset_name, savecode, length_cut=10, area=False, export=False, save_folder="figures"
+    name,
+    data,
+    length,
+    dataset_name,
+    savecode,
+    length_cut=10,
+    area=False,
+    export=False,
+    save_folder="figures",
 ):
     """
     Create a 3D scatter plot.
@@ -4387,29 +4395,32 @@ def pline_plot_with_ci(
     fig.show()
 
 
-def pbar_plot(name, data, length, covid_time, dataset_name, savecode, area=False, export=False, save_folder="figures"):
+def pbar_plot(
+    name,
+    data,
+    length,
+    covid_time,
+    dataset_name,
+    savecode,
+    area=False,
+    export=False,
+    save_folder="figures",
+):
     """Create bar plots for data visualization."""
     folder_path = save_folder
     x = []
-    
+
     for i in range(len(data)):
         x.append(data[i][-length:])
-    
+
     fig = go.Figure()
     for i, item in enumerate(x):
-        fig.add_trace(go.Bar(
-            x=list(range(len(item))),
-            y=item,
-            name=dataset_name[i]
-        ))
-    
+        fig.add_trace(go.Bar(x=list(range(len(item))), y=item, name=dataset_name[i]))
+
     fig.update_layout(
-        title=name,
-        xaxis_title="Time",
-        yaxis_title="Value",
-        barmode='group'
+        title=name, xaxis_title="Time", yaxis_title="Value", barmode="group"
     )
-    
+
     if export:
         ensure_folder_exists(folder_path)
         pio.write_image(
@@ -4417,7 +4428,7 @@ def pbar_plot(name, data, length, covid_time, dataset_name, savecode, area=False
             os.path.join(folder_path, f"{savecode}_{name}_plot.pdf"),
             format="pdf",
         )
-    
+
     fig.show()
 
 
@@ -4436,27 +4447,26 @@ def box_plot(
     """Create box plots for data distribution analysis."""
     folder_path = save_folder
     x = []
-    
+
     for i in range(len(data)):
         x.append(data[i][-length:])
         if length_cut is not None:
             x[i] = x[i][:length_cut]
-    
+
     fig = go.Figure()
     for i, item in enumerate(x):
-        fig.add_trace(go.Box(
-            y=item,
-            name=dataset_name[i],
-            marker_color=color_set[i] if i < len(color_set) else None
-        ))
-    
+        fig.add_trace(
+            go.Box(
+                y=item,
+                name=dataset_name[i],
+                marker_color=color_set[i] if i < len(color_set) else None,
+            )
+        )
+
     fig.update_layout(
-        title=graph_title,
-        xaxis_title="Dataset",
-        yaxis_title=name,
-        showlegend=True
+        title=graph_title, xaxis_title="Dataset", yaxis_title=name, showlegend=True
     )
-    
+
     if export:
         ensure_folder_exists(folder_path)
         pio.write_image(
@@ -4464,7 +4474,7 @@ def box_plot(
             os.path.join(folder_path, f"{savecode}_{name}_plot.pdf"),
             format="pdf",
         )
-    
+
     fig.show()
 
 
@@ -4483,7 +4493,7 @@ def heatmap_plot(
 ):
     """Create heatmap visualization for correlation analysis."""
     folder_path = save_folder
-    
+
     # Prepare data matrix
     matrix_data = []
     for i in range(len(data)):
@@ -4491,32 +4501,29 @@ def heatmap_plot(
         if length_cut is not None:
             series = series[:length_cut]
         matrix_data.append(series)
-    
+
     # Convert to correlation matrix if multiple series
     if len(matrix_data) > 1:
         df = pd.DataFrame(matrix_data).T
         correlation_matrix = df.corr()
-        
-        fig = go.Figure(data=go.Heatmap(
-            z=correlation_matrix.values,
-            x=dataset_names,
-            y=dataset_names,
-            colorscale='Viridis'
-        ))
+
+        fig = go.Figure(
+            data=go.Heatmap(
+                z=correlation_matrix.values,
+                x=dataset_names,
+                y=dataset_names,
+                colorscale="Viridis",
+            )
+        )
     else:
         # Single series heatmap
         reshaped_data = np.array(matrix_data[0]).reshape(1, -1)
-        fig = go.Figure(data=go.Heatmap(
-            z=reshaped_data,
-            colorscale='Viridis'
-        ))
-    
+        fig = go.Figure(data=go.Heatmap(z=reshaped_data, colorscale="Viridis"))
+
     fig.update_layout(
-        title=graph_title,
-        xaxis_title="Variables",
-        yaxis_title="Variables"
+        title=graph_title, xaxis_title="Variables", yaxis_title="Variables"
     )
-    
+
     if export:
         ensure_folder_exists(folder_path)
         pio.write_image(
@@ -4524,7 +4531,7 @@ def heatmap_plot(
             os.path.join(folder_path, f"{savecode}_heatmap.pdf"),
             format="pdf",
         )
-    
+
     fig.show()
 
 

@@ -37,15 +37,15 @@ class TestIntegrationWorkflows(unittest.TestCase):
         # Use ultra-minimal parameters for fastest possible testing
         self.params.update(
             {
-                "c_agents": 3,        # Reduced from 10
-                "capitalists": 1,     # Reduced from 3  
-                "csf_agents": 1,      # Reduced from 2
-                "cpf_agents": 1,      # Keep at 1
+                "c_agents": 3,  # Reduced from 10
+                "capitalists": 1,  # Reduced from 3
+                "csf_agents": 1,  # Reduced from 2
+                "cpf_agents": 1,  # Keep at 1
                 "green_energy_owners": 1,  # Keep at 1
                 "brown_energy_owners": 1,  # Keep at 1
-                "b_agents": 1,        # Keep at 1
-                "g_agents": 1,        # Keep at 1
-                "steps": 2,           # Reduced from 5 to absolute minimum
+                "b_agents": 1,  # Keep at 1
+                "g_agents": 1,  # Keep at 1
+                "steps": 2,  # Reduced from 5 to absolute minimum
                 "verboseFlag": False,
                 "climateModuleFlag": False,
             }
@@ -60,14 +60,12 @@ class TestIntegrationWorkflows(unittest.TestCase):
         """Test complete simulation workflow from start to finish."""
         # Test only one scenario for speed - BAU is simplest
         scenario = {"settings": "BAU", "covid_settings": None}
-        
+
         params = self.params.copy()
         params.update(scenario)
 
         # Run simulation
-        result = single_run(
-            params, parent_folder=self.test_dir, make_stats=False
-        )
+        result = single_run(params, parent_folder=self.test_dir, make_stats=False)
 
         # Verify that simulation completed
         self.assertIsNotNone(result)
@@ -213,7 +211,10 @@ class TestCommandLineInterface(unittest.TestCase):
         # Test that climapan-run is available
         try:
             result = subprocess.run(
-                ["climapan-run", "--help"], capture_output=True, text=True, timeout=5  # Reduced timeout
+                ["climapan-run", "--help"],
+                capture_output=True,
+                text=True,
+                timeout=5,  # Reduced timeout
             )
             # Should not crash (exit code doesn't matter for --help)
             self.assertIsNotNone(result)
@@ -247,8 +248,8 @@ class TestDataAnalysisWorkflow(unittest.TestCase):
         self.params = economic_params.copy()
         self.params.update(
             {
-                "c_agents": 2,        # Reduced from 5
-                "steps": 1,           # Reduced from 3
+                "c_agents": 2,  # Reduced from 5
+                "steps": 1,  # Reduced from 3
                 "verboseFlag": False,
             }
         )
@@ -306,8 +307,8 @@ class TestErrorRecovery(unittest.TestCase):
         params.update(
             {
                 "settings": "INVALID_SCENARIO",
-                "c_agents": 2,        # Reduced from 5
-                "steps": 1,           # Reduced from 2
+                "c_agents": 2,  # Reduced from 5
+                "steps": 1,  # Reduced from 2
             }
         )
 
@@ -332,11 +333,11 @@ class TestErrorRecovery(unittest.TestCase):
         params = economic_params.copy()
         params.update(
             {
-                "c_agents": 1,        # Reduced from 2
+                "c_agents": 1,  # Reduced from 2
                 "capitalists": 1,
                 "csf_agents": 1,
                 "cpf_agents": 1,
-                "steps": 10,          # Reduced from 100
+                "steps": 10,  # Reduced from 100
                 "verboseFlag": False,
             }
         )

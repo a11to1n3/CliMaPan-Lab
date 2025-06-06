@@ -183,7 +183,7 @@ def single_run(
     if multi_params:
         with open(f"{save_folder}/varying_params.txt", "w") as params_file:
             params_file.write(json.dumps(varying_var))
-    
+
     return results
 
 
@@ -272,7 +272,11 @@ if __name__ == "__main__":
         help="situation settings: BAU, DIST, LOCK, VAX",
     )
     parser.add_argument(
-        "-d", "--climateDamage", type=str, default="AggPop", help="Climate damage type: AggPop, Idiosyncratic, or None"
+        "-d",
+        "--climateDamage",
+        type=str,
+        default="AggPop",
+        help="Climate damage type: AggPop, Idiosyncratic, or None",
     )
     parser.add_argument(
         "-l",
@@ -451,7 +455,11 @@ def main():
         help="situation settings: BAU, DIST, LOCK, VAX",
     )
     parser.add_argument(
-        "-d", "--climateDamage", type=str, default="AggPop", help="Climate damage type: AggPop, Idiosyncratic, or None"
+        "-d",
+        "--climateDamage",
+        type=str,
+        default="AggPop",
+        help="Climate damage type: AggPop, Idiosyncratic, or None",
     )
     parser.add_argument(
         "-l",
