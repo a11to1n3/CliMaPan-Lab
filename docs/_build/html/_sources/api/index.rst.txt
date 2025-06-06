@@ -8,8 +8,6 @@ This section contains the complete API documentation for CliMaPan-Lab.
 
    model
    agents
-   parameters
-   utilities
 
 Main Model
 ----------

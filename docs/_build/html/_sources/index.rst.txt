@@ -26,28 +26,12 @@ about installation, usage, API reference, and examples.
 
    installation
    quickstart
-   tutorials/index
-
-.. toctree::
-   :maxdepth: 2
-   :caption: User Guide
-
-   user_guide/model_overview
-   user_guide/parameters
-   user_guide/scenarios
-   user_guide/visualization
 
 .. toctree::
    :maxdepth: 2
    :caption: API Reference
 
    api/index
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Examples
-
-   examples/index
 
 .. toctree::
    :maxdepth: 1
@@ -73,7 +57,6 @@ Quick Links
 * :doc:`installation` - Get started with installing CliMaPan-Lab
 * :doc:`quickstart` - Run your first simulation
 * :doc:`api/index` - Complete API documentation
-* :doc:`examples/index` - Ready-to-run examples
 
 Indices and tables
 ==================

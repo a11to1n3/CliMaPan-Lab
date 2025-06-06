@@ -223,7 +223,6 @@ Simulation Settings
 Next Steps
 ----------
 
-* Read the :doc:`user_guide/model_overview` for detailed model explanation
-* Explore :doc:`examples/index` for more complex scenarios
 * Check the :doc:`api/index` for complete API documentation
-* Learn about :doc:`user_guide/parameters` for advanced parameter tuning 
+* Browse the source code examples in the repository
+* Read the :doc:`contributing` guide to contribute to the project 

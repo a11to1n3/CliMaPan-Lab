@@ -61,10 +61,27 @@ autodoc_default_options = {
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
-# MyST parser settings
+# MyST parser settings  
 source_suffix = {
     ".rst": None,
-    ".md": "myst_parser",
+}
+
+myst_enable_extensions = [
+    "deflist",
+    "tasklist",
+    "fieldlist",
+    "html_admonition",
+    "html_image",
+    "colon_fence",
+    "smartquotes",
+    "replacements",
+]
+
+myst_heading_anchors = 3
+myst_html_meta = {
+    "description lang=en": "CliMaPan-Lab: Climate-Pandemic Economic Modeling Framework",
+    "keywords": "climate, pandemic, economics, agent-based modeling, simulation",
+    "property=og:locale": "en_US",
 }
 
 # -- Options for HTML output -------------------------------------------------
