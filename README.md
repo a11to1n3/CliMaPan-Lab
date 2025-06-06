@@ -70,7 +70,7 @@ The `run_sim` script supports the following arguments:
 | `--noOfRuns` | `-n` | int | 1 | Number of simulation runs to execute |
 | `--settings` | `-s` | str | "BAU" | Economic scenario: `BAU`, `CT`, `CTRa`, `CTRb`, `CTRc`, `CTRd` |
 | `--covidSettings` | `-c` | str | None | COVID scenario: `BAU`, `DIST`, `LOCK`, `VAX` |
-| `--climateDamage` | `-d` | str | "Flood" | Climate damage type |
+| `--climateDamage` | `-d` | str | "AggPop" | Climate damage type: `AggPop`, `Idiosyncratic`, or `None` |
 | `--extractedVarListPathNpy` | `-l` | str | None | Path to text file with variables to extract as numpy files |
 | `--extractedVarListPathCsv` | `-v` | str | None | Path to text file with variables to extract as CSV files |
 | `--plot` | `-p` | flag | False | Generate plots of simulation results |
@@ -85,13 +85,16 @@ climapan-run -s CT -p
 climapan-run -n 10 -s BAU -c LOCK
 
 # Full scenario with climate damage and plotting
-climapan-run -s CTRa -c VAX -d Flood -p
+climapan-run -s CTRa -c VAX -d AggPop -p
 
 # Extract specific variables to separate files
 climapan-run -s CT -l variables_list.txt -v output_vars.txt -p
 
 # Complex multi-parameter scenario
-climapan-run -n 5 -s CTRb -c DIST -d Flood -p
+climapan-run -n 5 -s CTRb -c DIST -d Idiosyncratic -p
+
+# Scenario without climate damage
+climapan-run -s CT -c BAU -d None -p
 ```
 
 #### Scenario Descriptions
@@ -109,6 +112,11 @@ climapan-run -n 5 -s CTRb -c DIST -d Flood -p
 - `DIST`: Social distancing measures
 - `LOCK`: Lockdown implementation
 - `VAX`: Vaccination rollout scenario
+
+**Climate Damage Settings (`--climateDamage`)**:
+- `AggPop`: Aggregate population-level climate damage
+- `Idiosyncratic`: Individual-level climate damage variation
+- `None`: No climate damage effects
 
 #### Variable Extraction
 
