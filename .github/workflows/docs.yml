@@ -79,7 +79,7 @@ jobs:
     
     steps:
     - name: Trigger Read the Docs build
-      if: ${{ secrets.RTD_WEBHOOK_URL }}
+      if: ${{ secrets.RTD_WEBHOOK_URL != '' }}
       run: |
         curl -X POST \
           -H "Content-Type: application/json" \
