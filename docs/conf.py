@@ -61,7 +61,7 @@ autodoc_default_options = {
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
-# MyST parser settings  
+# MyST parser settings
 source_suffix = {
     ".rst": None,
 }
