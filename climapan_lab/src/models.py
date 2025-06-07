@@ -11,7 +11,7 @@ import math
 from collections import OrderedDict
 from datetime import date, timedelta
 
-import agentpy as ap
+import jaxabm.agentpy as ap
 import numpy as np
 
 from .banks.Bank import Bank
@@ -22,10 +22,60 @@ from .firms.CapitalGoodsFirm import CapitalGoodsFirm
 from .firms.ConsumerGoodsFirm import ConsumerGoodsFirm
 from .firms.GreenEnergyFirm import GreenEnergyFirm
 from .governments.Goverment import Government
+from .legacy import AgentList
+from .param_dict import ParamDict
 from .utils import _merge_edgelist, gini, listToArray, lognormal, normal
 
 
 class EconModel(ap.Model):
+
+    def __init__(self, parameters=None, seed=None):
+        super().__init__(parameters=parameters, seed=seed)
+        # Convert parameter dictionary to allow attribute-style access
+        self.p = ParamDict(self.p)
+        # Track simulation time steps similar to AgentPy's ``Model.t``
+        self.t = 0
+
+    def run(self, *args, **kwargs):
+        """Run the model and store results similar to AgentPy."""
+        results = super().run(*args, **kwargs)
+
+        # ``results`` is a ``jaxabm.api.Results`` object whose ``_data``
+        # attribute stores a dictionary of recorded variables.  For
+        # backward compatibility with the previous AgentPy-based code we
+        # expose this dictionary through ``model.output.variables`` and
+        # additionally create a pandas ``DataFrame`` under
+        # ``results.variables.EconModel`` that mirrors the structure used
+        # in the legacy tests.
+        import pandas as pd
+
+        # Build a DataFrame from all non-agent level variables
+        data = {
+            k: v for k, v in results._data.items() if not k.startswith("agents.")
+        }
+        if data:
+            # Determine the maximum length of recorded series
+            max_len = max(
+                len(v) if isinstance(v, (list, np.ndarray)) else 1 for v in data.values()
+            )
+            norm_data = {}
+            for k, v in data.items():
+                if not isinstance(v, (list, np.ndarray)):
+                    norm_data[k] = [v] * max_len
+                else:
+                    arr = list(v)
+                    if len(arr) < max_len:
+                        arr.extend([None] * (max_len - len(arr)))
+                    norm_data[k] = arr
+            econ_df = pd.DataFrame(norm_data)
+            results.variables.EconModel = econ_df
+
+        class Output:
+            def __init__(self, variables_dict):
+                self.variables = variables_dict
+
+        self.output = Output(results._data)
+        return results
 
     def setup(self):
         """Initialize the agents and network of the model."""
@@ -82,7 +132,12 @@ class EconModel(ap.Model):
         # Inititate agents
 
         ## Initiate consumer agents
-        self.consumer_agents = ap.AgentList(self, self.p.c_agents, Consumer)
+        self.consumer_agents = AgentList(
+            self,
+            self.p.c_agents,
+            Consumer,
+            **dict(self.p)
+        )
         for i in range(len(self.consumer_agents)):
             ageRandomness = np.random.normal(0, 0.1)
 
@@ -140,14 +195,19 @@ class EconModel(ap.Model):
         )
 
         ## Initiate bank agents
-        self.bank_agents = ap.AgentList(self, 1, Bank)
+        self.bank_agents = AgentList(self, 1, Bank, **dict(self.p))
 
         ## Initiate Government agents
-        self.government_agents = ap.AgentList(self, self.p.g_agents, Government)
+        self.government_agents = AgentList(self, self.p.g_agents, Government, **dict(self.p))
 
         ## Initiate firm agents
         ### Consumption goods firms
-        self.csfirm_agents = ap.AgentList(self, self.p.csf_agents, ConsumerGoodsFirm)
+        self.csfirm_agents = AgentList(
+            self,
+            self.p.csf_agents,
+            ConsumerGoodsFirm,
+            **dict(self.p)
+        )
         # Ensure we have at least one of each energy type if we have multiple firms
         if len(self.csfirm_agents) >= 2:
             # Assign first firm to brown, second to green, rest randomly
@@ -173,7 +233,12 @@ class EconModel(ap.Model):
                     self.csfirm_agents[i].useEnergyType("green")
                     self.csfirm_agents[i].brown_firm = False
         ### Capital goods firms
-        self.cpfirm_agents = ap.AgentList(self, self.p.cpf_agents, CapitalGoodsFirm)
+        self.cpfirm_agents = AgentList(
+            self,
+            self.p.cpf_agents,
+            CapitalGoodsFirm,
+            **dict(self.p)
+        )
         # Ensure we have at least one of each energy type if we have multiple firms
         if len(self.cpfirm_agents) >= 2:
             # Assign first firm to brown, second to green, rest randomly
@@ -206,8 +271,8 @@ class EconModel(ap.Model):
                     self.cpfirm_agents[i].brown_firm = False
 
         ### Energy firms
-        self.greenEFirm = ap.AgentList(self, 1, GreenEnergyFirm)
-        self.brownEFirm = ap.AgentList(self, 1, BrownEnergyFirm)
+        self.greenEFirm = AgentList(self, 1, GreenEnergyFirm, **dict(self.p))
+        self.brownEFirm = AgentList(self, 1, BrownEnergyFirm, **dict(self.p))
 
         # Cluster goods firms
         self.firms = self.csfirm_agents + self.cpfirm_agents
@@ -226,7 +291,7 @@ class EconModel(ap.Model):
 
         # Climate related module
         if self.p.climateModuleFlag:
-            self.climateModule = ap.AgentList(self, 1, Climate)
+            self.climateModule = AgentList(self, 1, Climate, **dict(self.p))
             self.climateShockMode = copy.deepcopy(self.p.climateShockMode)
             self.climateModule.initGDP(self.GDP)
 
@@ -255,6 +320,8 @@ class EconModel(ap.Model):
 
     def step(self):
         """Define the models' events per simulation step."""
+        # Advance time counter before executing the step logic
+        self.t += 1
         self.initiate_step()
         # Check end of month
         if self.t <= self.covidStartDate:

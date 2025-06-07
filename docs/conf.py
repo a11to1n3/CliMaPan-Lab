@@ -135,4 +135,4 @@ intersphinx_mapping = {
 master_doc = "index"
 
 # Mock imports for dependencies that might not be available during build
-autodoc_mock_imports = ["agentpy", "pathos", "salib", "h5py"]
+autodoc_mock_imports = ["jaxabm", "pathos", "salib", "h5py"]

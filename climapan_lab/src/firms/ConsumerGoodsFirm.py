@@ -1,17 +1,22 @@
 import copy
 from collections import OrderedDict
 
-import agentpy as ap
+import jaxabm.agentpy as ap
 import numpy as np
 import numpy.random as random
 from scipy.optimize import minimize
 
+from ..param_dict import ParamDict
 from ..utils import days_in_month
 from .GoodsFirmBase import GoodsFirmBase
 
 
 class ConsumerGoodsFirm(GoodsFirmBase):
     """A ConsumerGoodsFirm agent"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.p = ParamDict(self.p)
 
     def setup(self):
         super().setup()
@@ -70,10 +75,9 @@ class ConsumerGoodsFirm(GoodsFirmBase):
         self.market_shareList.append(self.market_share)"""
         self.set_aggregate_demand(0)
         self.soldProducts = 0
-        self.consumersList = self.model.aliveConsumers.select(
-            self.model.aliveConsumers.getCovidStateAttr("state") != "dead"
-            and self.model.aliveConsumers.getAgeGroup() == "working"
-        )
+        state_ok = self.model.aliveConsumers.getCovidStateAttr("state") != "dead"
+        working = self.model.aliveConsumers.getAgeGroup() == "working"
+        self.consumersList = self.model.aliveConsumers.select(state_ok & working)
         # market share
 
     def calculate_input_demand(self):

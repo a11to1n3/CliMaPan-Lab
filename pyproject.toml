@@ -30,7 +30,7 @@ dependencies = [
     "numpy>=1.21.0",
     "pandas>=1.3.0",
     "matplotlib>=3.5.0",
-    "agentpy>=0.1.5",
+    "jaxabm @ git+https://github.com/a11to1n3/JaxABM.git",
     "scikit-learn>=1.0.0",
     "scipy>=1.7.0",
     "joblib>=1.1.0",
@@ -39,6 +39,9 @@ dependencies = [
     "pathos>=0.2.8",
     "dill>=0.3.4",
     "h5py>=3.7.0",
+    "psutil>=5.0",
+    "statsmodels>=0.13.0",
+    "plotly>=5.0",
 ]
 
 [project.optional-dependencies]
@@ -95,4 +98,4 @@ profile = "black"
 multi_line_output = 3
 line_length = 88
 known_first_party = ["climapan_lab"]
-known_third_party = ["agentpy", "numpy", "pandas", "matplotlib", "sklearn", "scipy", "joblib", "salib", "networkx", "pathos", "dill", "h5py"] 
+known_third_party = ["jaxabm", "numpy", "pandas", "matplotlib", "sklearn", "scipy", "joblib", "salib", "networkx", "pathos", "dill", "h5py"] 

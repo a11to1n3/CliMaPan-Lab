@@ -15,7 +15,7 @@ import warnings
 from datetime import datetime
 from itertools import product
 
-import agentpy as ap
+import jaxabm.agentpy as ap
 import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed
