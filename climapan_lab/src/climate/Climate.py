@@ -1,10 +1,16 @@
 import copy
 
-import agentpy as ap
+import jaxabm.agentpy as ap
 import numpy as np
+
+from ..param_dict import ParamDict
 
 
 class Climate(ap.Agent):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.p = ParamDict(self.p)
+
     def setup(self):
         self.climate_shock_start = self.p.climate_shock_start
         self.zeta_g = (self.p.climateZetaGreen,)

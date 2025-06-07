@@ -1,11 +1,18 @@
 # Government
-import agentpy as ap
+import jaxabm.agentpy as ap
 import numpy as np
 import pandas as pd
 
 
+from ..param_dict import ParamDict
+
+
 class Government(ap.Agent):
     """A government agent"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.p = ParamDict(self.p)
 
     def setup(self):
         self.taxRate = self.p.taxRate

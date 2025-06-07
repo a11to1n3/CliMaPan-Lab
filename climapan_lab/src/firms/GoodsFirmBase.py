@@ -1,16 +1,21 @@
 import copy
 from collections import OrderedDict
 
-import agentpy as ap
+import jaxabm.agentpy as ap
 import numpy as np
 import numpy.random as random
 from scipy.optimize import minimize
 
+from ..param_dict import ParamDict
 from ..utils import days_in_month
 
 
 class GoodsFirmBase(ap.Agent):
     """A GoodsFirmBase agent"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.p = ParamDict(self.p)
 
     def setup(self):
 

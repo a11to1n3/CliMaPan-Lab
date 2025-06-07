@@ -1,14 +1,20 @@
 import copy
 from collections import OrderedDict
 
-import agentpy as ap
+import jaxabm.agentpy as ap
 import numpy as np
 import numpy.random as random
 import pandas as pd
 
+from ..param_dict import ParamDict
+
 
 class Bank(ap.Agent):
     """A bank agent"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.p = ParamDict(self.p)
 
     def setup(self):
         self.loans = 0

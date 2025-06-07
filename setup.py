@@ -35,7 +35,7 @@ setup(
         "numpy>=1.21.0",
         "pandas>=1.3.0",
         "matplotlib>=3.5.0",
-        "agentpy>=0.1.5",
+        "jaxabm>=0.1.0",
         "scikit-learn>=1.0.0",
         "scipy>=1.7.0",
         "joblib>=1.1.0",

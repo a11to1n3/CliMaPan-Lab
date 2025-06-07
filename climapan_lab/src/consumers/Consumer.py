@@ -1,15 +1,20 @@
 import copy
 import math
 
-import agentpy as ap
+import jaxabm.agentpy as ap
 import numpy as np
 import numpy.random as random
 
+from ..param_dict import ParamDict
 from ..utils import lognormal
 
 
 class Consumer(ap.Agent):
     """A consumer agent"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.p = ParamDict(self.p)
 
     def setup(self):
 
@@ -183,6 +188,18 @@ class Consumer(ap.Agent):
 
     def getConsumerType(self):
         return self.consumerType
+
+    # ------------------------------------------------------------------
+    # Compatibility attributes
+    # ------------------------------------------------------------------
+    @property
+    def type(self):
+        """Alias for ``consumerType`` used in legacy tests."""
+        return self.consumerType
+
+    @type.setter
+    def type(self, value):
+        self.consumerType = value
 
     def getBelongToFirm(self):
         return self.belongToFirm

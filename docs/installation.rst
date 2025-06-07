@@ -18,7 +18,7 @@ Core Dependencies
 * **numpy** (>=1.21.0) - Numerical computing
 * **pandas** (>=1.3.0) - Data manipulation and analysis
 * **matplotlib** (>=3.5.0) - Plotting and visualization
-* **agentpy** (>=0.1.5) - Agent-based modeling framework
+* **jaxabm** (>=0.1.0) - Agent-based modeling framework
 * **scikit-learn** (>=1.0.0) - Machine learning utilities
 * **scipy** (>=1.7.0) - Scientific computing
 * **joblib** (>=1.1.0) - Parallel computing
@@ -27,6 +27,8 @@ Core Dependencies
 * **pathos** (>=0.2.8) - Parallel processing
 * **dill** (>=0.3.4) - Serialization
 * **h5py** (>=3.7.0) - HDF5 file handling
+* **statsmodels** (>=0.13.0) - Statistical analysis utilities
+* **plotly** (>=5.0) - Interactive plotting
 
 Installation Methods
 --------------------
@@ -95,7 +97,7 @@ Troubleshooting
 Common Issues
 ~~~~~~~~~~~~~
 
-**Import Error: No module named 'agentpy'**
+**Import Error: No module named 'jaxabm'**
 
 This usually means the dependencies weren't installed properly. Try:
 
