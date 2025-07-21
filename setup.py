@@ -40,6 +40,12 @@ setup(
         "scipy>=1.7.0",
         "joblib>=1.1.0",
         "salib>=1.4.0",
+        "networkx>=2.6.0",
+        "pathos>=0.2.8",
+        "dill>=0.3.4",
+        "h5py>=3.7.0",
+        "statsmodels>=0.13.0",
+        "plotly>=5.0",
     ],
     extras_require={
         "dev": [
