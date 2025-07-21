@@ -219,6 +219,6 @@ MIT License - see [LICENSE](LICENSE) file for details.
   title={CliMaPan-Lab: Climate-Pandemic Economic Modeling Laboratory},
   author={D'Orazio, Paola and Pham, Anh-Duy and Nguyen, Hong Son},
   year={2024},
-  url={https://github.com/your-username/CliMaPan-Lab}
+  url={https://github.com/a11to1n3/CliMaPan-Lab}
 }
 ```
