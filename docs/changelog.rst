@@ -1,7 +1,7 @@
 Changelog
 =========
 
-Version 0.0.2 (2024-12-05)
+Version 0.0.2 (2025-07-20)
 ---------------------------
 
 **Breaking Changes:**
@@ -31,7 +31,7 @@ Version 0.0.2 (2024-12-05)
 * Simplified climate shock implementation in models.py
 * Updated result folder naming from "FLOOD" to "CLIMATE"
 
-Version 0.0.1 (2024-12-05)
+Version 0.0.1 (2025-07-15)
 ---------------------------
 
 Initial release of CliMaPan-Lab.

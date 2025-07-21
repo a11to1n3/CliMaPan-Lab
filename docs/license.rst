@@ -6,7 +6,7 @@ CliMaPan-Lab is released under the MIT License.
 MIT License
 -----------
 
-Copyright (c) 2024 Paola D'Orazio, Anh-Duy Pham, Hong Son Nguyen
+Copyright (c) 2025 Paola D'Orazio, Anh-Duy Pham, Hong Son Nguyen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
