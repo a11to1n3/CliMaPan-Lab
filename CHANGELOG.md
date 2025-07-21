@@ -5,6 +5,39 @@ All notable changes to CliMaPan-Lab will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] - 0.0.4
+
+### 🔧 Configuration & Maintenance
+- **Updated repository URLs** throughout codebase from "your-username" to "a11to1n3"
+- **Updated time references** to be consistent with July 2025 development timeline
+- **Enhanced dependency management** to ensure `pip install -e .` installs all required packages
+
+### 📦 Package Installation
+- **Fixed `setup.py` dependencies** to include all packages from `requirements.txt`
+- **Updated `pyproject.toml`** with complete dependency list including:
+  - `statsmodels>=0.13.0` and `plotly>=5.0` (previously missing)
+  - All networking and parallel processing dependencies
+- **Ensured consistent package installation** across different installation methods
+
+### 📖 Documentation Updates  
+- **Updated copyright years** to 2025 in all documentation files
+- **Fixed citation year** in README.md to 2025
+- **Updated changelog dates** to reflect July 2025 development timeline
+- **Created high-level pseudocode specification** following academic standards for simulation timestep flow
+
+### 🏗️ Code Architecture Documentation
+- **Documented simulation architecture** with formal pseudocode
+- **Defined module interfaces** and data structures
+- **Created standardized timestep logic** documentation
+- **Specified algorithm flows** for each major component (Consumer, Firm, Climate, Government modules)
+
+### 🔄 Internal Improvements
+- **Enhanced build system consistency** between setup.py and pyproject.toml
+- **Improved package metadata** with correct repository references
+- **Updated version control references** across configuration files
+
+---
+
 ## [0.0.3] - 2025-07-21
 
 ### 🚀 Major Performance Improvements
