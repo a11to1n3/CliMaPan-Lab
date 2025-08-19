@@ -37,6 +37,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Improved code organization** with better separation of concerns
 - **Standardized coding conventions** following Python best practices
 
+### 📚 Model Documentation
+- **Added comprehensive ODD+D Protocol documentation** following established standards for agent-based models
+- **Created formal model specification** with mathematical formalization of agent decision rules
+- **Added detailed parameter tables** with values and sources
+- **Documented model limitations and assumptions** for transparency
+- **Added output format specifications** and acronym reference
+
+### 📧 Contact Information
+- **Updated package metadata** with current contact information
+
 ### 🔄 Internal Improvements
 - **Enhanced build system consistency** between setup.py and pyproject.toml
 - **Improved package metadata** with correct repository references and documentation links
