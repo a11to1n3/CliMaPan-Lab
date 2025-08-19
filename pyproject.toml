@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "climapan-lab"
 version = "0.0.4"
 authors = [
-    {name = "CliMaPan-Lab Team", email = "duyanhpham@outlook.com"},
+    {name = "CliMaPan-Lab Team", email = "anh-duy.pham@uni-wuerzburg.de"},
 ]
 description = "Climate-Pandemic Economic Modeling Laboratory"
 readme = "README.md"

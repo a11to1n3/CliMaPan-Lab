@@ -5,9 +5,9 @@ A comprehensive agent-based economic modeling framework that integrates
 climate change and pandemic dynamics.
 """
 
-__version__ = "0.0.1"
+__version__ = "0.0.4"
 __author__ = "CliMaPan-Lab Team"
-__email__ = "contact@climapan-lab.org"
+__email__ = "anh-duy.pham@uni-wuerzburg.de"
 
 # Import main components for easy access
 try:
