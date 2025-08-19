@@ -15,8 +15,8 @@ sys.path.insert(0, os.path.abspath(".."))
 project = "CliMaPan-Lab"
 copyright = "2025, Paola D'Orazio, Anh-Duy Pham, Hong Son Nguyen"
 author = "Paola D'Orazio, Anh-Duy Pham, Hong Son Nguyen"
-release = "0.0.1"
-version = "0.0.1"
+release = "0.0.4"
+version = "0.0.4"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
