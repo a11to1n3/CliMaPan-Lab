@@ -1,7 +1,9 @@
 Quick Start Guide
 =================
 
-This guide will help you run your first CliMaPan-Lab simulation in just a few minutes.
+This guide will help you run your first CliMaPan-Lab simulation in just a few minutes. 
+The codebase includes comprehensive inline documentation to help you understand how 
+each component works and interacts within the simulation.
 
 Basic Simulation
 ----------------

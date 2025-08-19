@@ -15,7 +15,7 @@ setup(
     description="Climate-Pandemic Economic Modeling Laboratory",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/your-username/climapan-lab",
+    url="https://github.com/a11to1n3/climapan-lab",
     packages=find_packages(exclude=["tests*", "docs*", "results*"]),
     include_package_data=True,
     classifiers=[

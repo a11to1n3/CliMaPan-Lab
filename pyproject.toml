@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "climapan-lab"
-version = "0.0.1"
+version = "0.0.4"
 authors = [
     {name = "CliMaPan-Lab Team", email = "duyanhpham@outlook.com"},
 ]
@@ -61,9 +61,10 @@ docs = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/your-username/climapan-lab"
-"Bug Reports" = "https://github.com/your-username/climapan-lab/issues"
-"Source" = "https://github.com/your-username/climapan-lab"
+"Homepage" = "https://github.com/a11to1n3/CliMaPan-Lab"
+"Bug Reports" = "https://github.com/a11to1n3/CliMaPan-Lab/issues"
+"Source" = "https://github.com/a11to1n3/CliMaPan-Lab"
+"Documentation" = "https://climapan-lab.readthedocs.io/"
 
 [project.scripts]
 climapan-run = "climapan_lab.run_sim:main"

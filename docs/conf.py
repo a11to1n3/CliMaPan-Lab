@@ -13,7 +13,7 @@ import sys
 sys.path.insert(0, os.path.abspath(".."))
 
 project = "CliMaPan-Lab"
-copyright = "2024, Paola D'Orazio, Anh-Duy Pham, Hong Son Nguyen"
+copyright = "2025, Paola D'Orazio, Anh-Duy Pham, Hong Son Nguyen"
 author = "Paola D'Orazio, Anh-Duy Pham, Hong Son Nguyen"
 release = "0.0.1"
 version = "0.0.1"

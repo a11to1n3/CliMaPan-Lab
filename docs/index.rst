@@ -46,11 +46,12 @@ Key Features
 ------------
 
 * **Agent-Based Modeling**: Comprehensive economic agents including consumers, firms, banks, and government
-* **Climate Integration**: Climate shocks and economic impacts modeling
-* **Pandemic Dynamics**: COVID-19 effects on economic activity
+* **Climate Integration**: Climate shocks and economic impacts modeling with detailed step-by-step dynamics
+* **Pandemic Dynamics**: COVID-19 effects on economic activity with SEIR-like disease progression
 * **Policy Analysis**: Carbon taxes, fiscal policies, and intervention scenarios
 * **Flexible Scenarios**: Various economic and environmental conditions
 * **Comprehensive Testing**: 60+ tests across 5 categories ensuring reliability
+* **Extensive Documentation**: Well-documented codebase with detailed inline comments explaining agent lifecycles, simulation flow, and component interactions
 
 Quick Links
 -----------

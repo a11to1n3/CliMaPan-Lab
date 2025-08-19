@@ -5,7 +5,47 @@ All notable changes to CliMaPan-Lab will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.0.3] - 2024-12-06
+## [0.0.4] - 2025-08-19
+
+### 🔧 Configuration & Maintenance
+- **Applied comprehensive Black formatting** to entire codebase (58 files reformatted)
+- **Updated version to 0.0.4** reflecting current development state
+- **Enhanced project metadata** with correct repository URLs and documentation links
+- **Updated dependency management** to ensure `pip install -e .` installs all required packages
+
+### 📦 Package Installation
+- **Fixed `setup.py` dependencies** to include all packages from `requirements.txt`
+- **Updated `pyproject.toml`** with complete dependency list including:
+  - `statsmodels>=0.13.0` and `plotly>=5.0` (previously missing)
+  - All networking and parallel processing dependencies
+- **Ensured consistent package installation** across different installation methods
+
+### 📖 Documentation Updates  
+- **Updated copyright years** to 2025 in all documentation files
+- **Fixed citation year** in README.md to 2025
+- **Updated changelog dates** to reflect July 2025 development timeline
+- **Created high-level pseudocode specification** following academic standards for simulation timestep flow
+
+### 🏗️ Code Quality & Standards
+- **Applied Black code formatting** across all Python files for consistent style
+- **Major documentation overhaul** with comprehensive inline documentation:
+  - **Climate Module**: Detailed step-by-step climate dynamics documentation
+  - **Consumer Agent**: Complete lifecycle and state management documentation
+  - **Economic Model**: Full simulation flow and component interaction documentation
+  - **Firm Base Classes**: Comprehensive production, finance, and lifecycle documentation
+  - **Main Runner**: Enhanced script-level documentation with feature descriptions
+- **Improved code organization** with better separation of concerns
+- **Standardized coding conventions** following Python best practices
+
+### 🔄 Internal Improvements
+- **Enhanced build system consistency** between setup.py and pyproject.toml
+- **Improved package metadata** with correct repository references and documentation links
+- **Updated version control references** across configuration files
+- **Improved code organization** and module structure
+
+---
+
+## [0.0.3] - 2025-07-21
 
 ### 🚀 Major Performance Improvements
 - **Fixed infinite loop bug** in `EconModel.setup()` that caused tests to hang indefinitely

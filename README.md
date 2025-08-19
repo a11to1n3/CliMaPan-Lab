@@ -147,11 +147,12 @@ climapan-run -s CT -l variables_list.txt -v variables_list.txt -p
 
 ## Model Features
 
-- **Agents**: Consumers, firms, banks, government
-- **Climate Integration**: Climate shocks and economic impacts
-- **Pandemic Dynamics**: COVID-19 effects on economic activity
-- **Policy Analysis**: Carbon taxes, fiscal policies
+- **Agents**: Consumers, firms, banks, government with comprehensive lifecycle documentation
+- **Climate Integration**: Climate shocks and economic impacts with detailed step-by-step dynamics
+- **Pandemic Dynamics**: COVID-19 effects on economic activity with SEIR-like progression
+- **Policy Analysis**: Carbon taxes, fiscal policies with clear implementation details
 - **Flexible Scenarios**: Various economic and environmental conditions
+- **Well-Documented Codebase**: Extensive inline documentation explaining agent behavior, simulation flow, and component interactions
 
 ## Example Scenarios
 
@@ -218,7 +219,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 @software{climapan_lab,
   title={CliMaPan-Lab: Climate-Pandemic Economic Modeling Laboratory},
   author={D'Orazio, Paola and Pham, Anh-Duy and Nguyen, Hong Son},
-  year={2024},
-  url={https://github.com/your-username/CliMaPan-Lab}
+  year={2025},
+  url={https://github.com/a11to1n3/CliMaPan-Lab}
 }
 ```
