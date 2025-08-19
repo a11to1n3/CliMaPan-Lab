@@ -8,25 +8,50 @@ from scipy.optimize import minimize
 
 from ..utils import days_in_month
 
+# ============================================================================
+#                           GoodsFirmBase
+# ============================================================================
+# Role:
+#   Base class with finance, production cost accounting, labor management,
+#   loans/repayment, carbon-tax handling, and shock/lockdown utilities.
+#
+# Lifecycle (per month; orchestrated by the model):
+#   1) plan:    set planned_production (in subclass), call production_budgeting()
+#   2) hire:    model assigns workers; calculate_all_wages() builds wage bill
+#   3) produce: subclass computes actual_production via production_function()
+#   4) sell:    model matches demand → set/updateSoldProducts(), setPrice()
+#   5) settle:  compute costs, profits, update capital value, progressPayback()
+#   6) tax/div: updateProfitsAfterTax(), ownerIncome handled at model level
+#
+# Key state:
+#   capital, energy, workersList, wages, price, deposit, loans (loanList),
+#   DTE (debt-to-equity), iL (loan rate), iF (financial fragility proxy),
+#   average_production_cost, planned/actual production, carbonTax etc.
+# ============================================================================
+
 
 class GoodsFirmBase(ap.Agent):
     """A GoodsFirmBase agent"""
 
     def setup(self):
 
-        # Main variables
-        self.workersList = []
-        self.wages = {}
-        self.price = 0
-        self.capital = 0
-        self.energy = 0
-        self.deposit = 0
+        # ----------------------------------------
+        # Core firm stocks & finance
+        # ----------------------------------------
+        self.workersList = []          # IDs of employed workers
+        self.wages = {}                # id → wage mapping for this firm
+        self.price = 0                 # initial price of produced goods (set by model)
+        self.capital = 0               # physical units of installed capital
+        self.energy = 0                # energy input planned/used this step
+        self.deposit = 0               # cash / liquid assets
         self.equity = 0
         self.net_profit = 0
-        self.non_loan = 0
+        self.non_loan = 0              # written-off part after bankruptcy
 
-        # parameter
-        self.iL = self.p.bankICB
+        # ----------------------------------------
+        # Technology & policy parameters (snapshot from self.p)
+        # ----------------------------------------
+        self.iL = self.p.bankICB       # base loan rate (bank interbank proxy)
         self.beta_capital = self.p.beta_capital
         self.beta_labour = self.p.beta_labour
         self.beta_energy = self.p.beta_energy
@@ -39,38 +64,46 @@ class GoodsFirmBase(ap.Agent):
         self.capital_depreciation = self.p.depreciationRate
         self.wage_factor = 1 / (1 + self.p.wageAdjustmentRate)
 
-        # Transitory variables
+        # ----------------------------------------
+        # Transient/accounting variables
+        # ----------------------------------------
         self.wage_bill = 0
         self.unitWageBill = self.p.unemploymentDole
-        self.capital_tracking = []
-        self.actual_production = 0  # 10
+        self.capital_tracking = []     # rolling buffer of investment values
+        self.actual_production = 0     # 10
         self.planned_production = 0
         self.average_production_cost = 0
         self.labour_demand = 0
         self.aggregate_demand = 0
         self.priceList = [1]
 
-        self.capital_investment = 0  # value variable
-        self.capital_increase = 0  # physical variable
+        # Capital purchase & valuation
+        self.capital_investment = 0    # value variable
+        self.capital_increase = 0      # physical variable
         self.capital_price = 1
         self.capital_value = self.capital * self.capital_price  # value variable
-        self.cost_of_capital = 0  # value variable
-        self.capital_purchase = 0  # physical vaariable
-        self.capital_demand = 0  # physical variable
-        self.capital_growth = 0  # physical variable
+        self.cost_of_capital = 0       # value variable - amortized cost in avg cost calc
+        self.capital_purchase = 0      # physical variable
+        self.capital_demand = 0        # physical variable
+        self.capital_growth = 0        # physical variable
 
-        self.useEnergy = None
+        # Energy mix
+        self.useEnergy = None          # 'green' or 'brown'
         self.brown_firm = self.useEnergy == "brown"
-        self.firmDataWriter = []
+        
+        # Data writer for quick diagnostics
+        self.firmDataWriter = []       # [sold, wage_bill, n_workers] each step
 
+        # Banking / leverage
         self.loanObtained = 0
         self.loan_demand = 0
-        self.loanList = [0, 0]
-        self.loanContractRemainingTime = {}
-        self.DTE = 0
-        self.iF = 0
+        self.loanList = [0, 0]         # outstanding principals by "vintage"
+        self.loanContractRemainingTime = {}  # vintage → months remaining
+        self.DTE = 0                   # debt-to-equity ratio
+        self.iF = 0                    # interest paid on loans
         self.reserve_ratio = self.p.reserve_ratio
 
+        # Other accounting & flags
         self.depositList = [0, 0]
         self.sale_record = 0
         self.profits = 0
@@ -86,10 +119,18 @@ class GoodsFirmBase(ap.Agent):
         self.lockdownList = []
         self.payback = 0
         self.profit_margin = 0
+        
+        # Shortcuts to agent lists
         self.consumersList = self.model.consumer_agents
         self.sickList = self.model.consumer_agents
+        
+        # Taxes & sales
         self.tax = 0
         self.soldProducts = 1
+        
+        # ----------------------------------------
+        # Rebuild worker roster if reloaded mid-run
+        # ----------------------------------------
         self.workersList = []
         [
             self.workersList.append(aConsumer.id)
@@ -102,7 +143,11 @@ class GoodsFirmBase(ap.Agent):
             if aConsumer.getIdentity() in self.workersList:
                 self.wages[aConsumer.getIdentity()] = aConsumer.getWage()
 
+    # ========================================
+    # Bankruptcy reset (re-entry with new balance sheet)
+    # ========================================
     def bankrupt_reset(self):
+        """Reset firm state after bankruptcy"""
         print("firm get bankrupt!!!", self.id)
         self.netWorth = 0
         self.loanObtained = 0
@@ -116,8 +161,11 @@ class GoodsFirmBase(ap.Agent):
         self.fiscal = 0
         self.brown_firm = self.useEnergy == "brown"
 
+    # ========================================
+    # CES-like production function (unit-consistent)
+    # ========================================
     def production_function(self, inputs):
-        # Define consumer goods production function
+        """Define consumer goods production function"""
         capital_input, labour_input, energy_input = inputs
         production = (
             self.beta_capital * (capital_input) ** self.eta_production
@@ -126,10 +174,14 @@ class GoodsFirmBase(ap.Agent):
         ) ** (1 / self.eta_production)
         return production
 
+    # ========================================
+    # Financing the plan (loan demand, deposits, logging)
+    # ========================================
     def production_budgeting(self):
-        """"""
+        """Decide funding for planned production; compute loan demand."""
         # print("capital stock", self.capital, self.capital_increase, self.capital_growth)
         # checking if production can be financed, otherwise taking loan if possible
+        # Need enough cash to cover variable cost; allow some minimum leverage
         self.loan_demand = np.max(
             [
                 self.get_average_production_cost() * self.planned_production
@@ -139,6 +191,7 @@ class GoodsFirmBase(ap.Agent):
         )
         # self.loan_demand = np.max([self.get_average_production_cost() * self.planned_production, 0])
         if self.loan_demand > 0:
+            # Bank module will respond via adjustAccordingToBankState
             pass
         else:
             self.loanList.append(0)
@@ -146,9 +199,13 @@ class GoodsFirmBase(ap.Agent):
             data = [self.getSoldProducts(), self.wage_bill, len(self.workersList)]
             self.firmDataWriter.append(data)
 
+    # ========================================
+    # Average production cost decomposition (wage, energy, capital)
+    # ========================================
     def calculate_average_production_cost(self):
-        # function to derive production cost
+        """Function to derive production cost"""
         ## Wage Component
+        # Wage component (use model-wide mean wage among workers)
         self.calculate_all_wages()
         mean_wage = np.mean(
             list(
@@ -160,6 +217,7 @@ class GoodsFirmBase(ap.Agent):
         # it is probably best to just sum the wage instead of taking average and multiply with number of labour
 
         ## Energy Component
+        # Energy component (price depends on current mix)
         energy_price = (
             self.model.brownEFirm[-1].getPrice()
             if self.brown_firm
@@ -169,6 +227,7 @@ class GoodsFirmBase(ap.Agent):
         # print("energy break down: ", self.id, self.getUseEnergy(), self.get_energy(), energy_price)
 
         ## Capital Component
+        # Capital component (amortize recent investment over a rolling window)
         # Need to default value of past periods to 0
         if len(self.capital_tracking) > self.p.capital_length:
             self.capital_tracking.pop(0)
@@ -178,6 +237,7 @@ class GoodsFirmBase(ap.Agent):
         self.cost_of_capital = cost_of_capital
         ##Need to also store the price of capital together with the period so we can do multiplication
 
+        # Unit cost and fixed cost (wage+capital, excluding variable energy)
         self.average_production_cost = (
             mean_wage * self.getNumberOfLabours() + energy_cost + cost_of_capital
         ) / (self.get_actual_production())
@@ -188,28 +248,11 @@ class GoodsFirmBase(ap.Agent):
 
         self.fix_cost = mean_wage * self.getNumberOfLabours() + cost_of_capital
 
-    def get_actual_production(self):
-        return self.actual_production
-
-    def getNumberOfLabours(self):
-        return len(self.workersList)
-
-    def update_actual_production(self, value):
-        self.actual_production += value
-
-    def getPrice(self):
-        return self.price
-
-    def getNetProfit(self):
-        return self.net_profit
-
-    def getIdentity(self):
-        return self.id
-
-    def getLoan(self):
-        return self.loanObtained
-
+    # ========================================
+    # Loan amortization & delinquency evolution (monthly)
+    # ========================================
     def payLoan(self):
+        """Amortize current loans with available payback amount"""
         if -self.payback > 0:
             payback = copy.copy(self.payback)
             for loan_id in [
@@ -223,6 +266,7 @@ class GoodsFirmBase(ap.Agent):
                 else:
                     self.loanList[loan_id] = 0
                     payback += np.sum(self.loanList[loan_id])
+                # Contract time and default trigger
                 if (
                     self.loanList[loan_id] > 0
                     and self.loanContractRemainingTime[loan_id] <= 0
@@ -233,6 +277,7 @@ class GoodsFirmBase(ap.Agent):
                 else:
                     self.loanContractRemainingTime.pop(loan_id)
         else:
+            # No payment this step; still age contracts and check default
             for loan_id in [
                 i for i in range(len(self.loanList)) if self.loanList[i] > 0
             ]:
@@ -246,7 +291,11 @@ class GoodsFirmBase(ap.Agent):
                 else:
                     self.loanContractRemainingTime.pop(loan_id)
 
+    # ========================================
+    # Profits after corporate + carbon tax
+    # ========================================
     def updateProfitsAfterTax(self, isC02Taxed=False):
+        """Apply corporate tax and optionally carbon tax"""
         carbonTax = copy.copy(self.carbonTax) if isC02Taxed else 0
         if self.profits > 0:
             self.net_profit = (1 - self.p.taxRate) * self.profits - carbonTax
@@ -255,9 +304,13 @@ class GoodsFirmBase(ap.Agent):
             self.net_profit = 1 * self.profits - carbonTax
             self.updateTax(carbonTax)
 
+    # ========================================
+    # Bank response (called after bank computes obtainedCredit)
+    # ========================================
     def adjustAccordingToBankState(self, obtainedCredit, eps=1e-8):
         """Check bank _calculate_running_loan for the function"""
         ## Credit obtained via bank
+        # If a loan is granted, create a new vintage with a repayment horizon
         # if obtainedCredit > 0 and len(self.loanContractRemainingTime) == 0:
         if obtainedCredit > 0:
             self.loanObtained = obtainedCredit
@@ -273,6 +326,7 @@ class GoodsFirmBase(ap.Agent):
                 )
 
         ## Adjust deposit and networth
+        # Cash in, update NW and leverage
         self.updateDeposit(np.sum(obtainedCredit))  # adjust deposit if loan is granted
         self.depositList[-1] = self.deposit
         self.netWorth = self.depositList[-1] - sum(self.loanList)
@@ -290,22 +344,33 @@ class GoodsFirmBase(ap.Agent):
         data = [self.soldProducts, self.wage_bill, len(self.workersList)]
         self.firmDataWriter.append(data)
 
+    # ========================================
+    # Capital stock & valuation update (depreciation + new investment)
+    # ========================================
     def update_capital_value(self):
-        """"""
+        """Update capital stock with depreciation and new investment"""
         # depreciation update
         self.set_capital(self.get_capital() * (1 - self.capital_depreciation))
 
         # reflect the purchase of new capital
+        # Add newly purchased units (from capital_growth / transactions)
         self.update_capital_increase(np.sum(self.capital_growth))
         self.set_capital(self.get_capital() + self.get_capital_increase())
 
         # new value of capital
+        # Revalue
         self.capital_value = self.get_capital() * self.capital_price
 
+    # ========================================
+    # Bankruptcy condition + re-entry logic (keeps sector composition)
+    # ========================================
     def setBankruptcy(self):
+        """Handle bankruptcy and firm re-entry"""
         if self.getBankrupt() == True or self.getNetWorth() < 0:
             self.model.bankrupt_count += 1
             self.non_loan = np.sum([self.loanList])
+            
+            # Rebirth policy: keep minimum counts of brown/green firms
             if "ConsumerGoods" in str(self):
                 self.model.numCSFirmBankrupt += 1
                 if (
@@ -313,6 +378,7 @@ class GoodsFirmBase(ap.Agent):
                     and np.sum(self.model.csfirm_agents.getUseEnergy() == "green") > 2
                 ):
                     if np.random.rand() < 0.5:
+                        # Release all workers
                         for wid in self.workersList:
                             self.model.aliveConsumers.select(
                                 self.model.aliveConsumers.getIdentity() == wid
@@ -375,7 +441,11 @@ class GoodsFirmBase(ap.Agent):
                     self.useEnergyType("green")
                     self.bankrupt_reset()
 
+    # ========================================
+    # Build wage bill (handles sick leave, lockdown, tax withholding)
+    # ========================================
     def calculate_all_wages(self):
+        """Calculate wages for all workers including sick leave and lockdown adjustments"""
         # Initialize the total wage bill and calculate the number of days in the current month
         self.wage_bill = 0
         self.wage_factor *= 1 + self.p.wageAdjustmentRate
@@ -402,7 +472,9 @@ class GoodsFirmBase(ap.Agent):
 
             wages = self.wages[aConsumer.id]
             # print("wage paid", wages)
+            
             # Wage Setting
+            # Base payroll with sick leave and possible lockdown transfer
             if aConsumer.getEmploymentState():
                 if self.model.t < 32:
                     wage = (wages / days) * (days - len(sick_leaves)) + (
@@ -422,6 +494,7 @@ class GoodsFirmBase(ap.Agent):
                             days - lockdown_days
                         ) + pandemic_transfer * lockdown_days
 
+                # Apply firm's wage factor and income tax withholding
                 wage = (
                     wages
                     / (1 - self.p.incomeTaxRate)
@@ -437,16 +510,11 @@ class GoodsFirmBase(ap.Agent):
                     aConsumer.getWage() - (unemployment_dole / days) * len(sick_leaves)
                 )
 
-    def get_aggregate_demand(self):
-        return self.aggregate_demand
-
-    def set_aggregate_demand(self, value):
-        self.aggregate_demand = value
-
-    def update_aggregate_demand(self, value):
-        self.aggregate_demand += value
-
+    # ========================================
+    # Energy back-out from CES target (given L,K and planned Q)
+    # ========================================
     def optimize_energy(self, labour, capital):
+        """Calculate optimal energy input given labour, capital, and planned production"""
         energy = (1 / self.rho_energy) * (
             (
                 self.planned_production**self.eta_production
@@ -466,6 +534,136 @@ class GoodsFirmBase(ap.Agent):
             energy = 0
         return energy
 
+    # ========================================
+    # Monthly payback, carbon tax pass-through, and risk metrics
+    # ========================================
+    def progressPayback(self, eps=1e-8):
+        """Calculate loan payments and apply carbon tax surcharge to price"""
+        # Amortization with simple annuity formula if there are active loans
+        if len(self.loanContractRemainingTime) > 0:
+            self.payback = (
+                self.iL
+                * np.sum([self.loanList])
+                / (
+                    1
+                    - (1 + self.iL)
+                    ** (list(self.loanContractRemainingTime.values())[0])
+                )
+            )
+        else:
+            self.payback = 0
+
+        if self.p.verboseFlag:
+            print("payback value", self.payback)
+            
+        # Carbon tax pass-through into price if brown and CT active
+        brown_firm_coefficient = (
+            self.brown_firm * self.p.climateZetaBrown * self.p.co2_price
+        )
+        carbon_tax = (
+            brown_firm_coefficient
+            * self.carbon_tax_state
+            * self.get_actual_production()
+        )
+        self.setPrice(
+            self.getPrice() + np.sum(carbon_tax / (self.get_actual_production()))
+        )
+        self.payLoan()
+
+        ## Update other financial variables
+        # Update risk metrics after payment
+        self.DTE = sum(self.loanList) / (self.netWorth + eps)
+        self.iF = np.max([0, self.DTE / 100])
+        # print("default probability factor", self.DTE)
+        if self.DTE < 0:
+            self.defaultProb = 1
+        else:
+            self.defaultProb = 1 - np.exp(-self.p.defaultProbAlpha * self.DTE)
+        self.iL = np.max([0, self.p.bankICB * (1 + self.defaultProb)])
+        # print("default Prob: ", self.defaultProb, " ", self.DTE)
+
+    # ========================================
+    # Fire workers (used on shutdown/bankruptcy)
+    # ========================================
+    def fire(self):
+        """Fire all workers (used on shutdown/bankruptcy)"""
+        # function for firm to fire workers
+        for (
+            id
+        ) in (
+            self.workersList
+        ):  # this line require an update mechanic to fire worker since the worker list shrink as we fire
+            worker = self.model.aliveConsumers.select(
+                self.model.aliveConsumers.getIdentity() == id
+            )
+            worker.receiveFiring()
+            self.workersList.remove(id)
+
+    # ========================================
+    # Shocks & lockdown utilities
+    # ========================================
+    def setLockDown(self):
+        """Activate lockdown state"""
+        self.lockdown = True
+        self.lockdownList.append(self.model.today)
+
+    def unsetLockDown(self):
+        """Deactivate lockdown state"""
+        self.lockdown = False
+
+    def resetLockDown(self):
+        """Clear lockdown history"""
+        self.lockdownList = []
+
+    # ========================================
+    # Fiscal transfer hook (e.g., targeted support)
+    # ========================================
+    def gov_transfer(self, value):
+        """Receive government transfer"""
+        self.updateDeposit(value)
+        self.depositList[-1] = self.deposit
+        self.netWorth += self.depositList[-1]
+        self.model.government_agents.expenditure += value
+
+    # ----------------------------------------
+    # Small helpers/getters
+    # ----------------------------------------
+    def get_actual_production(self):
+        return self.actual_production
+
+    def getNumberOfLabours(self):
+        return len(self.workersList)
+
+    def update_actual_production(self, value):
+        self.actual_production += value
+
+    def getPrice(self):
+        return self.price
+
+    def getNetProfit(self):
+        return self.net_profit
+
+    def getIdentity(self):
+        return self.id
+
+    def getLoan(self):
+        return self.loanObtained
+
+    # ----------------------------------------
+    # Demand aggregation helpers
+    # ----------------------------------------
+    def get_aggregate_demand(self):
+        return self.aggregate_demand
+
+    def set_aggregate_demand(self, value):
+        self.aggregate_demand = value
+
+    def update_aggregate_demand(self, value):
+        self.aggregate_demand += value
+
+    # ----------------------------------------
+    # Simple setters/getters
+    # ----------------------------------------
     def set_energy(self, value):
         self.set_energy = value
 
@@ -511,12 +709,6 @@ class GoodsFirmBase(ap.Agent):
     def getUseEnergy(self):
         return self.useEnergy
 
-    def gov_transfer(self, value):
-        self.updateDeposit(value)
-        self.depositList[-1] = self.deposit
-        self.netWorth += self.depositList[-1]
-        self.model.government_agents.expenditure += value
-
     def getBankrupt(self):
         return self.bankrupt
 
@@ -561,73 +753,11 @@ class GoodsFirmBase(ap.Agent):
 
     def set_capital_price(self, value):
         # firm will get this info when doing transaction, capital firm know their price
+        # Provided by capital-goods firm during transaction
         self.capital_price = value
-
-    def fire(self):
-        # function for firm to fire workers
-        for (
-            id
-        ) in (
-            self.workersList
-        ):  # this line require an update mechanic to fire worker since the worker list shrink as we fire
-            worker = self.model.aliveConsumers.select(
-                self.model.aliveConsumers.getIdentity() == id
-            )
-            worker.receiveFiring()
-            self.workersList.remove(id)
-
-    def setLockDown(self):
-        self.lockdown = True
-        self.lockdownList.append(self.model.today)
-
-    def unsetLockDown(self):
-        self.lockdown = False
-
-    def resetLockDown(self):
-        self.lockdownList = []
 
     def getOwnerIncome(self):
         return self.ownerIncome
-
-    def progressPayback(self, eps=1e-8):
-        if len(self.loanContractRemainingTime) > 0:
-            self.payback = (
-                self.iL
-                * np.sum([self.loanList])
-                / (
-                    1
-                    - (1 + self.iL)
-                    ** (list(self.loanContractRemainingTime.values())[0])
-                )
-            )
-        else:
-            self.payback = 0
-
-        if self.p.verboseFlag:
-            print("payback value", self.payback)
-        brown_firm_coefficient = (
-            self.brown_firm * self.p.climateZetaBrown * self.p.co2_price
-        )
-        carbon_tax = (
-            brown_firm_coefficient
-            * self.carbon_tax_state
-            * self.get_actual_production()
-        )
-        self.setPrice(
-            self.getPrice() + np.sum(carbon_tax / (self.get_actual_production()))
-        )
-        self.payLoan()
-
-        ## Update other financial variables
-        self.DTE = sum(self.loanList) / (self.netWorth + eps)
-        self.iF = np.max([0, self.DTE / 100])
-        # print("default probability factor", self.DTE)
-        if self.DTE < 0:
-            self.defaultProb = 1
-        else:
-            self.defaultProb = 1 - np.exp(-self.p.defaultProbAlpha * self.DTE)
-        self.iL = np.max([0, self.p.bankICB * (1 + self.defaultProb)])
-        # print("default Prob: ", self.defaultProb, " ", self.DTE)
 
     def reset_non_loan(self):
         self.non_loan = 0
