@@ -35,6 +35,12 @@ about installation, usage, API reference, and examples.
    api/index
 
 .. toctree::
+   :maxdepth: 2
+   :caption: Model Documentation
+
+   odd_protocol
+
+.. toctree::
    :maxdepth: 1
    :caption: Development
 
