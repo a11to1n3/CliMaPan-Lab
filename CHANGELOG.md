@@ -5,12 +5,13 @@ All notable changes to CliMaPan-Lab will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 0.0.4
+## [0.0.4] - 2025-08-19
 
 ### 🔧 Configuration & Maintenance
-- **Updated repository URLs** throughout codebase from "your-username" to "a11to1n3"
-- **Updated time references** to be consistent with July 2025 development timeline
-- **Enhanced dependency management** to ensure `pip install -e .` installs all required packages
+- **Applied comprehensive Black formatting** to entire codebase (58 files reformatted)
+- **Updated version to 0.0.4** reflecting current development state
+- **Enhanced project metadata** with correct repository URLs and documentation links
+- **Updated dependency management** to ensure `pip install -e .` installs all required packages
 
 ### 📦 Package Installation
 - **Fixed `setup.py` dependencies** to include all packages from `requirements.txt`
@@ -25,16 +26,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Updated changelog dates** to reflect July 2025 development timeline
 - **Created high-level pseudocode specification** following academic standards for simulation timestep flow
 
-### 🏗️ Code Architecture Documentation
-- **Documented simulation architecture** with formal pseudocode
-- **Defined module interfaces** and data structures
-- **Created standardized timestep logic** documentation
-- **Specified algorithm flows** for each major component (Consumer, Firm, Climate, Government modules)
+### 🏗️ Code Quality & Standards
+- **Applied Black code formatting** across all Python files for consistent style
+- **Major documentation overhaul** with comprehensive inline documentation:
+  - **Climate Module**: Detailed step-by-step climate dynamics documentation
+  - **Consumer Agent**: Complete lifecycle and state management documentation
+  - **Economic Model**: Full simulation flow and component interaction documentation
+  - **Firm Base Classes**: Comprehensive production, finance, and lifecycle documentation
+  - **Main Runner**: Enhanced script-level documentation with feature descriptions
+- **Improved code organization** with better separation of concerns
+- **Standardized coding conventions** following Python best practices
 
 ### 🔄 Internal Improvements
 - **Enhanced build system consistency** between setup.py and pyproject.toml
-- **Improved package metadata** with correct repository references
+- **Improved package metadata** with correct repository references and documentation links
 - **Updated version control references** across configuration files
+- **Improved code organization** and module structure
 
 ---
 
