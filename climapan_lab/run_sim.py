@@ -56,9 +56,9 @@ def single_run(
 ):
     """
     Execute a single simulation experiment.
-    
+
     Supports optional multi-parameter bookkeeping for parameter sweep experiments.
-    
+
     Args:
         parameters: Dict of model parameters, or [params_dict, varying_dict] for sweeps
         idx: Index for this run in a parameter sweep
@@ -66,7 +66,7 @@ def single_run(
         make_stats: Whether to collect results for later aggregation
         var_dict: Dictionary to store results across multiple runs
         args: Command-line arguments object
-    
+
     Returns:
         AgentPy Results object containing simulation outputs
     """
@@ -76,17 +76,19 @@ def single_run(
     if len(parameters) == 2:
         multi_params = True
         varying_var = parameters[1]  # Dict of varying parameters
-        parameters = parameters[0]   # Base parameters dict
+        parameters = parameters[0]  # Base parameters dict
 
     # Generate unique timestamp for this run
     timestamp = datetime.timestamp(datetime.now())
-    
+
     # Encode varying parameters into folder name for traceability
     if multi_params:
-        varying_params = "".join([
-            str(list(varying_var.keys())[i]) + str(list(varying_var.values())[i])
-            for i in range(len(varying_var))
-        ])
+        varying_params = "".join(
+            [
+                str(list(varying_var.keys())[i]) + str(list(varying_var.values())[i])
+                for i in range(len(varying_var))
+            ]
+        )
     else:
         varying_params = None
 
@@ -101,12 +103,12 @@ def single_run(
         # Include climate shock mode in folder name
         shockModeList = parameters["climateShockMode"]
         base_name = f"results_{parameters['settings']}_{parameters['covid_settings']}_{''.join(shockModeList)}"
-        
+
         if parent_folder:
             save_folder = os.path.abspath(f"./{parent_folder}/{base_name}")
         else:
             save_folder = os.path.abspath(f"./results/{base_name}")
-            
+
         if varying_params is not None:
             save_folder += f"_{varying_params}"
         save_folder += f"_{timestamp}"
@@ -114,12 +116,12 @@ def single_run(
         # Standard folder naming without climate damage
         parameters["climateShockMode"] = None
         base_name = f"results_{parameters['settings']}_{parameters['covid_settings']}"
-        
+
         if parent_folder:
             save_folder = os.path.abspath(f"./{parent_folder}/{base_name}")
         else:
             save_folder = os.path.abspath(f"./results/{base_name}")
-            
+
         if varying_params is not None:
             save_folder += f"_{varying_params}"
         save_folder += f"_{timestamp}"
@@ -127,7 +129,7 @@ def single_run(
     # ===== Model Execution =====
     model = EconModel(parameters)
     results = model.run()
-    
+
     # Ensure output directory exists
     if not os.path.exists(save_folder):
         os.makedirs(save_folder)
@@ -135,18 +137,18 @@ def single_run(
     # ===== Visualization Generation =====
     if args and hasattr(args, "plot") and args.plot:
         print("Plotting the results...")
-        
+
         # Core economic indicators
         plotConsumersSummary(results, save_folder)
         plotConsumptionInflationSummary(results, save_folder)
         plotBankSummary(results, save_folder)
-        
+
         # Firm-level analysis
         plotGoodsFirmsProfitSummary(results, save_folder)
         plotGoodsFirmsDemandsSummary(results, save_folder)
         plotGoodsFirmWorkersSummary(results, save_folder)
         plotGoodsFirmSalesSummary(results, save_folder)
-        
+
         # Sector-specific plots
         if parameters["energySectorFlag"]:
             plotEnergyFirmsDemands(results, save_folder)
@@ -161,21 +163,35 @@ def single_run(
         for var in varListNpy:
             if var in results.variables.EconModel.columns:
                 # Extract non-null values and preserve array structure
-                saving_var = np.array([
-                    i for i in list(results.variables.EconModel[var.strip()].values)
-                    if (i is not None)
-                ])
+                saving_var = np.array(
+                    [
+                        i
+                        for i in list(results.variables.EconModel[var.strip()].values)
+                        if (i is not None)
+                    ]
+                )
                 saving_var = np.array(
                     [[i] if "ndarray" in str(type(i)) else i for i in saving_var]
                 )
-                
+
                 # Save with sanitized filename
                 filename = f"{save_folder}/{''.join(var.strip().split(' '))}.npy"
-                np.save(filename, np.array([
-                    (list(i) if ("ndarray" in str(type(i)) and i.shape != ()) else i)
-                    for i in list(results.variables.EconModel[var.strip()].values)
-                ]))
-                
+                np.save(
+                    filename,
+                    np.array(
+                        [
+                            (
+                                list(i)
+                                if ("ndarray" in str(type(i)) and i.shape != ())
+                                else i
+                            )
+                            for i in list(
+                                results.variables.EconModel[var.strip()].values
+                            )
+                        ]
+                    ),
+                )
+
                 # Remove from main DataFrame to reduce memory footprint
                 results.variables.EconModel = results.variables.EconModel.drop(
                     columns=[var.strip()]
@@ -192,7 +208,7 @@ def single_run(
                         varList.append([i])
                     else:
                         varList.append(i)
-                
+
                 # Attempt CSV export (may fail for ragged arrays)
                 try:
                     filename = f"{save_folder}/{''.join(var.strip().split(' '))}.csv"
@@ -228,24 +244,22 @@ def single_run(
 def multi_run(overall_dict, i, save_folder):
     """
     Execute one simulation within a multi-run batch.
-    
+
     Handles seed-based reproducibility and per-run output organization.
-    
+
     Args:
         overall_dict: Shared dictionary to collect results across runs
         i: Run index (seeds start at 60 by convention)
         save_folder: Parent directory for all batch runs
     """
     print(f"Processing run number {i-60+1}")
-    
+
     # ===== Seed Configuration =====
     # Set unique seed for this run (convention: start at 60)
     parameters["seed"] = i
 
     # ===== Per-Run Directory Setup =====
-    process_save_path = os.path.join(
-        os.path.abspath(f"{save_folder}"), f"run_{i-60}"
-    )
+    process_save_path = os.path.join(os.path.abspath(f"{save_folder}"), f"run_{i-60}")
     if not os.path.exists(process_save_path):
         os.makedirs(process_save_path)
 
@@ -256,7 +270,7 @@ def multi_run(overall_dict, i, save_folder):
     # ===== Optional Visualization =====
     if args and hasattr(args, "plot") and args.plot:
         print("Plotting the results...")
-        
+
         # Generate all standard plots
         plotConsumersSummary(results, process_save_path)
         plotConsumptionInflationSummary(results, process_save_path)
@@ -265,7 +279,7 @@ def multi_run(overall_dict, i, save_folder):
         plotGoodsFirmsDemandsSummary(results, process_save_path)
         plotGoodsFirmWorkersSummary(results, process_save_path)
         plotGoodsFirmSalesSummary(results, process_save_path)
-        
+
         # Conditional plots based on model configuration
         if parameters["energySectorFlag"]:
             plotEnergyFirmsDemands(results, process_save_path)
@@ -277,14 +291,17 @@ def multi_run(overall_dict, i, save_folder):
         for var in varListNpy:
             if var in results.variables.EconModel.columns:
                 # Extract and structure data for NumPy storage
-                saving_var = np.array([
-                    i for i in list(results.variables.EconModel[var.strip()].values)
-                    if (i is not None)
-                ])
+                saving_var = np.array(
+                    [
+                        i
+                        for i in list(results.variables.EconModel[var.strip()].values)
+                        if (i is not None)
+                    ]
+                )
                 saving_var = np.array(
                     [[i] if "ndarray" in str(type(i)) else i for i in saving_var]
                 )
-                
+
                 # Save and remove from DataFrame
                 filename = f"{process_save_path}/{''.join(var.strip().split(' '))}.npy"
                 np.save(filename, saving_var)
@@ -313,7 +330,7 @@ def multi_run(overall_dict, i, save_folder):
     # Pickle the entire model object for detailed post-analysis
     with open(f"{process_save_path}/model_run_{i-60}.pickle", "wb") as handle:
         pickle.dump(model, handle, protocol=pickle.HIGHEST_PROTOCOL)
-    
+
     # Store results for batch aggregation
     overall_dict[f"Run_0{i-60}"] = results.variables.EconModel
 
@@ -321,7 +338,7 @@ def multi_run(overall_dict, i, save_folder):
 def main():
     """
     Main entry point for console script execution.
-    
+
     Orchestrates the simulation workflow based on command-line arguments:
     - Parses CLI arguments for scenario configuration
     - Handles single vs. multi-run execution modes
@@ -334,50 +351,54 @@ def main():
     parser = argparse.ArgumentParser(
         description="CliMaPan-Lab Economic Model Simulation Runner"
     )
-    
+
     # Simulation mode arguments
     parser.add_argument(
-        "-n", "--noOfRuns", 
-        type=int, 
-        default=1, 
-        help="Number of simulation runs (1=single, >1=batch with different seeds)"
+        "-n",
+        "--noOfRuns",
+        type=int,
+        default=1,
+        help="Number of simulation runs (1=single, >1=batch with different seeds)",
     )
-    
+
     # Scenario configuration
     parser.add_argument(
-        "-s", "--settings", 
-        type=str, 
+        "-s",
+        "--settings",
+        type=str,
         default="BAU",
-        help="Economic scenario: BAU, CT, CTRa, CTRb, CTRc, CTRd"
+        help="Economic scenario: BAU, CT, CTRa, CTRb, CTRc, CTRd",
     )
     parser.add_argument(
-        "-c", "--covidSettings", 
-        type=str, 
+        "-c",
+        "--covidSettings",
+        type=str,
         default=None,
-        help="Pandemic scenario: BAU, DIST, LOCK, VAX"
+        help="Pandemic scenario: BAU, DIST, LOCK, VAX",
     )
     parser.add_argument(
-        "-d", "--climateDamage", 
-        type=str, 
+        "-d",
+        "--climateDamage",
+        type=str,
         default="AggPop",
-        help="Climate damage type: AggPop, Idiosyncratic, or None"
+        help="Climate damage type: AggPop, Idiosyncratic, or None",
     )
-    
+
     # Output configuration
     parser.add_argument(
-        "-l", "--extractedVarListPathNpy",
+        "-l",
+        "--extractedVarListPathNpy",
         default=None,
-        help="Path to .txt file listing variables to export as NumPy arrays"
+        help="Path to .txt file listing variables to export as NumPy arrays",
     )
     parser.add_argument(
-        "-v", "--extractedVarListPathCsv",
+        "-v",
+        "--extractedVarListPathCsv",
         default=None,
-        help="Path to .txt file listing variables to export as CSV files"
+        help="Path to .txt file listing variables to export as CSV files",
     )
     parser.add_argument(
-        "-p", "--plot", 
-        action="store_true", 
-        help="Generate visualization plots"
+        "-p", "--plot", action="store_true", help="Generate visualization plots"
     )
 
     # Make args globally accessible for nested functions
@@ -434,23 +455,23 @@ def main():
         # ===== Single Run Mode =====
         print("Start simulating...")
         print(f"Climate damage mode: {args.climateDamage}")
-        
+
         # Check for list-valued parameters (indicates sweep mode)
         count = sum(1 for v in parameters.values() if isinstance(v, list))
-        
+
         if count == 0:
             # Standard single run
             single_run(parameters)
         else:
             # ===== Parameter Sweep Mode =====
             print("Entering multi-parameter sweep mode...")
-            
+
             # Identify varying parameters
             parameters_combinations = []
             count = 0
             list_of_varying_parameters = {}
             values_of_varying_parameters = {}
-            
+
             for name, value in parameters.items():
                 if isinstance(value, list):
                     list_of_varying_parameters[count] = name
@@ -460,19 +481,21 @@ def main():
 
             # Generate Cartesian product of parameter combinations
             list_parameters_combinations = list(product(*parameters_combinations))
-            print(f"Parameter sweep will generate {len(list_parameters_combinations)} experiments")
+            print(
+                f"Parameter sweep will generate {len(list_parameters_combinations)} experiments"
+            )
 
             # Build parameter dictionaries for each combination
             parameters_combinations = []
             for parameter_vars in list_parameters_combinations:
                 varying_dict = {}
                 params_copy = copy.deepcopy(parameters)
-                
+
                 for i, value in enumerate(parameter_vars):
                     param_name = list_of_varying_parameters[i]
                     params_copy[param_name] = value
                     varying_dict[param_name] = value
-                    
+
                 parameters_combinations.append([params_copy, varying_dict])
 
             # Create parent directory for sweep results
@@ -491,7 +514,7 @@ def main():
                     parent_folder=parent_folder,
                     make_stats=True,
                     var_dict=var_dict,
-                    args=args
+                    args=args,
                 )
                 for idx, params in enumerate(parameters_combinations)
             )
@@ -505,15 +528,15 @@ def main():
     elif args.noOfRuns > 1:
         # ===== Multi-Run Batch Mode =====
         print(f"Starting batch simulation with {args.noOfRuns} runs...")
-        
+
         # Check for parameter sweeps (not supported in multi-run mode)
         count = sum(1 for v in parameters.values() if isinstance(v, list))
-        
+
         if count == 0:
             # Standard multi-run over seeds
             overall_dict = {}
             timestamp = datetime.timestamp(datetime.now())
-            
+
             # Configure output directory with appropriate naming
             if args.climateDamage:
                 save_folder = (
@@ -528,7 +551,7 @@ def main():
                     f"{parameters['settings']}_{parameters['covid_settings']}_"
                     f"{timestamp}"
                 )
-                
+
             if not os.path.exists(save_folder):
                 os.makedirs(save_folder)
 
@@ -542,11 +565,11 @@ def main():
             result = pd.concat(overall_dict)
             result = result.rename(columns={"Unnamed: 0": "RunNo"})
             result.to_csv(f"{save_folder}/multi_runs.csv.gz", compression="gzip")
-            
+
             # Save parameter configuration
             with open(f"{save_folder}/params.txt", "w") as params_file:
                 params_file.write(json.dumps(parameters))
-                
+
         else:
             # Multi-parameter + multi-run combination not implemented
             print("ERROR: Parameter sweeps are not supported in multi-run mode.")

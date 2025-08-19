@@ -38,20 +38,20 @@ class GoodsFirmBase(ap.Agent):
         # ----------------------------------------
         # Core firm stocks & finance
         # ----------------------------------------
-        self.workersList = []          # IDs of employed workers
-        self.wages = {}                # id → wage mapping for this firm
-        self.price = 0                 # initial price of produced goods (set by model)
-        self.capital = 0               # physical units of installed capital
-        self.energy = 0                # energy input planned/used this step
-        self.deposit = 0               # cash / liquid assets
+        self.workersList = []  # IDs of employed workers
+        self.wages = {}  # id → wage mapping for this firm
+        self.price = 0  # initial price of produced goods (set by model)
+        self.capital = 0  # physical units of installed capital
+        self.energy = 0  # energy input planned/used this step
+        self.deposit = 0  # cash / liquid assets
         self.equity = 0
         self.net_profit = 0
-        self.non_loan = 0              # written-off part after bankruptcy
+        self.non_loan = 0  # written-off part after bankruptcy
 
         # ----------------------------------------
         # Technology & policy parameters (snapshot from self.p)
         # ----------------------------------------
-        self.iL = self.p.bankICB       # base loan rate (bank interbank proxy)
+        self.iL = self.p.bankICB  # base loan rate (bank interbank proxy)
         self.beta_capital = self.p.beta_capital
         self.beta_labour = self.p.beta_labour
         self.beta_energy = self.p.beta_energy
@@ -69,8 +69,8 @@ class GoodsFirmBase(ap.Agent):
         # ----------------------------------------
         self.wage_bill = 0
         self.unitWageBill = self.p.unemploymentDole
-        self.capital_tracking = []     # rolling buffer of investment values
-        self.actual_production = 0     # 10
+        self.capital_tracking = []  # rolling buffer of investment values
+        self.actual_production = 0  # 10
         self.planned_production = 0
         self.average_production_cost = 0
         self.labour_demand = 0
@@ -78,29 +78,29 @@ class GoodsFirmBase(ap.Agent):
         self.priceList = [1]
 
         # Capital purchase & valuation
-        self.capital_investment = 0    # value variable
-        self.capital_increase = 0      # physical variable
+        self.capital_investment = 0  # value variable
+        self.capital_increase = 0  # physical variable
         self.capital_price = 1
         self.capital_value = self.capital * self.capital_price  # value variable
-        self.cost_of_capital = 0       # value variable - amortized cost in avg cost calc
-        self.capital_purchase = 0      # physical variable
-        self.capital_demand = 0        # physical variable
-        self.capital_growth = 0        # physical variable
+        self.cost_of_capital = 0  # value variable - amortized cost in avg cost calc
+        self.capital_purchase = 0  # physical variable
+        self.capital_demand = 0  # physical variable
+        self.capital_growth = 0  # physical variable
 
         # Energy mix
-        self.useEnergy = None          # 'green' or 'brown'
+        self.useEnergy = None  # 'green' or 'brown'
         self.brown_firm = self.useEnergy == "brown"
-        
+
         # Data writer for quick diagnostics
-        self.firmDataWriter = []       # [sold, wage_bill, n_workers] each step
+        self.firmDataWriter = []  # [sold, wage_bill, n_workers] each step
 
         # Banking / leverage
         self.loanObtained = 0
         self.loan_demand = 0
-        self.loanList = [0, 0]         # outstanding principals by "vintage"
+        self.loanList = [0, 0]  # outstanding principals by "vintage"
         self.loanContractRemainingTime = {}  # vintage → months remaining
-        self.DTE = 0                   # debt-to-equity ratio
-        self.iF = 0                    # interest paid on loans
+        self.DTE = 0  # debt-to-equity ratio
+        self.iF = 0  # interest paid on loans
         self.reserve_ratio = self.p.reserve_ratio
 
         # Other accounting & flags
@@ -119,15 +119,15 @@ class GoodsFirmBase(ap.Agent):
         self.lockdownList = []
         self.payback = 0
         self.profit_margin = 0
-        
+
         # Shortcuts to agent lists
         self.consumersList = self.model.consumer_agents
         self.sickList = self.model.consumer_agents
-        
+
         # Taxes & sales
         self.tax = 0
         self.soldProducts = 1
-        
+
         # ----------------------------------------
         # Rebuild worker roster if reloaded mid-run
         # ----------------------------------------
@@ -369,7 +369,7 @@ class GoodsFirmBase(ap.Agent):
         if self.getBankrupt() == True or self.getNetWorth() < 0:
             self.model.bankrupt_count += 1
             self.non_loan = np.sum([self.loanList])
-            
+
             # Rebirth policy: keep minimum counts of brown/green firms
             if "ConsumerGoods" in str(self):
                 self.model.numCSFirmBankrupt += 1
@@ -472,7 +472,7 @@ class GoodsFirmBase(ap.Agent):
 
             wages = self.wages[aConsumer.id]
             # print("wage paid", wages)
-            
+
             # Wage Setting
             # Base payroll with sick leave and possible lockdown transfer
             if aConsumer.getEmploymentState():
@@ -555,7 +555,7 @@ class GoodsFirmBase(ap.Agent):
 
         if self.p.verboseFlag:
             print("payback value", self.payback)
-            
+
         # Carbon tax pass-through into price if brown and CT active
         brown_firm_coefficient = (
             self.brown_firm * self.p.climateZetaBrown * self.p.co2_price

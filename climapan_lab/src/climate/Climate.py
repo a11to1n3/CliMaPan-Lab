@@ -47,24 +47,38 @@ class Climate(ap.Agent):
         # ----------------------------------------
         # Parameters & Core State
         # ----------------------------------------
-        self.climate_shock_start = self.p.climate_shock_start  # Month index after which shocks can fire
+        self.climate_shock_start = (
+            self.p.climate_shock_start
+        )  # Month index after which shocks can fire
 
         # NOTE: The trailing commas below create 1-element tuples (kept as-is; do not change logic).
         # If you intended scalars, remove the trailing commas in the assignments.
-        self.zeta_g = (self.p.climateZetaGreen,)  # Emission intensity for green tech (tuple)
-        self.zeta_b = (self.p.climateZetaBrown,)  # Emission intensity for brown tech (tuple)
+        self.zeta_g = (
+            self.p.climateZetaGreen,
+        )  # Emission intensity for green tech (tuple)
+        self.zeta_b = (
+            self.p.climateZetaBrown,
+        )  # Emission intensity for brown tech (tuple)
 
         # Carbon cycle parameters
-        self.alpha_c = self.p.climateAlpha_conc  # Accumulation coefficient for concentration
-        self.beta_c = self.p.climateBeta_conc    # Reversion rate to preindustrial concentration
-        self.conc_t0 = self.p.climateConc_t0     # Baseline (preindustrial) concentration
-        self.conc_t = copy.copy(self.conc_t0)    # Current concentration
-        self.conc_pre = self.p.climateConc_pre   # Reference "pre" concentration (for mean reversion)
+        self.alpha_c = (
+            self.p.climateAlpha_conc
+        )  # Accumulation coefficient for concentration
+        self.beta_c = (
+            self.p.climateBeta_conc
+        )  # Reversion rate to preindustrial concentration
+        self.conc_t0 = self.p.climateConc_t0  # Baseline (preindustrial) concentration
+        self.conc_t = copy.copy(self.conc_t0)  # Current concentration
+        self.conc_pre = (
+            self.p.climateConc_pre
+        )  # Reference "pre" concentration (for mean reversion)
 
         # Forcing & temperature parameters
-        self.gammaRF = self.p.climateGammaRF     # Radiative Forcing coefficient
-        self.CS = self.p.climateSensitivity      # Equilibrium climate sensitivity (°C per CO2 doubling)
-        
+        self.gammaRF = self.p.climateGammaRF  # Radiative Forcing coefficient
+        self.CS = (
+            self.p.climateSensitivity
+        )  # Equilibrium climate sensitivity (°C per CO2 doubling)
+
         # E-folding time (phi) as a function of CS (minimum 1 to avoid division by zero)
         self.phi = np.max(
             [
@@ -74,14 +88,14 @@ class Climate(ap.Agent):
                 1,
             ]
         )
-        
+
         # Emissions state
-        self.EM = 0        # Cumulative emissions proxy (lifetime)
-        self.step_EM = 0   # Emissions at the current step (month)
+        self.EM = 0  # Cumulative emissions proxy (lifetime)
+        self.step_EM = 0  # Emissions at the current step (month)
 
         # Temperature state
         self.T = self.p.climateT0  # Current temperature
-        self.T_list = [self.T]     # Keep history for shock detection
+        self.T_list = [self.T]  # Keep history for shock detection
 
         # Damage function parameters (used by process_aggregate_damage)
         self.alpha_d = self.p.climateAlpha_d
@@ -93,7 +107,7 @@ class Climate(ap.Agent):
         self.gamma_etm = self.p.climateGamnma_etm  # NOTE: parameter name as provided
 
         # Forcing & damages placeholders
-        self.RF = 0   # Radiative forcing
+        self.RF = 0  # Radiative forcing
         self.ETD = 0  # Economic (output) damages
         self.ETM = 0  # Labor/employment-related damages
 
@@ -131,7 +145,7 @@ class Climate(ap.Agent):
         # ----------------------------------------
         self.workers_t = 0
         self.step_EM = 0
-        
+
         # Scenario-specific injection: S3MOD (kept as in original code)
         if (
             (self.model.t >= self.model.fiscalDate)

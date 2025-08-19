@@ -29,38 +29,40 @@ class EnergyFirmBase(ap.Agent):
         # ----------------------------------------
         # Core state
         # ----------------------------------------
-        self.capital = 0                    # Initial Physical capital stock
-        self.deposit = 20000                # Initial Financial cash/deposits buffer
-        self.net_profit = 0                 # Initial Profit after tax
-        self.useEnergy = "brown"            # Either "brown" or "green"
+        self.capital = 0  # Initial Physical capital stock
+        self.deposit = 20000  # Initial Financial cash/deposits buffer
+        self.net_profit = 0  # Initial Profit after tax
+        self.useEnergy = "brown"  # Either "brown" or "green"
 
         # ----------------------------------------
         # Parameters (from self.p)
         # ----------------------------------------
-        self.iL = self.p.bankICB            # Loan interest baseline (bank ICB)
+        self.iL = self.p.bankICB  # Loan interest baseline (bank ICB)
         self.capital_growth_rate = self.p.capital_growth_rate
         self.capital_depreciation = self.p.depreciationRate
-        self.base_price = 0                 # Initial price (if used by children)
-        self.energy_price_growth = 0        # Trend/growth in price (if used)
-        self.div_ratio = self.p.energyOwnerProportionFromProfits  # Payout ratio to owners
+        self.base_price = 0  # Initial price (if used by children)
+        self.energy_price_growth = 0  # Trend/growth in price (if used)
+        self.div_ratio = (
+            self.p.energyOwnerProportionFromProfits
+        )  # Payout ratio to owners
 
         # ----------------------------------------
         # Transient / book-keeping
         # ----------------------------------------
-        self.capital_tracking = []          # Rolling tracker for capex costs (amortized)
-        self.actual_production = 1000       # Energy output (units)
-        self.average_production_cost = 0    # Average cost per unit
+        self.capital_tracking = []  # Rolling tracker for capex costs (amortized)
+        self.actual_production = 1000  # Energy output (units)
+        self.average_production_cost = 0  # Average cost per unit
 
         # Debt / credit state
-        self.loanList = [0, 0]              # Outstanding loans (vector of amounts)
-        self.loanContractRemainingTime = {} # loan_id -> months left
-        self.loanObtained = 0               # Last obtained credit
+        self.loanList = [0, 0]  # Outstanding loans (vector of amounts)
+        self.loanContractRemainingTime = {}  # loan_id -> months left
+        self.loanObtained = 0  # Last obtained credit
         self.loan_demand = 0
-        self.DTE = 0                        # Debt-to-equity proxy
-        self.iF = 0                         # Firm interest spread component
+        self.DTE = 0  # Debt-to-equity proxy
+        self.iF = 0  # Firm interest spread component
 
         # Financial accounts
-        self.depositList = [0, 0]           # Historical deposits (for stats)
+        self.depositList = [0, 0]  # Historical deposits (for stats)
         self.sale_record = 0
         self.profits = 0
         self.ownerIncome = 0
@@ -70,20 +72,20 @@ class EnergyFirmBase(ap.Agent):
         self.countConsumers = 0
         self.tax = 0
         self.carbonTax = 0
-        self.energy_demand = 0              # Aggregate energy demand from other firms
+        self.energy_demand = 0  # Aggregate energy demand from other firms
 
         # Policy environment
         self.carbon_tax_state = self.p.settings.find("CT") != -1
         self.brown_firm = self.useEnergy == "brown"
 
         # Capital formation channels (value vs. physical)
-        self.capital_investment = 0         # value variable
-        self.capital_increase = 0           # physical variable
-        self.capital_price = 1              # Price of one unit of capital
+        self.capital_investment = 0  # value variable
+        self.capital_increase = 0  # physical variable
+        self.capital_price = 1  # Price of one unit of capital
         self.capital_value = self.capital * self.capital_price  # value variable
-        self.cost_of_capital = 0            # value variable
-        self.capital_purchase = 0           # physical variable
-        self.capital_demand = 0             # physical variable
+        self.cost_of_capital = 0  # value variable
+        self.capital_purchase = 0  # physical variable
+        self.capital_demand = 0  # physical variable
 
     # ========================================
     # Step 1: Input demand (how much capital we need to maintain/expand)
@@ -175,7 +177,7 @@ class EnergyFirmBase(ap.Agent):
         # 3) Apply taxes (and carbon tax if brown & carbon tax active)
         # Net Profit after Tax
         self.updateProfitsAfterTax(isC02Taxed=self.carbon_tax_state * self.brown_firm)
-        
+
         # 4) Retained earnings into deposits
         self.updateDeposit(self.net_profit)
 
@@ -315,7 +317,7 @@ class EnergyFirmBase(ap.Agent):
         else:
             self.payback = 0
         # print(0", self.payback)
-        
+
         # Carbon surcharge: add CO2 price component to unit price if brown firm
         brown_firm_coefficient = (
             self.brown_firm * self.p.climateZetaBrown * self.p.co2_price

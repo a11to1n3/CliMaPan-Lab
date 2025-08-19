@@ -55,13 +55,19 @@ class Consumer(ap.Agent):
         self.consumptionSubsistenceLevel = (
             self.p.subsistenceLevelOfConsumption
         )  # minimum physical good demand
-        self.worker_additional_consumption = self.p.worker_additional_consumption  # additional consumption if employed
-        self.owner_additional_consumption = self.p.owner_additional_consumption    # additional consumption if owner
-        self.iD = self.p.bankID                                                   # deposit interest rate (per step)
-        self.consumption_growth = self.p.consumption_growth                       # drift in desired consumption
+        self.worker_additional_consumption = (
+            self.p.worker_additional_consumption
+        )  # additional consumption if employed
+        self.owner_additional_consumption = (
+            self.p.owner_additional_consumption
+        )  # additional consumption if owner
+        self.iD = self.p.bankID  # deposit interest rate (per step)
+        self.consumption_growth = (
+            self.p.consumption_growth
+        )  # drift in desired consumption
         self.employed = False
         self.reset()  # reset endogenous storages
-        
+
         # Epidemiology container (SEIR-like with extra states)
         self.covidState = {
             "state": None,
@@ -71,9 +77,9 @@ class Consumer(ap.Agent):
         }
 
         # Initial wealth and type flags
-        self.deposit = 1500        # starting liquid wealth
-        self.growth_factor = 1     # multiplicative consumption trend
-        self.consumerType = None   # set later by model: workers/owners/etc.
+        self.deposit = 1500  # starting liquid wealth
+        self.growth_factor = 1  # multiplicative consumption trend
+        self.consumerType = None  # set later by model: workers/owners/etc.
 
         # what else do I need
 
@@ -84,19 +90,19 @@ class Consumer(ap.Agent):
         self.owner = False
         self.memoryLengthForUnemplymentRate = 5
         self.memoryLengthForEmplymentState = 10
-        self.wage = self.p.minimumWage      # baseline wage (or dole if unemployed)
-        self.income = 0                     # total income flow realized this step
-        self.div = 0                        # owner dividend (if owner)
-        self.wealthList = [0]               # time series of deposits
+        self.wage = self.p.minimumWage  # baseline wage (or dole if unemployed)
+        self.income = 0  # total income flow realized this step
+        self.div = 0  # owner dividend (if owner)
+        self.wealthList = [0]  # time series of deposits
         self.desired_consumption = self.consumptionSubsistenceLevel  # physical units
-        self.consumption = 0                # realized spending (value)
-        self.employmentStateStorage = [1]   # short memory of employment status
+        self.consumption = 0  # realized spending (value)
+        self.employmentStateStorage = [1]  # short memory of employment status
         self.unemploymentRateStorage = [0]  # memory of perceived unemployment (local)
         self.employed = False
         self.belongToFirm = None
         self.dead = False
-        self.sickLeaves = []                # dates while sick (for accounting)
-        self.price = 0                      # last faced consumer good price
+        self.sickLeaves = []  # dates while sick (for accounting)
+        self.price = 0  # last faced consumer good price
 
     # ----------------------------------------
     # Desired consumption rule (physical units)
@@ -104,8 +110,8 @@ class Consumer(ap.Agent):
     def desired_C(self):
         """Calculate desired consumption based on wealth and subsistence needs"""
         sick_reduction = self.p.sick_reduction  # reduction in consumption if sick
-        sick = self.model.covidState            # model-level COVID flag
-        
+        sick = self.model.covidState  # model-level COVID flag
+
         # Base demand: subsistence + add-on (higher if employed/owner),
         # bounded by 80% of current deposits in real terms
         base_consumption = self.consumptionSubsistenceLevel + np.min(
@@ -136,7 +142,7 @@ class Consumer(ap.Agent):
             + self.owner * (self.p.minimumWage + self.getDiv())
         )
         # if self.owner: print("owner income", self.income)
-        
+
         # Update deposits after paying for consumption (note: consumption is value, not units)
         self.deposit += (
             self.income - self.consumption
@@ -315,7 +321,7 @@ class Consumer(ap.Agent):
     # ============================================================================
     # Epidemiology state: helpers + transitions (daily progression)
     # ============================================================================
-    
+
     def setCovidState(self, state=None, time=None, duration=None, nextState=None):
         """Set COVID state with transition parameters"""
         # Full update if state + time provided

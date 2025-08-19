@@ -34,9 +34,9 @@ class ConsumerGoodsFirm(GoodsFirmBase):
         # ----------------------------------------
         # Core state
         # ----------------------------------------
-        self.wages = {}         # worker_id -> current wage
-        self.price = 0          # unit price of consumer goods
-        self.capital = 10000    # initial physical capital
+        self.wages = {}  # worker_id -> current wage
+        self.price = 0  # unit price of consumer goods
+        self.capital = 10000  # initial physical capital
         self.labour = 0
         self.equity = 0
 
@@ -57,7 +57,9 @@ class ConsumerGoodsFirm(GoodsFirmBase):
         self.carbon_tax_state = self.p.settings.find("CT") != -1
         self.div_ratio = self.p.ownerProportionFromProfits
         self.capital_depreciation = self.p.depreciationRate
-        self.forecast_discount_factor = self.p.forecast_discount_factor  # smoothing weight β
+        self.forecast_discount_factor = (
+            self.p.forecast_discount_factor
+        )  # smoothing weight β
 
         # ----------------------------------------
         # Transient / book-keeping
@@ -69,19 +71,19 @@ class ConsumerGoodsFirm(GoodsFirmBase):
         self.aggregate_demand = 0
         self.energy = 0
         self.brown_firm = self.useEnergy == "brown"
-        
+
         # Capital accounting (value vs. physical)
-        self.capital_investment = 0    # value variable
-        self.capital_increase = 616    # physical increment (target for expansion)
+        self.capital_investment = 0  # value variable
+        self.capital_increase = 616  # physical increment (target for expansion)
         self.capital_price = 0
         self.capital_value = self.capital * self.capital_price  # value variable
-        self.cost_of_capital = 0       # value variable
-        self.capital_purchase = 0      # physical variable
+        self.cost_of_capital = 0  # value variable
+        self.capital_purchase = 0  # physical variable
         self.capital_demand = self.capital * (
             self.capital_growth_rate + self.capital_depreciation
         )  # physical variable
         self.average_production_cost = 0
-        
+
         # Market structure (each firm starts with equal market share)
         self.market_share = 1 / self.p.csf_agents
         self.market_shareList = []
@@ -114,16 +116,16 @@ class ConsumerGoodsFirm(GoodsFirmBase):
         self.planned_production = (
             beta * self.sale_record + (1 - beta) * self.get_aggregate_demand()
         )
-        
+
         # Utilization ratio = recent sales / expected demand (used in pricing markup)
         self.utilization = self.sale_record / self.old_demand
-        
+
         # Labour demand heuristic: allocate share of total workers
         self.labour_demand = 0.8 * self.model.num_worker / self.p.csf_agents
-        
+
         # Choose energy given labour and capital
         self.energy = self.optimize_energy(self.labour_demand, self.capital)
-        
+
         # Capital demand: replacement + expansion need
         self.capital_demand = self.get_capital() * (
             self.capital_growth_rate + self.capital_depreciation
@@ -148,7 +150,7 @@ class ConsumerGoodsFirm(GoodsFirmBase):
         )
         if self.p.verboseFlag:
             print("sick leave", aggSickLeaves)
-            
+
         # Fraction of hours lost
         sick_ratio = np.min(
             [1, np.max([0, aggSickLeaves / (30 * len(self.workersList))])]
@@ -168,7 +170,7 @@ class ConsumerGoodsFirm(GoodsFirmBase):
             (capital_input, labour_input, energy_input)
         ) * (1 - sick_ratio)
         # print("production value", production_value, self.planned_production)
-        
+
         # Net output = all goes to consumer market (no self-expansion withholding)
         self.set_actual_production(production_value)
 
@@ -188,7 +190,7 @@ class ConsumerGoodsFirm(GoodsFirmBase):
             if self.brown_firm
             else self.model.greenEFirm[-1].getPrice()
         )
-        
+
         # Markup is adjusted by (α + β * utilization)
         self.price = self.get_average_production_cost() * (
             1
@@ -203,7 +205,7 @@ class ConsumerGoodsFirm(GoodsFirmBase):
     def compute_net_profit(self, eps=1e-8):
         """Calculate profit after all costs, taxes, and owner payments"""
         # function to calculate profit
-        
+
         # Wage component summarized as per-worker average
         if self.wage_bill > 0:
             self.unitWageBill = self.wage_bill / (self.getNumberOfLabours())
@@ -242,25 +244,25 @@ class ConsumerGoodsFirm(GoodsFirmBase):
             - self.get_average_production_cost() * self.get_actual_production()
             + self.payback
         )  # - self.inn
-        
+
         # Profit margin (sales margin measure)
         self.profit_margin = (
             self.getSoldProducts() * self.getPrice()
             - self.get_average_production_cost() * self.get_actual_production()
         ) / (self.getSoldProducts() * self.getPrice())
-        
+
         # Apply taxes (+ carbon tax if brown and policy active), compute net profit
         self.updateProfitsAfterTax(isC02Taxed=self.carbon_tax_state * self.brown_firm)
-        
+
         # Owner payout = fraction of positive net profit
         self.ownerIncome = np.max([0, self.net_profit * self.div_ratio])
-        
+
         if self.p.verboseFlag:
             print("deposit before", self.deposit)
-            
+
         # Retained earnings = net profit - ownerIncome
         self.updateDeposit(self.net_profit - self.ownerIncome)
-        
+
         if self.p.verboseFlag:
             print("deposit after", self.deposit)
             print("networth", self.netWorth)

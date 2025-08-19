@@ -31,12 +31,12 @@ class CapitalGoodsFirm(GoodsFirmBase):
         # ----------------------------------------
         # Core state
         # ----------------------------------------
-        self.wages = {}                # worker_id -> current wage
-        self.price = 1                 # unit price of capital goods
-        self.capital = 0               # internal capital stock (also part of prod. function)
+        self.wages = {}  # worker_id -> current wage
+        self.price = 1  # unit price of capital goods
+        self.capital = 0  # internal capital stock (also part of prod. function)
         self.labour = 0
         self.equity = 0
-        self.deposit = 10000           # cash buffer
+        self.deposit = 10000  # cash buffer
 
         # ----------------------------------------
         # Technology / preferences (capital-goods specific)
@@ -50,29 +50,35 @@ class CapitalGoodsFirm(GoodsFirmBase):
         # self.capital_multiplier = self.p.capital_multiplier  # currently not use
         self.capital_growth_rate = self.p.capital_growth_rate
         self.mark_up = self.p.mark_up_factor
-        self.mark_up_alpha = self.p.mark_up_alpha  # (unused here but kept for compatibility)
-        self.mark_up_beta = self.p.mark_up_beta    # (unused here but kept for compatibility)
+        self.mark_up_alpha = (
+            self.p.mark_up_alpha
+        )  # (unused here but kept for compatibility)
+        self.mark_up_beta = (
+            self.p.mark_up_beta
+        )  # (unused here but kept for compatibility)
         self.carbon_tax_state = self.p.settings.find("CT") != -1
         self.div_ratio = self.p.ownerProportionFromProfits
         self.capital_depreciation = self.p.depreciationRate
-        self.forecast_discount_factor = self.p.forecast_discount_factor  # smoothing weight β
+        self.forecast_discount_factor = (
+            self.p.forecast_discount_factor
+        )  # smoothing weight β
 
         # ----------------------------------------
         # Transient / book-keeping
         # ----------------------------------------
-        self.actual_production = 0        # net marketable output (after own expansion)
-        self.planned_production = 1500    # initial production plan
+        self.actual_production = 0  # net marketable output (after own expansion)
+        self.planned_production = 1500  # initial production plan
         self.labour_demand = 0
-        self.aggregate_demand = 20000     # placeholder; set each step in prepareForecast
+        self.aggregate_demand = 20000  # placeholder; set each step in prepareForecast
         self.energy = 0
         self.brown_firm = self.useEnergy == "brown"
-        
+
         # Capital accounting (value vs. physical)
-        self.capital_investment = 0       # value variable
-        self.capital_increase = 165       # physical increment autonomously targeted
+        self.capital_investment = 0  # value variable
+        self.capital_increase = 165  # physical increment autonomously targeted
         self.capital_price = self.price
         self.capital_value = self.capital * self.capital_price  # value variable
-        self.cost_of_capital = 0          # value variable
+        self.cost_of_capital = 0  # value variable
         self.average_production_cost = 0
 
         # Initial capital differently by energy type
@@ -102,10 +108,10 @@ class CapitalGoodsFirm(GoodsFirmBase):
             beta * self.sale_record + (1 - beta) * self.get_aggregate_demand()
         ) + self.capital_increase
         # print("capital planned production", self.planned_production)
-        
+
         # Labour demand: simple proportional target over total workers (heuristic)
         self.labour_demand = 0.15 * self.model.num_worker / self.p.cpf_agents
-        
+
         # Choose energy consistent with production function and current capital
         self.energy = self.optimize_energy(self.labour_demand, self.capital)
         # print("capital input", self.energy, self.labour_demand, self.capital)
@@ -118,7 +124,7 @@ class CapitalGoodsFirm(GoodsFirmBase):
         # This function is to calculate the actual production value based on the inputs of current period
         # Check production function in GoodsFirmBase
         # print("worker list", len(self.workersList), self.getNumberOfLabours())
-        
+
         # Aggregate sick leave among workers assigned to this firm
         aggSickLeaves = np.sum(
             [
@@ -128,7 +134,7 @@ class CapitalGoodsFirm(GoodsFirmBase):
             ]
         )
         # print("sick leave", aggSickLeaves)
-        
+
         # Fraction of hours lost (cap at 100%)
         sick_ratio = np.min(
             [1, np.max([0, aggSickLeaves / (720 * len(self.workersList))])]
@@ -146,13 +152,13 @@ class CapitalGoodsFirm(GoodsFirmBase):
                 self.labour_demand,
                 self.get_capital(),
             )
-        
+
         # Gross output from production function, reduced by sickness
         production_value = self.production_function(
             (capital_input, labour_input, energy_input)
         ) * (1 - sick_ratio)
         # print("capital production value")
-        
+
         # Net marketable output: withhold own expansion (capital_increase) automatically
         self.set_actual_production(
             production_value - self.capital_increase
@@ -170,7 +176,7 @@ class CapitalGoodsFirm(GoodsFirmBase):
 
         ## set price
         self.price = self.get_average_production_cost() * (1 + self.mark_up)
-        
+
         # For capital producers, the "capital price" is their own output price
         self.set_capital_price(
             self.price
@@ -183,7 +189,7 @@ class CapitalGoodsFirm(GoodsFirmBase):
     def compute_net_profit(self, eps=1e-8):
         """Calculate profit after all costs, taxes, and owner payments"""
         # function to calculate profit
-        
+
         # Wage component summarized as per-worker average if any wages were paid
         if self.wage_bill > 0:
             self.unitWageBill = self.wage_bill / (self.getNumberOfLabours() + eps)
@@ -207,13 +213,13 @@ class CapitalGoodsFirm(GoodsFirmBase):
             - self.get_average_production_cost() * self.get_actual_production()
             + self.payback
         )  # - self.inn
-        
+
         # Apply taxes (+ carbon tax if brown and policy active), compute net profit
         self.updateProfitsAfterTax(isC02Taxed=self.carbon_tax_state * self.brown_firm)
-        
+
         # Owner payout = all positive net profit (modeling choice here)
         self.ownerIncome = np.max([0, self.net_profit])
-        
+
         # Retained earnings = net_profit - ownerIncome (≤ 0 if fully distributed)
         self.updateDeposit(self.net_profit - self.ownerIncome)
 

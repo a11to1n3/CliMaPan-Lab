@@ -52,44 +52,44 @@ class EconModel(ap.Model):
         # ----------------------------------------
         # Global / simulation-wide state
         # ----------------------------------------
-        
+
         # Initiate variables
         np.random.seed(self.p.seed)
 
         # --- Population composition counters ---
         self.num_worker = 0
         self.num_owner = 0
-        
+
         # --- Prices / inflation / consumption variance ---
         self.fossil_fuel_price = self.p.fossil_fuel_price
         # self.expectedInflationRate = self.p.bankCredibility * self.p.targetInflation
         self.consumption_var = self.p.consumption_var
         # self.expectedInflationRateList = []
         self.averagePriceList = [0.5]
-        
+
         # --- Firm failure / bankruptcy bookkeeping ---
         self.numCSFirmBankrupt = 0
         self.numCPFirmBankrupt = 0
         self.bankrupt_count = 0
         self.bankrupt_list = []
         self.bankrupt_total_count = 0
-        
+
         # --- Banking & taxes ---
         self.bankIL = self.p.bankIL
         self.inflationRate = 0
         self.totalCarbonTaxes = 0
         self.totalTaxes = 0
         self.inflationRateList = []
-        
+
         # --- Pandemic policy state ---
         self.covidState = False
         self.lockdown = False
         self.lockdown_scale = self.p.lock_down_production_utilization
-        
+
         # --- Fiscal policy triggers ---
         self.fiscalDate = np.inf
         self.fiscal_count = 0
-        
+
         # --- Epidemiological aggregates (daily resolution) ---
         self.num_infection = 0
         self.num_death = 0
@@ -102,7 +102,7 @@ class EconModel(ap.Model):
         # self.covid_infect = 0
         self.covid_death = 0
         self.covid_new = 0
-        
+
         # --- Accounting aggregates ---
         self.total_good = 0
         self.sale = 0
@@ -110,24 +110,24 @@ class EconModel(ap.Model):
         self.cssale = 0
         self.expenditure = 0
         self.ue_gov = 0
-        
+
         # --- Calendrical state ---
         self.month_no = 0
         self.demand_fluctuation = 0
-        
+
         # --- Initial endowments & policy multipliers ---
         self.owner_endownment = self.p.owner_endownment
         self.worker_endownment = self.p.worker_endownment
         self.alpha_h = self.p.alpha_h
         self.alpha_f = self.p.alpha_f
-        
+
         # ----------------------------------------
         # Agent creation and attributes
         # ----------------------------------------
-        
+
         ## Initiate consumer agents
         self.consumer_agents = ap.AgentList(self, self.p.c_agents, Consumer)
-        
+
         # Assign age groups with small random deviations
         for i in range(len(self.consumer_agents)):
             ageRandomness = np.random.normal(0, 0.1)
@@ -198,7 +198,7 @@ class EconModel(ap.Model):
         self.government_agents = ap.AgentList(self, self.p.g_agents, Government)
 
         ## Initiate firm agents
-        
+
         ### Consumption goods firms (CS)
         self.csfirm_agents = ap.AgentList(self, self.p.csf_agents, ConsumerGoodsFirm)
         # Ensure we have at least one of each energy type if we have multiple firms
@@ -225,7 +225,7 @@ class EconModel(ap.Model):
                 else:
                     self.csfirm_agents[i].useEnergyType("green")
                     self.csfirm_agents[i].brown_firm = False
-                    
+
         ### Capital goods firms (CP)
         self.cpfirm_agents = ap.AgentList(self, self.p.cpf_agents, CapitalGoodsFirm)
         # Ensure we have at least one of each energy type if we have multiple firms
@@ -300,7 +300,7 @@ class EconModel(ap.Model):
         self.fossil_fuel_price = copy.copy(self.p.fossil_fuel_price)
         self.today = date.fromisoformat(self.p.start_date) + timedelta(days=self.t - 1)
         self.tomorrow = self.today + timedelta(days=1)
-        
+
         # ----------------------------------------
         # Epidemic and fiscal policy timing
         # ----------------------------------------
@@ -320,7 +320,7 @@ class EconModel(ap.Model):
     def step(self):
         """Define the models' events per simulation step."""
         self.initiate_step()
-        
+
         # Check end of month
         # Before COVID start date: only run monthly blocks on month rollover
         if self.t <= self.covidStartDate:
@@ -362,7 +362,7 @@ class EconModel(ap.Model):
         # Advance calendar
         self.today += timedelta(days=1)
         self.tomorrow += timedelta(days=1)
-        
+
         # Refresh alive population views
         self.aliveConsumers = self.aliveConsumers.select(
             self.aliveConsumers.getCovidStateAttr("state") != "dead"
@@ -375,7 +375,7 @@ class EconModel(ap.Model):
             for idx in range(len(self.aliveConsumers))
             if self.aliveConsumers[idx].getAgeGroup() == "working"
         ]
-        
+
         # Daily demand fluctuation
         self.demand_fluctuation = normal(1, self.consumption_var)
 
@@ -528,7 +528,7 @@ class EconModel(ap.Model):
 
         # Labour market opens
         self._hire()
-        
+
         # Check covid start date
         if self.t > self.covidStartDate and self.num_infection != 0:
             self._propagate_covid()
@@ -580,7 +580,7 @@ class EconModel(ap.Model):
         [self.cpfirm_agents[i].price_setting() for i in range(len(self.cpfirm_agents))]
         self._csf_transaction()
         self._cpf_transaction()
-        
+
         # CS firms: profits, capital updates, NPL accounting
         for i in range(len(self.csfirm_agents)):
             self.csfirm_agents[i].compute_net_profit()
@@ -591,7 +591,7 @@ class EconModel(ap.Model):
                 i
             ].non_loan
             self.csfirm_agents[i].reset_non_loan()
-            
+
         # CP firms: profits, capital updates, NPL accounting
         for i in range(len(self.cpfirm_agents)):
             self.cpfirm_agents[i].compute_net_profit()
@@ -600,20 +600,20 @@ class EconModel(ap.Model):
             self.bank_agents.NPL += self.cpfirm_agents[i].non_loan
             self.cpfirm_agents[i].reset_non_loan()
         self.bank_agents.profit -= (1 + self.bankIL) * self.csfirm_agents[i].non_loan
-        
+
         if self.p.verboseFlag:
             print("____bank profit", self.bank_agents.profit)
             print("___bank DTE", self.bank_agents.DTE)
             # print("capital firm growth", self.cpfirm_agents[i].capital, self.cpfirm_agents[i].capital_growth)
             print("total non loan", self.bank_agents.NPL)
-            
+
         # Energy firms: profits and capital growth
         self.brownEFirm.compute_net_profit()
         self.greenEFirm.compute_net_profit()
         self.brownEFirm.update_capital_growth()
         self.greenEFirm.update_capital_growth()
         self.totalFirms.update_capital_value()
-        
+
         ## Accounting owner's income
         self.capitalistsIncome = (
             (
@@ -717,7 +717,7 @@ class EconModel(ap.Model):
             self.ksale += np.sum([firm.getSoldProducts() * firm.getPrice()])
 
         self.GDP += np.sum([self.expenditure])
-        
+
         # Update inequality metrics
         self.gini = gini(
             np.array(
@@ -725,7 +725,7 @@ class EconModel(ap.Model):
             )
         )
         self.consumption_gini = gini(np.array(self.aliveConsumers.getConsumption()))
-        
+
         # Reset lockdown flags
         self.csfirm_agents.resetLockDown()
         self.cpfirm_agents.resetLockDown()
@@ -765,7 +765,7 @@ class EconModel(ap.Model):
                 "Desired Consumption",
                 listToArray(self.aliveConsumers.get_desired_consumption()),
             )
-            
+
             # Bank metrics
             self.record("Loans", listToArray(self.bank_agents.loans))
             self.record(
@@ -794,7 +794,7 @@ class EconModel(ap.Model):
             self.record(
                 "Total Loan Demand", listToArray(self.bank_agents.totalLoanDemands)
             )
-            
+
             # CS Firm metrics
             self.record("CS Num Bankrupt", listToArray(self.numCSFirmBankrupt))
             self.record(
@@ -847,7 +847,7 @@ class EconModel(ap.Model):
             self.record(
                 "CS Credit Default Risk", listToArray(self.csfirm_agents.defaultProb)
             )
-            
+
             # CP Firm metrics
             self.record(
                 "CP Credit Default Risk", listToArray(self.cpfirm_agents.defaultProb)
@@ -1032,7 +1032,7 @@ class EconModel(ap.Model):
     # ========================================
     # Market Helper Routines
     # ========================================
-    
+
     def _csf_forecast_demand(self):
         """Aggregate household desired consumption and distribute to CS firms"""
         aggregated_demand = 0
@@ -1053,7 +1053,7 @@ class EconModel(ap.Model):
         self.total_good = 0
         ordered_price = OrderedDict()
         self.countConsumersPerCompanyC = {}
-        
+
         # Build price list and reset sale records
         for i in range(len(self.csfirm_agents)):
             # set counter for # consumers per company
@@ -1065,7 +1065,7 @@ class EconModel(ap.Model):
         ordered_price = OrderedDict(
             sorted(ordered_price.items(), key=lambda item: item[1])
         )
-        
+
         # Prepare ordered production by firm
         self.orderedCompaniesProductionC = OrderedDict()
         total_production = 0
@@ -1234,7 +1234,7 @@ class EconModel(ap.Model):
     # ========================================
     # COVID Helper Routines
     # ========================================
-    
+
     def _make_random_contacts(self):
         """Generate random daily contacts in the community"""
         eps = 1e-8
@@ -1484,7 +1484,7 @@ class EconModel(ap.Model):
     # ========================================
     # Policy Helper Routines
     # ========================================
-    
+
     def _carbon_tax_policy(self, eps=1e-8):
         """Carbon tax collection and redistribution"""
         self.totalCarbonTaxes += np.sum([firm.carbonTax for firm in self.totalFirms])
@@ -1686,21 +1686,41 @@ class EconModel(ap.Model):
         # Two modes:
         #  - "AggPop": use aggregate population mortality PM from climate module (same probability across agents)
         #  - "Idiosyncratic": use individual survival outcomes from climate module (heterogeneous)
-        if self.climateShockMode == "AggPop" and self.climateModule.shockHappens[0] == True:
+        if (
+            self.climateShockMode == "AggPop"
+            and self.climateModule.shockHappens[0] == True
+        ):
             print("start shock")
             # Number of deaths implied by climate module's population mortality (PM)
-            deadIDs = np.random.permutation(self.aliveConsumers.getIdentity())[:np.max([int(self.climateModule.getPM()[0]), 0])]
+            deadIDs = np.random.permutation(self.aliveConsumers.getIdentity())[
+                : np.max([int(self.climateModule.getPM()[0]), 0])
+            ]
             # Fractional wealth loss applied uniformly to survivors (proxy for asset damages)
-            loss_percentage = np.max([int(self.climateModule.getPM()[0]), 0]) / len(self.aliveConsumers)
+            loss_percentage = np.max([int(self.climateModule.getPM()[0]), 0]) / len(
+                self.aliveConsumers
+            )
             # Mark selected agents as dead
-            [self.aliveConsumers.select(self.aliveConsumers.getIdentity() == ID).setDead() for ID in deadIDs]
+            [
+                self.aliveConsumers.select(
+                    self.aliveConsumers.getIdentity() == ID
+                ).setDead()
+                for ID in deadIDs
+            ]
             # Rebuild alive population view and working-age subset
-            self.aliveConsumers = self.aliveConsumers.select(self.aliveConsumers.isDead() != True)
-            self.workingAgeConsumers = [idx for idx in range(len(self.aliveConsumers)) if self.aliveConsumers[idx].getAgeGroup() == 'working']
+            self.aliveConsumers = self.aliveConsumers.select(
+                self.aliveConsumers.isDead() != True
+            )
+            self.workingAgeConsumers = [
+                idx
+                for idx in range(len(self.aliveConsumers))
+                if self.aliveConsumers[idx].getAgeGroup() == "working"
+            ]
             # Apply proportional wealth loss to survivors
             self.aliveConsumers.wealth_loss(loss_percentage)
             aliveIDs = self.aliveConsumers.getIdentity()
-            print(f"Climate shock happens: {np.max([int(self.climateModule.getPM()[0]), 0])} people died!")
+            print(
+                f"Climate shock happens: {np.max([int(self.climateModule.getPM()[0]), 0])} people died!"
+            )
             # Remove deceased workers from firms' rosters
             for firm in self.firms:
                 if len(firm.workersList) > 0:
@@ -1710,15 +1730,47 @@ class EconModel(ap.Model):
             # Reset shock flag so it does not re-trigger immediately
             self.climateModule.shockHappens = False
 
-        elif self.climateShockMode == "Idiosyncratic" and self.climateModule.shockHappens[0] == True:
+        elif (
+            self.climateShockMode == "Idiosyncratic"
+            and self.climateModule.shockHappens[0] == True
+        ):
             # Number of deaths implied by individual survival outcomes: alive_post_shock provided by climate module
-            deadIDs = np.random.permutation(self.aliveConsumers.getIdentity())[:np.max([int(len(self.aliveConsumers) - self.climateModule.getAliveConsumersPostShock()[0]), 0])]
-            [self.aliveConsumers.select(self.aliveConsumers.getIdentity() == ID).setDead() for ID in deadIDs]
+            deadIDs = np.random.permutation(self.aliveConsumers.getIdentity())[
+                : np.max(
+                    [
+                        int(
+                            len(self.aliveConsumers)
+                            - self.climateModule.getAliveConsumersPostShock()[0]
+                        ),
+                        0,
+                    ]
+                )
+            ]
+            [
+                self.aliveConsumers.select(
+                    self.aliveConsumers.getIdentity() == ID
+                ).setDead()
+                for ID in deadIDs
+            ]
             # Fractional wealth loss computed from realized death share (proxy for distributed damages)
-            loss_percentage = np.max([int(len(self.aliveConsumers) - self.climateModule.getAliveConsumersPostShock()[0]), 0]) / len(self.aliveConsumers)
+            loss_percentage = np.max(
+                [
+                    int(
+                        len(self.aliveConsumers)
+                        - self.climateModule.getAliveConsumersPostShock()[0]
+                    ),
+                    0,
+                ]
+            ) / len(self.aliveConsumers)
             # Refresh alive/working-age views
-            self.aliveConsumers = self.aliveConsumers.select(self.aliveConsumers.isDead() != True)
-            self.workingAgeConsumers = [idx for idx in range(len(self.aliveConsumers)) if self.aliveConsumers[idx].getAgeGroup() == 'working']
+            self.aliveConsumers = self.aliveConsumers.select(
+                self.aliveConsumers.isDead() != True
+            )
+            self.workingAgeConsumers = [
+                idx
+                for idx in range(len(self.aliveConsumers))
+                if self.aliveConsumers[idx].getAgeGroup() == "working"
+            ]
             # Apply proportional wealth loss to survivors
             self.aliveConsumers.wealth_loss(loss_percentage)
             aliveIDs = self.aliveConsumers.getIdentity()
