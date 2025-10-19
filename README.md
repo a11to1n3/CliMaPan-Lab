@@ -216,10 +216,13 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## Citation
 
 ```bibtex
-@software{climapan_lab,
-  title={CliMaPan-Lab: Climate-Pandemic Economic Modeling Laboratory},
-  author={D'Orazio, Paola and Pham, Anh-Duy and Nguyen, Hong Son},
+@article{d2025climapan,
+  title={CliMaPan-Lab: An open-source Python framework for agent-based macroeconomic simulation of climate-and pandemic-related systemic risks},
+  author={D’Orazio, Paola and Pham, Anh-Duy and Nguyen, Son Hong},
+  journal={SoftwareX},
+  volume={32},
+  pages={102408},
   year={2025},
-  url={https://github.com/a11to1n3/CliMaPan-Lab}
+  publisher={Elsevier}
 }
 ```
