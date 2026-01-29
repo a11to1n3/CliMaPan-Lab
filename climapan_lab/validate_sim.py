@@ -9,7 +9,7 @@ using autocorrelation analysis and parameter calibration.
 import argparse
 import warnings
 
-import agentpy as ap
+import ambr as am
 import numpy as np
 import pandas as pd
 import sobol_seq

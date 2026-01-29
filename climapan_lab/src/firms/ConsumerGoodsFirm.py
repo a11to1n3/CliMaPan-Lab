@@ -1,7 +1,7 @@
 import copy
 from collections import OrderedDict
 
-import agentpy as ap
+import ambr as am
 import numpy as np
 import numpy.random as random
 from scipy.optimize import minimize
@@ -102,8 +102,8 @@ class ConsumerGoodsFirm(GoodsFirmBase):
         self.soldProducts = 0
         # Select working-age, non-dead consumers to anchor labour assignment and sick-leave calc
         self.consumersList = self.model.aliveConsumers.select(
-            self.model.aliveConsumers.getCovidStateAttr("state") != "dead"
-            and self.model.aliveConsumers.getAgeGroup() == "working"
+            (self.model.aliveConsumers.getCovidStateAttr("state") != "dead")
+            & (self.model.aliveConsumers.getAgeGroup() == "working")
         )
         # market share
 

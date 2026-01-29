@@ -11,7 +11,7 @@ import math
 from collections import OrderedDict
 from datetime import date, timedelta
 
-import agentpy as ap
+import ambr as am
 import numpy as np
 
 from .banks.Bank import Bank
@@ -44,7 +44,7 @@ from .utils import _merge_edgelist, gini, listToArray, lognormal, normal
 # ============================================================================
 
 
-class EconModel(ap.Model):
+class EconModel(am.Model):
 
     def setup(self):
         """Initialize the agents and network of the model."""
@@ -126,7 +126,7 @@ class EconModel(ap.Model):
         # ----------------------------------------
 
         ## Initiate consumer agents
-        self.consumer_agents = ap.AgentList(self, self.p.c_agents, Consumer)
+        self.consumer_agents = am.AgentList(self, self.p.c_agents, Consumer)
 
         # Assign age groups with small random deviations
         for i in range(len(self.consumer_agents)):
@@ -192,15 +192,15 @@ class EconModel(ap.Model):
         )
 
         ## Initiate bank agents
-        self.bank_agents = ap.AgentList(self, 1, Bank)
+        self.bank_agents = am.AgentList(self, 1, Bank)
 
         ## Initiate Government agents
-        self.government_agents = ap.AgentList(self, self.p.g_agents, Government)
+        self.government_agents = am.AgentList(self, self.p.g_agents, Government)
 
         ## Initiate firm agents
 
         ### Consumption goods firms (CS)
-        self.csfirm_agents = ap.AgentList(self, self.p.csf_agents, ConsumerGoodsFirm)
+        self.csfirm_agents = am.AgentList(self, self.p.csf_agents, ConsumerGoodsFirm)
         # Ensure we have at least one of each energy type if we have multiple firms
         if len(self.csfirm_agents) >= 2:
             # Assign first firm to brown, second to green, rest randomly
@@ -227,7 +227,7 @@ class EconModel(ap.Model):
                     self.csfirm_agents[i].brown_firm = False
 
         ### Capital goods firms (CP)
-        self.cpfirm_agents = ap.AgentList(self, self.p.cpf_agents, CapitalGoodsFirm)
+        self.cpfirm_agents = am.AgentList(self, self.p.cpf_agents, CapitalGoodsFirm)
         # Ensure we have at least one of each energy type if we have multiple firms
         if len(self.cpfirm_agents) >= 2:
             # Assign first firm to brown, second to green, rest randomly
@@ -260,8 +260,8 @@ class EconModel(ap.Model):
                     self.cpfirm_agents[i].brown_firm = False
 
         ### Energy firms
-        self.greenEFirm = ap.AgentList(self, 1, GreenEnergyFirm)
-        self.brownEFirm = ap.AgentList(self, 1, BrownEnergyFirm)
+        self.greenEFirm = am.AgentList(self, 1, GreenEnergyFirm)
+        self.brownEFirm = am.AgentList(self, 1, BrownEnergyFirm)
 
         # Cluster goods firms
         self.firms = self.csfirm_agents + self.cpfirm_agents
@@ -284,7 +284,7 @@ class EconModel(ap.Model):
         # Climate module (optional)
         # ----------------------------------------
         if self.p.climateModuleFlag:
-            self.climateModule = ap.AgentList(self, 1, Climate)
+            self.climateModule = am.AgentList(self, 1, Climate)
             self.climateShockMode = copy.deepcopy(self.p.climateShockMode)
             self.climateModule.initGDP(self.GDP)
 
@@ -698,7 +698,7 @@ class EconModel(ap.Model):
             self.bankrupt_list.pop(0)
         self.bankrupt_list.append(self.bankrupt_count)
         self.bankrupt_total_count = np.sum(self.bankrupt_list)
-        print(self.bankrupt_total_count)
+        # print(self.bankrupt_total_count)
 
         ## Bank and Government accounting
         self.expenditure = self.government_agents.E_Gov()
@@ -719,12 +719,9 @@ class EconModel(ap.Model):
         self.GDP += np.sum([self.expenditure])
 
         # Update inequality metrics
-        self.gini = gini(
-            np.array(
-                [(self.aliveConsumers.getWage()) + (self.aliveConsumers.getIncome())]
-            )
-        )
-        self.consumption_gini = gini(np.array(self.aliveConsumers.getConsumption()))
+        income_combined = self.aliveConsumers.getWage() + self.aliveConsumers.getIncome()
+        self.gini = gini(income_combined)
+        self.consumption_gini = gini(self.aliveConsumers.getConsumption())
 
         # Reset lockdown flags
         self.csfirm_agents.resetLockDown()
@@ -989,18 +986,21 @@ class EconModel(ap.Model):
 
             # Data writers
             try:
-                self.record(
-                    "BankDataWriter",
-                    listToArray(self.bank_agents.bankDataWriter)[-1][-1],
-                )
-                self.record(
-                    "CSFirmDataWriter",
-                    listToArray(self.csfirm_agents.firmDataWriter)[-1][-1],
-                )
-                self.record(
-                    "CPFirmDataWriter",
-                    listToArray(self.cpfirm_agents.firmDataWriter)[-1][-1],
-                )
+                if len(self.bank_agents.bankDataWriter) > 0 and len(self.bank_agents.bankDataWriter[0]) > 0:
+                    self.record(
+                        "BankDataWriter",
+                        listToArray(self.bank_agents.bankDataWriter)[-1][-1],
+                    )
+                if len(self.csfirm_agents.firmDataWriter) > 0 and len(self.csfirm_agents.firmDataWriter[0]) > 0:
+                    self.record(
+                        "CSFirmDataWriter",
+                        listToArray(self.csfirm_agents.firmDataWriter)[-1][-1],
+                    )
+                if len(self.cpfirm_agents.firmDataWriter) > 0 and len(self.cpfirm_agents.firmDataWriter[0]) > 0:
+                    self.record(
+                        "CPFirmDataWriter",
+                        listToArray(self.cpfirm_agents.firmDataWriter)[-1][-1],
+                    )
             except:
                 self.record(
                     "BankDataWriter", listToArray(self.bank_agents.bankDataWriter)

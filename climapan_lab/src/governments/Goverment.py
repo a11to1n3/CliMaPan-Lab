@@ -1,10 +1,10 @@
 # Government
-import agentpy as ap
+import ambr as am
 import numpy as np
 import pandas as pd
 
 
-class Government(ap.Agent):
+class Government(am.Agent):
     """A government agent"""
 
     def setup(self):

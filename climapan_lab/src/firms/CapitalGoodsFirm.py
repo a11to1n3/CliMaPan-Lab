@@ -1,7 +1,7 @@
 import copy
 from collections import OrderedDict
 
-import agentpy as ap
+import ambr as am
 import numpy as np
 import numpy.random as random
 from scipy.optimize import minimize
@@ -96,8 +96,8 @@ class CapitalGoodsFirm(GoodsFirmBase):
         self.soldProducts = 0
         # Keep only alive, working-age consumers for firm-level sick leave accounting
         self.consumersList = self.model.aliveConsumers.select(
-            self.model.aliveConsumers.getCovidStateAttr("state") != "dead"
-            and self.model.aliveConsumers.getAgeGroup() == "working"
+            (self.model.aliveConsumers.getCovidStateAttr("state") != "dead")
+            & (self.model.aliveConsumers.getAgeGroup() == "working")
         )
 
     def calculate_input_demand(self):

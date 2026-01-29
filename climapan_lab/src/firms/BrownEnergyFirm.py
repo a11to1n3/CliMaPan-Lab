@@ -1,7 +1,7 @@
 import copy
 from collections import OrderedDict
 
-import agentpy as ap
+import ambr as am
 import numpy as np
 import numpy.random as random
 

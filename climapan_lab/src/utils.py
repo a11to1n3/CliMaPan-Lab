@@ -27,7 +27,10 @@ from .params import parameters
 
 
 def listToArray(x):
-    return np.array(x)
+    try:
+        return np.array(x)
+    except ValueError:
+        return np.array(x, dtype=object)
 
 
 def leap_year(year):

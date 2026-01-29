@@ -24,7 +24,7 @@ import warnings
 from datetime import datetime
 from itertools import product
 
-import agentpy as ap
+import ambr as am
 import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed

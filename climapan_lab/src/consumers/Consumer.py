@@ -1,7 +1,7 @@
 import copy
 import math
 
-import agentpy as ap
+import ambr as am
 import numpy as np
 import numpy.random as random
 
@@ -45,7 +45,7 @@ from ..utils import lognormal
 # ============================================================================
 
 
-class Consumer(ap.Agent):
+class Consumer(am.Agent):
     """A consumer agent"""
 
     def setup(self):
