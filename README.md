@@ -9,6 +9,9 @@ CliMaPan-Lab is an agent-based economic modeling framework for studying interact
 ## Installation
 
 ```bash
+# Install from PyPI (Recommended)
+pip install climapan-lab
+
 # Install from source
 git clone https://github.com/a11to1n3/CliMaPan-Lab.git
 cd CliMaPan-Lab
