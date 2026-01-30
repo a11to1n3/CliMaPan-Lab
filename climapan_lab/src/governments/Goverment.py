@@ -67,17 +67,15 @@ class Government(am.Agent):
 
     ### put the government calculation here (unemployment dole, tax)
     def E_Gov(self):
+        unemployed_count = np.sum(self.model.aliveConsumers.getUnemploymentState() == 1)
         self.expenditure = (
-            self.p.unemploymentDole
-            * sum(np.array(self.model.aliveConsumers.getUnemploymentState() == 1))
-            + self.fiscal
+            self.p.unemploymentDole * float(unemployed_count) + self.fiscal
         )
         return self.expenditure
 
     def UE_Gov(self):
-        self.ue_gov = self.p.unemploymentDole * sum(
-            np.array(self.model.aliveConsumers.getUnemploymentState() == 1)
-        )
+        unemployed_count = np.sum(self.model.aliveConsumers.getUnemploymentState() == 1)
+        self.ue_gov = self.p.unemploymentDole * float(unemployed_count)
         return self.ue_gov
 
     def update_budget(self, value):
