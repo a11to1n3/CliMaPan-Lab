@@ -703,174 +703,177 @@ class EconModel(am.Model):
             # Monthly recording of all major indicators
             # Record date as string for better compatibility
             self.record("date", str(self.today))
-            self.record("GDP", self.GDP)
-            self.record("Gini", self.gini)
-            self.record("People", len(self.aliveConsumers))
-            self.record("Gini Consumption", self.consumption_gini)
+            self.record("GDP", float(self.GDP))  # Ensure float scalar
+            self.record("Gini", float(self.gini)) # Ensure float scalar
+            self.record("People", int(len(self.aliveConsumers)))
+            self.record("Gini Consumption", float(self.consumption_gini))
+            
+            # For array-like data, convert to Python lists to avoid Polars/numpy interaction issues with sparse data
+            # ambr handles list of lists better than list of numpy arrays mixed with None
             self.record(
                 "UnemplDole",
                 listToArray(self.aliveConsumers.getWage())[
                     self.aliveConsumers.getWage() == self.p.unemploymentDole
-                ],
+                ].tolist(),
             )
-            self.record("Unemployment Expenditure", self.ue_gov)
-            self.record("Owners Income", listToArray(self.aliveConsumers.getDiv()))
-            self.record("Wage", listToArray(self.aliveConsumers.getWage()))
+            self.record("Unemployment Expenditure", float(self.ue_gov))
+            self.record("Owners Income", listToArray(self.aliveConsumers.getDiv()).tolist())
+            self.record("Wage", listToArray(self.aliveConsumers.getWage()).tolist())
             # self.record('Average Income', listToArray( np.mean(self.aliveConsumers.getIncome())))
-            self.record("Employed", listToArray(self.aliveConsumers.isEmployed()))
+            self.record("Employed", listToArray(self.aliveConsumers.isEmployed()).tolist())
             self.record(
-                "Consumer Type", listToArray(self.aliveConsumers.getConsumerType())
+                "Consumer Type", listToArray(self.aliveConsumers.getConsumerType()).tolist()
             )
             self.record(
                 "UnemploymentRate",
-                np.sum(listToArray(self.aliveConsumers.getUnemploymentState()), axis=0)
-                / (self.p.c_agents - self.num_owner),
+                float(np.sum(listToArray(self.aliveConsumers.getUnemploymentState()), axis=0)
+                / (self.p.c_agents - self.num_owner)),
             )
             self.record(
-                "Consumption", listToArray(self.aliveConsumers.getConsumption())
+                "Consumption", listToArray(self.aliveConsumers.getConsumption()).tolist()
             )
             self.record(
                 "Desired Consumption",
-                listToArray(self.aliveConsumers.get_desired_consumption()),
+                listToArray(self.aliveConsumers.get_desired_consumption()).tolist(),
             )
 
             # Bank metrics
-            self.record("Loans", listToArray(self.bank_agents.loans))
+            self.record("Loans", listToArray(self.bank_agents.loans).tolist())
             self.record(
-                "Bank totalLoanSupply", listToArray(self.bank_agents.totalLoanSupply)
+                "Bank totalLoanSupply", listToArray(self.bank_agents.totalLoanSupply).tolist()
             )
-            self.record("Bank Equity", listToArray(self.bank_agents.equity))
-            self.record("Bank Deposits", listToArray(self.bank_agents.deposits))
+            self.record("Bank Equity", listToArray(self.bank_agents.equity).tolist())
+            self.record("Bank Deposits", listToArray(self.bank_agents.deposits).tolist())
             self.record(
                 "Bank LDR",
-                listToArray(self.bank_agents.loans / (self.bank_agents.deposits + eps)),
+                listToArray(self.bank_agents.loans / (self.bank_agents.deposits + eps)).tolist(),
             )
             self.record(
-                "Bank Loan Demands", listToArray(self.bank_agents.totalLoanDemands)
+                "Bank Loan Demands", listToArray(self.bank_agents.totalLoanDemands).tolist()
             )
             self.record(
                 "Bank Loan Over Equity",
                 listToArray(
                     self.bank_agents.actualSuppliedLoan
                     / (self.bank_agents.equity + eps)
-                ),
+                ).tolist(),
             )
-            self.record("Bank DTE", listToArray(self.bank_agents.DTE))
-            self.record("Non Performing Loan", listToArray(self.bank_agents.NPL))
+            self.record("Bank DTE", listToArray(self.bank_agents.DTE).tolist())
+            self.record("Non Performing Loan", listToArray(self.bank_agents.NPL).tolist())
             # self.record('Expected Inflation Rate', listToArray(self.expectedInflationRateList))
-            self.record("Inflation Rate", listToArray(self.inflationRateList))
+            self.record("Inflation Rate", listToArray(self.inflationRateList).tolist())
             self.record(
-                "Total Loan Demand", listToArray(self.bank_agents.totalLoanDemands)
+                "Total Loan Demand", listToArray(self.bank_agents.totalLoanDemands).tolist()
             )
 
             # CS Firm metrics
-            self.record("CS Num Bankrupt", listToArray(self.numCSFirmBankrupt))
+            self.record("CS Num Bankrupt", int(self.numCSFirmBankrupt))
             self.record(
                 "CS V Cost",
-                listToArray(self.csfirm_agents.get_average_production_cost()),
+                listToArray(self.csfirm_agents.get_average_production_cost()).tolist(),
             )
             self.record(
                 "CS U Cost",
-                listToArray(self.csfirm_agents.get_average_production_cost()),
+                listToArray(self.csfirm_agents.get_average_production_cost()).tolist(),
             )
-            self.record("CS Firm Loans", listToArray(self.csfirm_agents.loanObtained))
-            self.record("CS Net Profits", listToArray(self.csfirm_agents.net_profit))
-            self.record("CS Capital", listToArray(self.csfirm_agents.get_capital()))
-            self.record("CS Net Profits", listToArray(self.csfirm_agents.net_profit))
-            self.record("CS Net Worth", listToArray(self.csfirm_agents.getNetWorth()))
+            self.record("CS Firm Loans", listToArray(self.csfirm_agents.loanObtained).tolist())
+            self.record("CS Net Profits", listToArray(self.csfirm_agents.net_profit).tolist())
+            self.record("CS Capital", listToArray(self.csfirm_agents.get_capital()).tolist())
+            self.record("CS Net Profits 2", listToArray(self.csfirm_agents.net_profit).tolist()) # Avoiding identical key replacement issue
+            self.record("CS Net Worth", listToArray(self.csfirm_agents.getNetWorth()).tolist())
             self.record(
-                "CS Number of Workers", listToArray(self.csfirm_agents.countWorkers)
+                "CS Number of Workers", listToArray(self.csfirm_agents.countWorkers).tolist()
             )
             self.record(
-                "CS Number of Consumers", listToArray(self.csfirm_agents.countConsumers)
+                "CS Number of Consumers", listToArray(self.csfirm_agents.countConsumers).tolist()
             )
-            self.record("CS Price", listToArray(self.csfirm_agents.getPrice()))
+            self.record("CS Price", listToArray(self.csfirm_agents.getPrice()).tolist())
             self.record(
-                "CS Sold Products", listToArray(self.csfirm_agents.getSoldProducts())
+                "CS Sold Products", listToArray(self.csfirm_agents.getSoldProducts()).tolist()
             )
-            self.record("CS Sale", listToArray(self.cssale))
-            self.record("CS iL", listToArray(self.csfirm_agents.iL))
-            self.record("CS iF", listToArray(self.csfirm_agents.iF))
+            self.record("CS Sale", listToArray(self.cssale).tolist())
+            self.record("CS iL", listToArray(self.csfirm_agents.iL).tolist())
+            self.record("CS iF", listToArray(self.csfirm_agents.iF).tolist())
             self.record(
-                "CS Loan Obtained", listToArray(self.csfirm_agents.loanObtained)
+                "CS Loan Obtained", listToArray(self.csfirm_agents.loanObtained).tolist()
             )
-            self.record("CS Deposit", listToArray(self.csfirm_agents.getDeposit()))
-            self.record("CS Margin", listToArray(self.csfirm_agents.profit_margin))
+            self.record("CS Deposit", listToArray(self.csfirm_agents.getDeposit()).tolist())
+            self.record("CS Margin", listToArray(self.csfirm_agents.profit_margin).tolist())
             self.record(
                 "CS Capital Investment",
-                listToArray(self.csfirm_agents.get_capital_investment()),
+                listToArray(self.csfirm_agents.get_capital_investment()).tolist(),
             )
             self.record(
                 "CS Production Cost",
                 listToArray(
                     self.csfirm_agents.get_average_production_cost()
                     * self.csfirm_agents.get_actual_production()
-                ),
+                ).tolist(),
             )
             self.record(
-                "CS Capacity", listToArray(self.csfirm_agents.get_actual_production())
+                "CS Capacity", listToArray(self.csfirm_agents.get_actual_production()).tolist()
             )
-            self.record("CS Wage Bill", listToArray(self.csfirm_agents.wage_bill))
-            self.record("CS Loan Payment", listToArray(self.csfirm_agents.payback))
+            self.record("CS Wage Bill", listToArray(self.csfirm_agents.wage_bill).tolist())
+            self.record("CS Loan Payment", listToArray(self.csfirm_agents.payback).tolist())
             self.record(
-                "CS Credit Default Risk", listToArray(self.csfirm_agents.defaultProb)
+                "CS Credit Default Risk", listToArray(self.csfirm_agents.defaultProb).tolist()
             )
 
             # CP Firm metrics
             self.record(
-                "CP Credit Default Risk", listToArray(self.cpfirm_agents.defaultProb)
+                "CP Credit Default Risk", listToArray(self.cpfirm_agents.defaultProb).tolist()
             )
-            self.record("CP Num Bankrupt", listToArray(self.numCPFirmBankrupt))
-            self.record("CP Firm Loans", listToArray(self.cpfirm_agents.loanObtained))
-            self.record("CP Net Profits", listToArray(self.cpfirm_agents.net_profit))
-            self.record("CP Net Worth", listToArray(self.cpfirm_agents.getNetWorth()))
-            self.record("CP Capital", listToArray(self.cpfirm_agents.get_capital()))
-            self.record("CP Price", listToArray(self.cpfirm_agents.getPrice()))
+            self.record("CP Num Bankrupt", int(self.numCPFirmBankrupt))
+            self.record("CP Firm Loans", listToArray(self.cpfirm_agents.loanObtained).tolist())
+            self.record("CP Net Profits", listToArray(self.cpfirm_agents.net_profit).tolist())
+            self.record("CP Net Worth", listToArray(self.cpfirm_agents.getNetWorth()).tolist())
+            self.record("CP Capital", listToArray(self.cpfirm_agents.get_capital()).tolist())
+            self.record("CP Price", listToArray(self.cpfirm_agents.getPrice()).tolist())
             self.record(
-                "CP Sold Products", listToArray(self.cpfirm_agents.getSoldProducts())
+                "CP Sold Products", listToArray(self.cpfirm_agents.getSoldProducts()).tolist()
             )
-            self.record("CP Sale", listToArray(self.ksale))
+            self.record("CP Sale", listToArray(self.ksale).tolist())
             self.record(
-                "CP Number of Workers", listToArray(self.cpfirm_agents.countWorkers)
+                "CP Number of Workers", listToArray(self.cpfirm_agents.countWorkers).tolist()
             )
             self.record(
-                "CP Number of Consumers", listToArray(self.cpfirm_agents.countConsumers)
+                "CP Number of Consumers", listToArray(self.cpfirm_agents.countConsumers).tolist()
             )
             self.record(
                 "CP V Cost",
-                listToArray(self.cpfirm_agents.get_average_production_cost()),
+                listToArray(self.cpfirm_agents.get_average_production_cost()).tolist(),
             )
             self.record(
                 "CP U Cost",
-                listToArray(self.cpfirm_agents.get_average_production_cost()),
+                listToArray(self.cpfirm_agents.get_average_production_cost()).tolist(),
             )
-            self.record("CP iL", listToArray(self.cpfirm_agents.iL))
-            self.record("CP iF", listToArray(self.cpfirm_agents.iF))
+            self.record("CP iL", listToArray(self.cpfirm_agents.iL).tolist())
+            self.record("CP iF", listToArray(self.cpfirm_agents.iF).tolist())
             self.record(
-                "CP Loan Obtained", listToArray(self.cpfirm_agents.loanObtained)
+                "CP Loan Obtained", listToArray(self.cpfirm_agents.loanObtained).tolist()
             )
-            self.record("CP Deposit", listToArray(self.cpfirm_agents.getDeposit()))
+            self.record("CP Deposit", listToArray(self.cpfirm_agents.getDeposit()).tolist())
             self.record(
                 "CP Production Cost",
                 listToArray(
                     self.cpfirm_agents.get_average_production_cost()
                     * self.cpfirm_agents.get_actual_production()
-                ),
+                ).tolist(),
             )
             self.record(
-                "CP Capacity", listToArray(self.cpfirm_agents.get_actual_production())
+                "CP Capacity", listToArray(self.cpfirm_agents.get_actual_production()).tolist()
             )
-            self.record("CP Wage Bill", listToArray(self.cpfirm_agents.wage_bill))
-            self.record("CP Loan Payment", listToArray(self.cpfirm_agents.payback))
+            self.record("CP Wage Bill", listToArray(self.cpfirm_agents.wage_bill).tolist())
+            self.record("CP Loan Payment", listToArray(self.cpfirm_agents.payback).tolist())
 
             # Governments
-            self.record("Fiscal Policy", listToArray(self.government_agents.fiscal))
-            self.record("Expenditures", listToArray(self.expenditure))
-            self.record("Total Taxes", listToArray(self.totalTaxes))
-            self.record("Budget", listToArray(self.government_agents.budget))
+            self.record("Fiscal Policy", listToArray(self.government_agents.fiscal).tolist())
+            self.record("Expenditures", listToArray(self.expenditure).tolist())
+            self.record("Total Taxes", listToArray(self.totalTaxes).tolist())
+            self.record("Budget", listToArray(self.government_agents.budget).tolist())
 
             # Covid
-            self.record("Deaths", listToArray(self.covid_death))
+            self.record("Deaths", listToArray(self.covid_death).tolist())
 
             # Investments
             greenCapitalMeanPrice = np.mean(
