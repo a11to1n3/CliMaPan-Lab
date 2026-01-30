@@ -100,7 +100,7 @@ class ConsumerGoodsFirm(GoodsFirmBase):
         self.market_shareList.append(self.market_share)"""
         self.set_aggregate_demand(0)
         self.soldProducts = 0
-        
+
         # Optimization: Avoid O(N) selection. Use reference to global list.
         # Filtering is done efficiently in calculate_all_wages and produce.
         self.consumersList = self.model.aliveConsumers
@@ -143,23 +143,15 @@ class ConsumerGoodsFirm(GoodsFirmBase):
         # Optimization: Use fast attribute check or set membership
         # workers_set = set(self.workersList) # Use if self.workersList is not guaranteed to sync with employerID?
         # But employerID is likely single source of truth.
-        
+
         # Fast iteration using direct attribute access if possible.
         # Since self.consumersList is now ALL consumers, filtering by employerID is needed.
-        
+
         # Check if we can just iterate self.workersList if we can map IDs -> Objects?
-        # If not, iterating 5000 items is fast (0.04s total for 138 calls is ~0.0003s). 
-        # But let's make it as fast as possible.
-        
-        # Direct attribute: c.employerID (Assuming it exists, AMBER usually uses lower camelCase for attributes)
-        # The method is getBelongToFirm(). Let's check typical attribute naming in Consumer.
-        # usually self.employerID or self.belongToFirm.
-        # Let's assume getBelongToFirm just returns self.employerID? 
-        # I'll stick to the method optimization but use set lookup if safer, OR just trust ID check.
-        
-        # Actually, in calculate_all_wages I used 'if id in workers_set'. 
-        # Let's stick to that pattern for consistency and speed.
-        
+        # If not, iterating 5000 items is fast (0.04s total for 138 calls is ~0.0003s).
+        # Optimization: use fast set membership check on worker IDs
+        # This mirrors the pattern in calculate_all_wages for consistency and speed.
+
         workers_set = set(self.workersList)
         aggSickLeaves = sum(
             len(aConsumer.getSickLeaves())

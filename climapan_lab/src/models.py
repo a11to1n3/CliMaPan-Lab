@@ -1172,7 +1172,7 @@ class EconModel(am.Model):
             # The original code used:
             # chosenFirm = self.csfirm_agents.select(getIdentity() - offset == company)
             # If company 'i' corresponds to csfirm_agents[i], then getIdentity() should match.
-            # Let's verify indexing assumption. Yes, line 1014 iterates range(len).
+
             # So 'company' IS the index.
 
             # Optimization: Direct access
