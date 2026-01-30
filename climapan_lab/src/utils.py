@@ -66,13 +66,35 @@ def _merge_edgelist(p1, p2, mapping, offset=0):
 
 
 def gini(x, eps=1e-8):
-    # Mean absolute difference
-    mad = np.abs(np.subtract.outer(x, x)).mean()
-    # Relative mean absolute difference
-    rmad = mad / (np.mean(x) + eps)
-    # Gini coefficient
-    g = 0.5 * rmad
-    return g
+    """
+    Calculate Gini coefficient efficiently (O(N log N)).
+    
+    Args:
+        x (array-like): Array of values (income/consumption)
+        eps (float): Small value to avoid division by zero
+        
+    Returns:
+        float: Gini coefficient
+    """
+    x = np.asarray(x, dtype=np.float64)
+    if x.size == 0:
+        return 0.0
+        
+    # Filter NaNs if any, though model shouldn't produce them ideally
+    x = x[~np.isnan(x)]
+    if x.size == 0:
+        return 0.0
+        
+    # Sort data for efficient calculation
+    sorted_x = np.sort(x)
+    n = x.size
+    
+    # Gini formula using sorted values:
+    # G = (2 * sum(i * x_i) / (n * sum(x_i))) - (n + 1) / n
+    # where i is 1-based index (1 to n)
+    
+    index = np.arange(1, n + 1)
+    return (2 * np.sum(index * sorted_x)) / (n * np.sum(sorted_x) + eps) - (n + 1) / n
 
 
 def plotConsumersSummary(results, saveFolder):

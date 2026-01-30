@@ -212,9 +212,11 @@ class TestPerformance(unittest.TestCase):
             avg_time = sum(execution_times) / len(execution_times)
             max_deviation = max(abs(t - avg_time) for t in execution_times)
 
-            # Deviation shouldn't be more than 100% of average
+            # Deviation shouldn't be more than 100% of average, unless execution is very fast (<0.1s)
+            # For extremely fast runs, system noise dominates.
+            threshold = max(avg_time, 0.1)
             self.assertLess(
-                max_deviation, avg_time, "Performance is too inconsistent between runs"
+                max_deviation, threshold, f"Performance is too inconsistent between runs (dev={max_deviation:.4f}, avg={avg_time:.4f})"
             )
 
 

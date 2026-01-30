@@ -129,15 +129,12 @@ class EconModel(am.Model):
         self.consumer_agents = am.AgentList(self, self.p.c_agents, Consumer)
 
         # Assign age groups with small random deviations
-        for i in range(len(self.consumer_agents)):
-            ageRandomness = np.random.normal(0, 0.1)
-
-            if ageRandomness < -0.1:
-                self.consumer_agents[i].setAgeGroup("young")
-            elif ageRandomness > 0.15:
-                self.consumer_agents[i].setAgeGroup("elderly")
-            else:
-                self.consumer_agents[i].setAgeGroup("working")
+        # Vectorized age group assignment
+        rands = np.random.normal(0, 0.1, len(self.consumer_agents))
+        
+        self.consumer_agents.select(rands < -0.1).call("setAgeGroup", "young")
+        self.consumer_agents.select(rands > 0.15).call("setAgeGroup", "elderly")
+        self.consumer_agents.select((rands >= -0.1) & (rands <= 0.15)).call("setAgeGroup", "working")
 
         # Assign working-age consumers into economic roles
         count = 0
@@ -209,55 +206,71 @@ class EconModel(am.Model):
             self.csfirm_agents[1].useEnergyType("green")
             self.csfirm_agents[1].brown_firm = False
 
-            for i in range(2, len(self.csfirm_agents)):
-                if np.random.uniform(0, 1) < 0.5:
-                    self.csfirm_agents[i].useEnergyType("brown")
-                    self.csfirm_agents[i].brown_firm = True
-                else:
-                    self.csfirm_agents[i].useEnergyType("green")
-                    self.csfirm_agents[i].brown_firm = False
+            # Vectorized assignment for remainder
+            rest_agents = am.AgentList(self, self.csfirm_agents[2:])
+            if len(rest_agents) > 0:
+                probs = np.random.uniform(0, 1, len(rest_agents))
+                brown_mask = probs < 0.5
+                
+                brown_agents = rest_agents.select(brown_mask)
+                brown_agents.call("useEnergyType", "brown")
+                for agent in brown_agents: agent.brown_firm = True # Manual attribute update
+                
+                green_agents = rest_agents.select(~brown_mask)
+                green_agents.call("useEnergyType", "green")
+                for agent in green_agents: agent.brown_firm = False
         else:
-            # If only one firm, assign randomly
-            for i in range(len(self.csfirm_agents)):
-                if np.random.uniform(0, 1) < 0.5:
-                    self.csfirm_agents[i].useEnergyType("brown")
-                    self.csfirm_agents[i].brown_firm = True
-                else:
-                    self.csfirm_agents[i].useEnergyType("green")
-                    self.csfirm_agents[i].brown_firm = False
+             # Single firm random assignment
+             if np.random.uniform(0, 1) < 0.5:
+                self.csfirm_agents.call("useEnergyType", "brown")
+                for agent in self.csfirm_agents: agent.brown_firm = True
+             else:
+                self.csfirm_agents.call("useEnergyType", "green")
+                for agent in self.csfirm_agents: agent.brown_firm = False
 
         ### Capital goods firms (CP)
         self.cpfirm_agents = am.AgentList(self, self.p.cpf_agents, CapitalGoodsFirm)
+        # Ensure we have at least one of each energy type if we have multiple firms
         # Ensure we have at least one of each energy type if we have multiple firms
         if len(self.cpfirm_agents) >= 2:
             # Assign first firm to brown, second to green, rest randomly
             self.cpfirm_agents[0].useEnergyType("brown")
             self.cpfirm_agents[0].capital = 5000
             self.cpfirm_agents[0].brown_firm = True
+            
             self.cpfirm_agents[1].useEnergyType("green")
             self.cpfirm_agents[1].capital = 4200
             self.cpfirm_agents[1].brown_firm = False
 
-            for i in range(2, len(self.cpfirm_agents)):
-                if np.random.beta(3, 7) < 0.5:
-                    self.cpfirm_agents[i].useEnergyType("brown")
-                    self.cpfirm_agents[i].capital = 5000
-                    self.cpfirm_agents[i].brown_firm = True
-                else:
-                    self.cpfirm_agents[i].useEnergyType("green")
-                    self.cpfirm_agents[i].capital = 4200
-                    self.cpfirm_agents[i].brown_firm = False
+            # Vectorized assignment for remainder
+            rest_agents = am.AgentList(self, self.cpfirm_agents[2:])
+            if len(rest_agents) > 0:
+                probs = np.random.beta(3, 7, len(rest_agents))
+                brown_mask = probs < 0.5
+                
+                brown_agents = rest_agents.select(brown_mask)
+                brown_agents.call("useEnergyType", "brown")
+                for agent in brown_agents: 
+                    agent.capital = 5000
+                    agent.brown_firm = True
+                
+                green_agents = rest_agents.select(~brown_mask)
+                green_agents.call("useEnergyType", "green")
+                for agent in green_agents: 
+                    agent.capital = 4200
+                    agent.brown_firm = False
         else:
-            # If only one firm, assign randomly
-            for i in range(len(self.cpfirm_agents)):
-                if np.random.beta(3, 7) < 0.5:
-                    self.cpfirm_agents[i].useEnergyType("brown")
-                    self.cpfirm_agents[i].capital = 5000
-                    self.cpfirm_agents[i].brown_firm = True
-                else:
-                    self.cpfirm_agents[i].useEnergyType("green")
-                    self.cpfirm_agents[i].capital = 4200
-                    self.cpfirm_agents[i].brown_firm = False
+            # Single firm random assignment
+            if np.random.beta(3, 7) < 0.5:
+                self.cpfirm_agents.call("useEnergyType", "brown")
+                for agent in self.cpfirm_agents:
+                    agent.capital = 5000
+                    agent.brown_firm = True
+            else:
+                self.cpfirm_agents.call("useEnergyType", "green")
+                for agent in self.cpfirm_agents:
+                    agent.capital = 4200
+                    agent.brown_firm = False
 
         ### Energy firms
         self.greenEFirm = am.AgentList(self, 1, GreenEnergyFirm)
@@ -398,71 +411,27 @@ class EconModel(am.Model):
 
         # Reset contact every new day
         if self.p.covid_settings:
-            # Count epidemiological states
-            self.num_infection = len(
-                [
-                    covidState
-                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
-                    if covidState
-                    not in [
-                        None,
-                        "susceptible",
-                        "exposed",
-                        "recovered",
-                        "immunized",
-                        "dead",
-                    ]
-                ]
-            )
-            # print("infection total", self.num_infection)
-            self.num_exposed = len(
-                [
-                    covidState
-                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
-                    if covidState == "exposed"
-                ]
-            )
-            self.num_death = len(
-                [
-                    covidState
-                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
-                    if covidState == "dead"
-                ]
-            )
-            self.num_susceptible = len(
-                [
-                    covidState
-                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
-                    if covidState == "susceptible"
-                ]
-            )
-            self.num_recover = len(
-                [
-                    covidState
-                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
-                    if covidState in ["recovered", "immunized"]
-                ]
-            )
-            self.num_mild = len(
-                [
-                    covidState
-                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
-                    if covidState == "mild"
-                ]
-            )
-            self.num_critical = len(
-                [
-                    covidState
-                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
-                    if covidState == "critical"
-                ]
-            )
-            self.num_severe = len(
-                [
-                    covidState
-                    for covidState in self.aliveConsumers.getCovidStateAttr("state")
-                    if covidState == "severe"
-                ]
+            # Count epidemiological states efficiently
+            from collections import Counter
+            states = [c.covidState['state'] for c in self.aliveConsumers]
+            counts = Counter(states)
+            
+            self.num_susceptible = counts['susceptible']
+            self.num_exposed = counts['exposed']
+            self.num_mild = counts['mild']
+            self.num_severe = counts['severe']
+            self.num_critical = counts['critical']
+            self.num_recover = counts['recovered'] + counts['immunized']
+            self.num_death = counts['dead']
+            
+            # Total infection (all except susceptible, recovered, immunized, dead, None)
+            # effectively: exposed + mild + severe + critical + infected non-sympotomatic
+            self.num_infection = (
+                counts['exposed'] + 
+                counts['mild'] + 
+                counts['severe'] + 
+                counts['critical'] + 
+                counts['infected non-sympotomatic']
             )
 
         # Terminate or continue Covid State:
@@ -729,6 +698,7 @@ class EconModel(am.Model):
 
     def update(self, eps=1e-8):
         """Record metrics for analysis"""
+        super().update()
         if int(str(self.tomorrow).split("-")[-1]) == 1:
             # Monthly recording of all major indicators
             self.record("date", listToArray(self.today))
@@ -1035,18 +1005,25 @@ class EconModel(am.Model):
 
     def _csf_forecast_demand(self):
         """Aggregate household desired consumption and distribute to CS firms"""
-        aggregated_demand = 0
-        for i in np.random.permutation(self.workingAgeConsumers):
-            aConsumer = self.aliveConsumers[i]
-            # if i % 10 == 9: print("consumer demand", aConsumer.get_desired_consumption())
-            aggregated_demand += aConsumer.get_desired_consumption()
+        # Vectorized aggregation: Select consumers by working age index list
+        # self.workingAgeConsumers contains indices of working age consumers
+        working_consumers = self.aliveConsumers[self.workingAgeConsumers]
+        aggregated_demand = np.sum(working_consumers.get_desired_consumption())
 
-        for i in range(len(self.csfirm_agents)):
-            chosenFirm = self.csfirm_agents[i]
-            chosenFirm.prepareForecast()
-            chosenFirm.set_aggregate_demand(aggregated_demand * chosenFirm.market_share)
-            # print("aggregate demand", aggregated_demand * chosenFirm.market_share)
-            # print("market share", chosenFirm.market_share)
+        # Vectorized firm update: set demand proportional to market share
+        self.csfirm_agents.call("prepareForecast")
+        
+        market_shares = self.csfirm_agents.market_share
+        if isinstance(market_shares, list):
+            market_shares = np.array(market_shares)
+            
+        demands = aggregated_demand * market_shares
+        
+        # Iterate to set since we don't have a direct vector setter for this specific calculation pattern yet
+        # (Could use batch_update if we constructed a dict, but this loop is simple enough for now 
+        # given we need to multiply scalar * vector)
+        for i, firm in enumerate(self.csfirm_agents):
+            firm.set_aggregate_demand(demands[i])
 
     def _csf_transaction(self):
         """Consumer-goods market clearing: households buy from firms sorted by price"""
@@ -1094,38 +1071,52 @@ class EconModel(am.Model):
                 aConsumer.get_desired_consumption() * self.demand_fluctuation
             )
 
+            # Pre-calculate offset for firm ID mapping
+            # The 'company' key in orderedCompaniesProductionC comes from loop index 'i' (0 to n_firms-1)
+            # The code below previously searched for identity == company + offset
+            # But wait, self.csfirm_agents is a list/sequence. 
+            # If 'company' is just the index 'i' from the first loop (line 1014),
+            # then we can just access self.csfirm_agents[company] directly!
+            
+            # The original code used:
+            # chosenFirm = self.csfirm_agents.select(getIdentity() - offset == company)
+            # If company 'i' corresponds to csfirm_agents[i], then getIdentity() should match.
+            # Let's verify indexing assumption. Yes, line 1014 iterates range(len).
+            # So 'company' IS the index.
+            
+            # Optimization: Direct access
             for company, production in self.orderedCompaniesProductionC.items():
-                chosenFirm = self.csfirm_agents.select(
-                    self.csfirm_agents.getIdentity()
-                    - self.p.c_agents
-                    - 1
-                    - self.p.b_agents
-                    - self.p.g_agents
-                    == company
-                )
-                price = ordered_price[company]
-                aConsumer.price = price
-                # if chosenFirm.lockdown:
-                #    production *= self.lockdown_scale
-
+                if purchase >= desired_consumption:
+                    break
+                    
+                chosenFirm = self.csfirm_agents[company] 
+                
+                # Double check identity if paranoid, but structure implies index alignment
+                # (The original code searched for identity - offset == company)
+                
                 if production == 0:
                     continue
+
                 else:
+                    price = ordered_price[company]
+                    aConsumer.price = price
                     self.countConsumersPerCompanyC[company] += 1
                     # Budget-constrained purchase
                     if (production - desired_consumption) >= 0:
-                        purchase = np.max(
-                            [
-                                np.min(
-                                    [
-                                        desired_consumption,
-                                        (aConsumer.deposit + aConsumer.getIncome())
-                                        / price,
-                                    ]
-                                ),
-                                0,
-                            ]
-                        )
+                        if price > 0:
+                            purchase = np.max(
+                                [
+                                    np.min(
+                                        [
+                                            desired_consumption,
+                                            (aConsumer.deposit + aConsumer.getIncome()) / price,
+                                        ]
+                                    ),
+                                    0,
+                                ]
+                            )
+                        else:
+                            purchase = desired_consumption
                         # if aConsumer.owner:
                         # print("purchase amount", purchase, (aConsumer.deposit + aConsumer.getIncome()) / price, desired_consumption, aConsumer.deposit, aConsumer.getIncome(), price, aConsumer.consumerType)
                         self.orderedCompaniesProductionC[company] = (
@@ -1153,27 +1144,39 @@ class EconModel(am.Model):
 
     def _cpf_forecast_demand(self):
         """Build brown/green capital demand from CS+Energy firms"""
-        for i in range(len(self.cpfirm_agents)):
-            chosenFirm = self.cpfirm_agents[i]
-            chosenFirm.prepareForecast()
+        self.cpfirm_agents.call("prepareForecast")
 
-        b_aggregated_demand = 0
-        g_aggregated_demand = 0
+        firmsList = self.csfirm_agents + self.brownEFirm + self.greenEFirm
+        
+        # Vectorized aggregation
+        # Assuming `useEnergy` is an attribute 'brown' or 'green'
+        use_energy = firmsList.useEnergy
+        capital_demands = firmsList.get_capital_demand() # Vectorized call
+        
+        # Check if returned as list or numpy array, convert if needed
+        if isinstance(use_energy, list): use_energy = np.array(use_energy)
+        if isinstance(capital_demands, list): capital_demands = np.array(capital_demands)
+        
+        b_mask = (use_energy == "brown")
+        b_aggregated_demand = np.sum(capital_demands[b_mask])
+        g_aggregated_demand = np.sum(capital_demands[~b_mask])
 
-        self.firmsList = self.csfirm_agents + self.brownEFirm + self.greenEFirm
-        for i in np.random.permutation(len(self.firmsList)):
-            aFirm = self.firmsList[i]
-            if aFirm.useEnergy == "brown":
-                b_aggregated_demand += aFirm.get_capital_demand()
+        # Vectorized assignment
+        # CP firms also have `useEnergy`
+        cp_use_energy = self.cpfirm_agents.useEnergy
+        if isinstance(cp_use_energy, list): cp_use_energy = np.array(cp_use_energy)
+        
+        cp_b_mask = (cp_use_energy == "brown")
+        
+        # Set demands using loops for now to be safe until bulk setter is confirmed safe
+        # self.cpfirm_agents.select(cp_b_mask).call("set_aggregate_demand", b_aggregated_demand)
+        # self.cpfirm_agents.select(~cp_b_mask).call("set_aggregate_demand", g_aggregated_demand)
+        
+        for firm in self.cpfirm_agents:
+            if firm.useEnergy == "brown":
+                 firm.set_aggregate_demand(b_aggregated_demand)
             else:
-                g_aggregated_demand += aFirm.get_capital_demand()
-        for i in range(len(self.cpfirm_agents)):
-            if self.cpfirm_agents[i].useEnergy == "brown":
-                self.cpfirm_agents[i].set_aggregate_demand(b_aggregated_demand)
-                # print("capital demand", b_aggregated_demand)
-            else:
-                self.cpfirm_agents[i].set_aggregate_demand(g_aggregated_demand)
-                # print("capital demand", g_aggregated_demand)
+                 firm.set_aggregate_demand(g_aggregated_demand)
 
     def _cpf_transaction(self):
         """Capital-goods market clearing: CP sells to CS+Energy firms"""

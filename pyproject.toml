@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "climapan-lab"
-version = "0.0.4"
+version = "0.1.0"
 authors = [
     {name = "CliMaPan-Lab Team", email = "anh-duy.pham@uni-wuerzburg.de"},
 ]
@@ -30,7 +30,7 @@ dependencies = [
     "numpy>=1.21.0",
     "pandas>=1.3.0",
     "matplotlib>=3.5.0",
-    "agentpy>=0.1.5",
+    "ambr>=0.1.5",
     "scikit-learn>=1.0.0",
     "scipy>=1.7.0",
     "joblib>=1.1.0",
@@ -98,4 +98,4 @@ profile = "black"
 multi_line_output = 3
 line_length = 88
 known_first_party = ["climapan_lab"]
-known_third_party = ["agentpy", "numpy", "pandas", "matplotlib", "sklearn", "scipy", "joblib", "salib", "networkx", "pathos", "dill", "h5py"] 
+known_third_party = ["ambr", "numpy", "pandas", "matplotlib", "sklearn", "scipy", "joblib", "salib", "networkx", "pathos", "dill", "h5py"] 

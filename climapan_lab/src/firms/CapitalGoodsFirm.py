@@ -126,19 +126,24 @@ class CapitalGoodsFirm(GoodsFirmBase):
         # print("worker list", len(self.workersList), self.getNumberOfLabours())
 
         # Aggregate sick leave among workers assigned to this firm
-        aggSickLeaves = np.sum(
-            [
-                len(aConsumer.getSickLeaves())
-                for aConsumer in self.consumersList
-                if aConsumer.getBelongToFirm() == self.id
-            ]
+        workers_set = set(self.workersList)
+        aggSickLeaves = sum(
+            len(aConsumer.getSickLeaves())
+            for aConsumer in self.consumersList
+            if aConsumer.id in workers_set
         )
         # print("sick leave", aggSickLeaves)
 
-        # Fraction of hours lost (cap at 100%)
-        sick_ratio = np.min(
-            [1, np.max([0, aggSickLeaves / (720 * len(self.workersList))])]
-        )
+        if len(self.workersList) > 0:
+            denominator = 720 * len(self.workersList)
+            if denominator > 0: # Guard against division by zero
+                sick_ratio = np.min(
+                    [1, np.max([0, aggSickLeaves / denominator])]
+                )
+            else:
+                sick_ratio = 0
+        else:
+            sick_ratio = 0
         # print("sick ratio", sick_ratio)
 
         # Inputs for the period
