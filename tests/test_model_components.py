@@ -73,7 +73,7 @@ class TestModelComponents(unittest.TestCase):
         # Test consumer attributes
         if len(model.consumer_agents) > 0:
             consumer = model.consumer_agents[0]
-            required_attrs = ["deposit", "employed", "type"]
+            required_attrs = ["deposit", "employed", "consumerType"]
             for attr in required_attrs:
                 self.assertTrue(
                     hasattr(consumer, attr), f"Consumer missing attribute: {attr}"
@@ -177,13 +177,17 @@ class TestModelComponents(unittest.TestCase):
         model = EconModel(self.params)
 
         # Run model briefly
-        model.run()
+        results = model.run()
 
-        # Check that data collection works (AgentPy stores in model.output.variables)
-        self.assertTrue(hasattr(model, "output"))
-        if hasattr(model, "output") and hasattr(model.output, "variables"):
-            # Should have some data recorded
-            self.assertIsInstance(model.output.variables, dict)
+        # Check that data collection works (ambr returns dict with 'model' DataFrame)
+        # Legacy AgentPy checked model.output.variables
+        # We now check the returned results
+        if isinstance(results, dict):
+            self.assertIn("model", results)
+            self.assertFalse(results["model"].is_empty())
+        else:
+            # If wrapper is used or AgentPy compat matches
+            self.assertTrue(hasattr(results, "variables"))
 
 
 class TestParameterStructure(unittest.TestCase):

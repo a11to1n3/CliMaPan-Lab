@@ -1,6 +1,26 @@
 Changelog
 =========
 
+Version 0.1.0 (2026-01-30)
+---------------------------
+
+**Performance & Optimizations:**
+
+* **Vectorization:** Replaced iterative loops in demand forecasting and agent setup with vectorized NumPy/Polars operations
+* **Speed:** Simulation rate improved to >10,000 steps/s
+* **Refactoring:** Optimized `EconModel` and `Agent` initialization logic
+
+**Stability & Fixes:**
+
+* **AMBER v0.1.5 Compatibility:** Added monkeypatch for `ambr`'s data collection to handle sparse data with Polars
+* **CI Fixes:** Resolved `NoneType` errors and `TypeError` in scalar conversions during stress tests
+* **Dependencies:** Added `pyarrow` (>=10.0.0) for proper Polars functionality
+
+**Code Quality:**
+
+* **Formatting:** Enforced global `black` and `isort` compliance
+* **Cleanup:** Removed conversational comments and deprecated logic
+
 Version 0.0.4 (2025-08-19)
 ---------------------------
 

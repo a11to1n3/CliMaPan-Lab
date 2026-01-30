@@ -1,7 +1,7 @@
 import copy
 from collections import OrderedDict
 
-import agentpy as ap
+import ambr as am
 import numpy as np
 import numpy.random as random
 from scipy.optimize import minimize
@@ -100,11 +100,10 @@ class ConsumerGoodsFirm(GoodsFirmBase):
         self.market_shareList.append(self.market_share)"""
         self.set_aggregate_demand(0)
         self.soldProducts = 0
-        # Select working-age, non-dead consumers to anchor labour assignment and sick-leave calc
-        self.consumersList = self.model.aliveConsumers.select(
-            self.model.aliveConsumers.getCovidStateAttr("state") != "dead"
-            and self.model.aliveConsumers.getAgeGroup() == "working"
-        )
+
+        # Optimization: Avoid O(N) selection. Use reference to global list.
+        # Filtering is done efficiently in calculate_all_wages and produce.
+        self.consumersList = self.model.aliveConsumers
         # market share
 
     def calculate_input_demand(self):
@@ -141,20 +140,34 @@ class ConsumerGoodsFirm(GoodsFirmBase):
         # Check production function in GoodsFirmBase
 
         # Aggregate sick leave among workers assigned to this firm
-        aggSickLeaves = np.sum(
-            [
-                len(aConsumer.getSickLeaves())
-                for aConsumer in self.consumersList
-                if aConsumer.getBelongToFirm() == self.id
-            ]
+        # Optimization: Use fast attribute check or set membership
+        # workers_set = set(self.workersList) # Use if self.workersList is not guaranteed to sync with employerID?
+        # But employerID is likely single source of truth.
+
+        # Fast iteration using direct attribute access if possible.
+        # Since self.consumersList is now ALL consumers, filtering by employerID is needed.
+
+        # Check if we can just iterate self.workersList if we can map IDs -> Objects?
+        # If not, iterating 5000 items is fast (0.04s total for 138 calls is ~0.0003s).
+        # Optimization: use fast set membership check on worker IDs
+        # This mirrors the pattern in calculate_all_wages for consistency and speed.
+
+        workers_set = set(self.workersList)
+        aggSickLeaves = sum(
+            len(aConsumer.getSickLeaves())
+            for aConsumer in self.consumersList
+            if aConsumer.id in workers_set
         )
         if self.p.verboseFlag:
             print("sick leave", aggSickLeaves)
 
         # Fraction of hours lost
-        sick_ratio = np.min(
-            [1, np.max([0, aggSickLeaves / (30 * len(self.workersList))])]
-        )
+        if len(self.workersList) > 0:
+            sick_ratio = np.min(
+                [1, np.max([0, aggSickLeaves / (30 * len(self.workersList))])]
+            )
+        else:
+            sick_ratio = 0
         if self.p.verboseFlag:
             print("sick ratio", sick_ratio)
 
@@ -246,10 +259,14 @@ class ConsumerGoodsFirm(GoodsFirmBase):
         )  # - self.inn
 
         # Profit margin (sales margin measure)
-        self.profit_margin = (
-            self.getSoldProducts() * self.getPrice()
-            - self.get_average_production_cost() * self.get_actual_production()
-        ) / (self.getSoldProducts() * self.getPrice())
+        sales_val = self.getSoldProducts() * self.getPrice()
+        if sales_val > 0:
+            self.profit_margin = (
+                sales_val
+                - self.get_average_production_cost() * self.get_actual_production()
+            ) / sales_val
+        else:
+            self.profit_margin = 0
 
         # Apply taxes (+ carbon tax if brown and policy active), compute net profit
         self.updateProfitsAfterTax(isC02Taxed=self.carbon_tax_state * self.brown_firm)
