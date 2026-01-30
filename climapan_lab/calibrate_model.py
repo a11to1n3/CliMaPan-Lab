@@ -20,7 +20,6 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from climapan_lab.src.models import EconModel
 from climapan_lab.base_params import economic_params as parameters
 
-
 # =============================================================================
 # Load Target Data
 # =============================================================================
