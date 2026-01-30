@@ -701,10 +701,11 @@ class EconModel(am.Model):
         super().update()
         if int(str(self.tomorrow).split("-")[-1]) == 1:
             # Monthly recording of all major indicators
-            self.record("date", listToArray(self.today))
-            self.record("GDP", listToArray(self.GDP))
+            # Record date as string for better compatibility
+            self.record("date", str(self.today))
+            self.record("GDP", self.GDP)
             self.record("Gini", self.gini)
-            self.record("People", listToArray(len(self.aliveConsumers)))
+            self.record("People", len(self.aliveConsumers))
             self.record("Gini Consumption", self.consumption_gini)
             self.record(
                 "UnemplDole",
@@ -712,7 +713,7 @@ class EconModel(am.Model):
                     self.aliveConsumers.getWage() == self.p.unemploymentDole
                 ],
             )
-            self.record("Unemployment Expenditure", listToArray(self.ue_gov))
+            self.record("Unemployment Expenditure", self.ue_gov)
             self.record("Owners Income", listToArray(self.aliveConsumers.getDiv()))
             self.record("Wage", listToArray(self.aliveConsumers.getWage()))
             # self.record('Average Income', listToArray( np.mean(self.aliveConsumers.getIncome())))
