@@ -46,6 +46,7 @@ setup(
         "h5py>=3.7.0",
         "statsmodels>=0.13.0",
         "plotly>=5.0",
+        "pyarrow>=10.0.0",
     ],
     extras_require={
         "dev": [
