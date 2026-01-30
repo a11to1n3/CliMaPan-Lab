@@ -684,8 +684,8 @@ class EconModel(am.Model):
         # print(self.bankrupt_total_count)
 
         ## Bank and Government accounting
-        self.expenditure = self.government_agents.E_Gov()
-        self.ue_gov = self.government_agents.UE_Gov()
+        self.expenditure = np.sum(self.government_agents.E_Gov())
+        self.ue_gov = np.sum(self.government_agents.UE_Gov())
 
         # Rebuild national accounts
         self.GDP = 0
