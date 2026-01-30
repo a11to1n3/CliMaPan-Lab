@@ -12,6 +12,12 @@ from collections import OrderedDict
 from datetime import date, timedelta
 
 import ambr as am
+# Apply monkeypatch for AMBER v0.1.5 (CI Fix)
+try:
+    from . import ambr_patch
+except ImportError:
+    pass
+
 import numpy as np
 
 from .banks.Bank import Bank
