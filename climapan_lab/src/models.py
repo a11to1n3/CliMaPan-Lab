@@ -12,7 +12,8 @@ from collections import OrderedDict
 from datetime import date, timedelta
 
 import ambr as am
-# Apply monkeypatch for AMBER v0.1.5 (CI Fix)
+
+# Apply monkeypatch for ambr v0.1.5 compatibility
 try:
     from . import ambr_patch
 except ImportError:
@@ -137,10 +138,12 @@ class EconModel(am.Model):
         # Assign age groups with small random deviations
         # Vectorized age group assignment
         rands = np.random.normal(0, 0.1, len(self.consumer_agents))
-        
+
         self.consumer_agents.select(rands < -0.1).call("setAgeGroup", "young")
         self.consumer_agents.select(rands > 0.15).call("setAgeGroup", "elderly")
-        self.consumer_agents.select((rands >= -0.1) & (rands <= 0.15)).call("setAgeGroup", "working")
+        self.consumer_agents.select((rands >= -0.1) & (rands <= 0.15)).call(
+            "setAgeGroup", "working"
+        )
 
         # Assign working-age consumers into economic roles
         count = 0
@@ -217,22 +220,26 @@ class EconModel(am.Model):
             if len(rest_agents) > 0:
                 probs = np.random.uniform(0, 1, len(rest_agents))
                 brown_mask = probs < 0.5
-                
+
                 brown_agents = rest_agents.select(brown_mask)
                 brown_agents.call("useEnergyType", "brown")
-                for agent in brown_agents: agent.brown_firm = True # Manual attribute update
-                
+                for agent in brown_agents:
+                    agent.brown_firm = True  # Manual attribute update
+
                 green_agents = rest_agents.select(~brown_mask)
                 green_agents.call("useEnergyType", "green")
-                for agent in green_agents: agent.brown_firm = False
+                for agent in green_agents:
+                    agent.brown_firm = False
         else:
-             # Single firm random assignment
-             if np.random.uniform(0, 1) < 0.5:
+            # Single firm random assignment
+            if np.random.uniform(0, 1) < 0.5:
                 self.csfirm_agents.call("useEnergyType", "brown")
-                for agent in self.csfirm_agents: agent.brown_firm = True
-             else:
+                for agent in self.csfirm_agents:
+                    agent.brown_firm = True
+            else:
                 self.csfirm_agents.call("useEnergyType", "green")
-                for agent in self.csfirm_agents: agent.brown_firm = False
+                for agent in self.csfirm_agents:
+                    agent.brown_firm = False
 
         ### Capital goods firms (CP)
         self.cpfirm_agents = am.AgentList(self, self.p.cpf_agents, CapitalGoodsFirm)
@@ -243,7 +250,7 @@ class EconModel(am.Model):
             self.cpfirm_agents[0].useEnergyType("brown")
             self.cpfirm_agents[0].capital = 5000
             self.cpfirm_agents[0].brown_firm = True
-            
+
             self.cpfirm_agents[1].useEnergyType("green")
             self.cpfirm_agents[1].capital = 4200
             self.cpfirm_agents[1].brown_firm = False
@@ -253,16 +260,16 @@ class EconModel(am.Model):
             if len(rest_agents) > 0:
                 probs = np.random.beta(3, 7, len(rest_agents))
                 brown_mask = probs < 0.5
-                
+
                 brown_agents = rest_agents.select(brown_mask)
                 brown_agents.call("useEnergyType", "brown")
-                for agent in brown_agents: 
+                for agent in brown_agents:
                     agent.capital = 5000
                     agent.brown_firm = True
-                
+
                 green_agents = rest_agents.select(~brown_mask)
                 green_agents.call("useEnergyType", "green")
-                for agent in green_agents: 
+                for agent in green_agents:
                     agent.capital = 4200
                     agent.brown_firm = False
         else:
@@ -419,25 +426,26 @@ class EconModel(am.Model):
         if self.p.covid_settings:
             # Count epidemiological states efficiently
             from collections import Counter
-            states = [c.covidState['state'] for c in self.aliveConsumers]
+
+            states = [c.covidState["state"] for c in self.aliveConsumers]
             counts = Counter(states)
-            
-            self.num_susceptible = counts['susceptible']
-            self.num_exposed = counts['exposed']
-            self.num_mild = counts['mild']
-            self.num_severe = counts['severe']
-            self.num_critical = counts['critical']
-            self.num_recover = counts['recovered'] + counts['immunized']
-            self.num_death = counts['dead']
-            
+
+            self.num_susceptible = counts["susceptible"]
+            self.num_exposed = counts["exposed"]
+            self.num_mild = counts["mild"]
+            self.num_severe = counts["severe"]
+            self.num_critical = counts["critical"]
+            self.num_recover = counts["recovered"] + counts["immunized"]
+            self.num_death = counts["dead"]
+
             # Total infection (all except susceptible, recovered, immunized, dead, None)
             # effectively: exposed + mild + severe + critical + infected non-sympotomatic
             self.num_infection = (
-                counts['exposed'] + 
-                counts['mild'] + 
-                counts['severe'] + 
-                counts['critical'] + 
-                counts['infected non-sympotomatic']
+                counts["exposed"]
+                + counts["mild"]
+                + counts["severe"]
+                + counts["critical"]
+                + counts["infected non-sympotomatic"]
             )
 
         # Terminate or continue Covid State:
@@ -694,7 +702,9 @@ class EconModel(am.Model):
         self.GDP += np.sum([self.expenditure])
 
         # Update inequality metrics
-        income_combined = self.aliveConsumers.getWage() + self.aliveConsumers.getIncome()
+        income_combined = (
+            self.aliveConsumers.getWage() + self.aliveConsumers.getIncome()
+        )
         self.gini = gini(income_combined)
         self.consumption_gini = gini(self.aliveConsumers.getConsumption())
 
@@ -710,10 +720,10 @@ class EconModel(am.Model):
             # Record date as string for better compatibility
             self.record("date", str(self.today))
             self.record("GDP", float(self.GDP))  # Ensure float scalar
-            self.record("Gini", float(self.gini)) # Ensure float scalar
+            self.record("Gini", float(self.gini))  # Ensure float scalar
             self.record("People", int(len(self.aliveConsumers)))
             self.record("Gini Consumption", float(self.consumption_gini))
-            
+
             # For array-like data, convert to Python lists to avoid Polars/numpy interaction issues with sparse data
             # ambr handles list of lists better than list of numpy arrays mixed with None
             self.record(
@@ -723,20 +733,30 @@ class EconModel(am.Model):
                 ].tolist(),
             )
             self.record("Unemployment Expenditure", float(self.ue_gov))
-            self.record("Owners Income", listToArray(self.aliveConsumers.getDiv()).tolist())
+            self.record(
+                "Owners Income", listToArray(self.aliveConsumers.getDiv()).tolist()
+            )
             self.record("Wage", listToArray(self.aliveConsumers.getWage()).tolist())
             # self.record('Average Income', listToArray( np.mean(self.aliveConsumers.getIncome())))
-            self.record("Employed", listToArray(self.aliveConsumers.isEmployed()).tolist())
             self.record(
-                "Consumer Type", listToArray(self.aliveConsumers.getConsumerType()).tolist()
+                "Employed", listToArray(self.aliveConsumers.isEmployed()).tolist()
+            )
+            self.record(
+                "Consumer Type",
+                listToArray(self.aliveConsumers.getConsumerType()).tolist(),
             )
             self.record(
                 "UnemploymentRate",
-                float(np.sum(listToArray(self.aliveConsumers.getUnemploymentState()), axis=0)
-                / (self.p.c_agents - self.num_owner)),
+                float(
+                    np.sum(
+                        listToArray(self.aliveConsumers.getUnemploymentState()), axis=0
+                    )
+                    / (self.p.c_agents - self.num_owner)
+                ),
             )
             self.record(
-                "Consumption", listToArray(self.aliveConsumers.getConsumption()).tolist()
+                "Consumption",
+                listToArray(self.aliveConsumers.getConsumption()).tolist(),
             )
             self.record(
                 "Desired Consumption",
@@ -746,16 +766,22 @@ class EconModel(am.Model):
             # Bank metrics
             self.record("Loans", listToArray(self.bank_agents.loans).tolist())
             self.record(
-                "Bank totalLoanSupply", listToArray(self.bank_agents.totalLoanSupply).tolist()
+                "Bank totalLoanSupply",
+                listToArray(self.bank_agents.totalLoanSupply).tolist(),
             )
             self.record("Bank Equity", listToArray(self.bank_agents.equity).tolist())
-            self.record("Bank Deposits", listToArray(self.bank_agents.deposits).tolist())
             self.record(
-                "Bank LDR",
-                listToArray(self.bank_agents.loans / (self.bank_agents.deposits + eps)).tolist(),
+                "Bank Deposits", listToArray(self.bank_agents.deposits).tolist()
             )
             self.record(
-                "Bank Loan Demands", listToArray(self.bank_agents.totalLoanDemands).tolist()
+                "Bank LDR",
+                listToArray(
+                    self.bank_agents.loans / (self.bank_agents.deposits + eps)
+                ).tolist(),
+            )
+            self.record(
+                "Bank Loan Demands",
+                listToArray(self.bank_agents.totalLoanDemands).tolist(),
             )
             self.record(
                 "Bank Loan Over Equity",
@@ -765,11 +791,14 @@ class EconModel(am.Model):
                 ).tolist(),
             )
             self.record("Bank DTE", listToArray(self.bank_agents.DTE).tolist())
-            self.record("Non Performing Loan", listToArray(self.bank_agents.NPL).tolist())
+            self.record(
+                "Non Performing Loan", listToArray(self.bank_agents.NPL).tolist()
+            )
             # self.record('Expected Inflation Rate', listToArray(self.expectedInflationRateList))
             self.record("Inflation Rate", listToArray(self.inflationRateList).tolist())
             self.record(
-                "Total Loan Demand", listToArray(self.bank_agents.totalLoanDemands).tolist()
+                "Total Loan Demand",
+                listToArray(self.bank_agents.totalLoanDemands).tolist(),
             )
 
             # CS Firm metrics
@@ -782,29 +811,44 @@ class EconModel(am.Model):
                 "CS U Cost",
                 listToArray(self.csfirm_agents.get_average_production_cost()).tolist(),
             )
-            self.record("CS Firm Loans", listToArray(self.csfirm_agents.loanObtained).tolist())
-            self.record("CS Net Profits", listToArray(self.csfirm_agents.net_profit).tolist())
-            self.record("CS Capital", listToArray(self.csfirm_agents.get_capital()).tolist())
-            self.record("CS Net Profits 2", listToArray(self.csfirm_agents.net_profit).tolist()) # Avoiding identical key replacement issue
-            self.record("CS Net Worth", listToArray(self.csfirm_agents.getNetWorth()).tolist())
             self.record(
-                "CS Number of Workers", listToArray(self.csfirm_agents.countWorkers).tolist()
+                "CS Firm Loans", listToArray(self.csfirm_agents.loanObtained).tolist()
             )
             self.record(
-                "CS Number of Consumers", listToArray(self.csfirm_agents.countConsumers).tolist()
+                "CS Net Profits", listToArray(self.csfirm_agents.net_profit).tolist()
+            )
+            self.record(
+                "CS Capital", listToArray(self.csfirm_agents.get_capital()).tolist()
+            )
+            self.record(
+                "CS Net Worth", listToArray(self.csfirm_agents.getNetWorth()).tolist()
+            )
+            self.record(
+                "CS Number of Workers",
+                listToArray(self.csfirm_agents.countWorkers).tolist(),
+            )
+            self.record(
+                "CS Number of Consumers",
+                listToArray(self.csfirm_agents.countConsumers).tolist(),
             )
             self.record("CS Price", listToArray(self.csfirm_agents.getPrice()).tolist())
             self.record(
-                "CS Sold Products", listToArray(self.csfirm_agents.getSoldProducts()).tolist()
+                "CS Sold Products",
+                listToArray(self.csfirm_agents.getSoldProducts()).tolist(),
             )
             self.record("CS Sale", listToArray(self.cssale).tolist())
             self.record("CS iL", listToArray(self.csfirm_agents.iL).tolist())
             self.record("CS iF", listToArray(self.csfirm_agents.iF).tolist())
             self.record(
-                "CS Loan Obtained", listToArray(self.csfirm_agents.loanObtained).tolist()
+                "CS Loan Obtained",
+                listToArray(self.csfirm_agents.loanObtained).tolist(),
             )
-            self.record("CS Deposit", listToArray(self.csfirm_agents.getDeposit()).tolist())
-            self.record("CS Margin", listToArray(self.csfirm_agents.profit_margin).tolist())
+            self.record(
+                "CS Deposit", listToArray(self.csfirm_agents.getDeposit()).tolist()
+            )
+            self.record(
+                "CS Margin", listToArray(self.csfirm_agents.profit_margin).tolist()
+            )
             self.record(
                 "CS Capital Investment",
                 listToArray(self.csfirm_agents.get_capital_investment()).tolist(),
@@ -817,33 +861,51 @@ class EconModel(am.Model):
                 ).tolist(),
             )
             self.record(
-                "CS Capacity", listToArray(self.csfirm_agents.get_actual_production()).tolist()
+                "CS Capacity",
+                listToArray(self.csfirm_agents.get_actual_production()).tolist(),
             )
-            self.record("CS Wage Bill", listToArray(self.csfirm_agents.wage_bill).tolist())
-            self.record("CS Loan Payment", listToArray(self.csfirm_agents.payback).tolist())
             self.record(
-                "CS Credit Default Risk", listToArray(self.csfirm_agents.defaultProb).tolist()
+                "CS Wage Bill", listToArray(self.csfirm_agents.wage_bill).tolist()
+            )
+            self.record(
+                "CS Loan Payment", listToArray(self.csfirm_agents.payback).tolist()
+            )
+            self.record(
+                "CS Credit Default Risk",
+                listToArray(self.csfirm_agents.defaultProb).tolist(),
             )
 
             # CP Firm metrics
             self.record(
-                "CP Credit Default Risk", listToArray(self.cpfirm_agents.defaultProb).tolist()
+                "CP Credit Default Risk",
+                listToArray(self.cpfirm_agents.defaultProb).tolist(),
             )
             self.record("CP Num Bankrupt", int(self.numCPFirmBankrupt))
-            self.record("CP Firm Loans", listToArray(self.cpfirm_agents.loanObtained).tolist())
-            self.record("CP Net Profits", listToArray(self.cpfirm_agents.net_profit).tolist())
-            self.record("CP Net Worth", listToArray(self.cpfirm_agents.getNetWorth()).tolist())
-            self.record("CP Capital", listToArray(self.cpfirm_agents.get_capital()).tolist())
+            self.record(
+                "CP Firm Loans", listToArray(self.cpfirm_agents.loanObtained).tolist()
+            )
+            self.record(
+                "CP Net Profits", listToArray(self.cpfirm_agents.net_profit).tolist()
+            )
+            self.record(
+                "CP Net Worth", listToArray(self.cpfirm_agents.getNetWorth()).tolist()
+            )
+            self.record(
+                "CP Capital", listToArray(self.cpfirm_agents.get_capital()).tolist()
+            )
             self.record("CP Price", listToArray(self.cpfirm_agents.getPrice()).tolist())
             self.record(
-                "CP Sold Products", listToArray(self.cpfirm_agents.getSoldProducts()).tolist()
+                "CP Sold Products",
+                listToArray(self.cpfirm_agents.getSoldProducts()).tolist(),
             )
             self.record("CP Sale", listToArray(self.ksale).tolist())
             self.record(
-                "CP Number of Workers", listToArray(self.cpfirm_agents.countWorkers).tolist()
+                "CP Number of Workers",
+                listToArray(self.cpfirm_agents.countWorkers).tolist(),
             )
             self.record(
-                "CP Number of Consumers", listToArray(self.cpfirm_agents.countConsumers).tolist()
+                "CP Number of Consumers",
+                listToArray(self.cpfirm_agents.countConsumers).tolist(),
             )
             self.record(
                 "CP V Cost",
@@ -856,9 +918,12 @@ class EconModel(am.Model):
             self.record("CP iL", listToArray(self.cpfirm_agents.iL).tolist())
             self.record("CP iF", listToArray(self.cpfirm_agents.iF).tolist())
             self.record(
-                "CP Loan Obtained", listToArray(self.cpfirm_agents.loanObtained).tolist()
+                "CP Loan Obtained",
+                listToArray(self.cpfirm_agents.loanObtained).tolist(),
             )
-            self.record("CP Deposit", listToArray(self.cpfirm_agents.getDeposit()).tolist())
+            self.record(
+                "CP Deposit", listToArray(self.cpfirm_agents.getDeposit()).tolist()
+            )
             self.record(
                 "CP Production Cost",
                 listToArray(
@@ -867,13 +932,20 @@ class EconModel(am.Model):
                 ).tolist(),
             )
             self.record(
-                "CP Capacity", listToArray(self.cpfirm_agents.get_actual_production()).tolist()
+                "CP Capacity",
+                listToArray(self.cpfirm_agents.get_actual_production()).tolist(),
             )
-            self.record("CP Wage Bill", listToArray(self.cpfirm_agents.wage_bill).tolist())
-            self.record("CP Loan Payment", listToArray(self.cpfirm_agents.payback).tolist())
+            self.record(
+                "CP Wage Bill", listToArray(self.cpfirm_agents.wage_bill).tolist()
+            )
+            self.record(
+                "CP Loan Payment", listToArray(self.cpfirm_agents.payback).tolist()
+            )
 
             # Governments
-            self.record("Fiscal Policy", listToArray(self.government_agents.fiscal).tolist())
+            self.record(
+                "Fiscal Policy", listToArray(self.government_agents.fiscal).tolist()
+            )
             self.record("Expenditures", listToArray(self.expenditure).tolist())
             self.record("Total Taxes", listToArray(self.totalTaxes).tolist())
             self.record("Budget", listToArray(self.government_agents.budget).tolist())
@@ -966,17 +1038,26 @@ class EconModel(am.Model):
 
             # Data writers
             try:
-                if len(self.bank_agents.bankDataWriter) > 0 and len(self.bank_agents.bankDataWriter[0]) > 0:
+                if (
+                    len(self.bank_agents.bankDataWriter) > 0
+                    and len(self.bank_agents.bankDataWriter[0]) > 0
+                ):
                     self.record(
                         "BankDataWriter",
                         listToArray(self.bank_agents.bankDataWriter)[-1][-1],
                     )
-                if len(self.csfirm_agents.firmDataWriter) > 0 and len(self.csfirm_agents.firmDataWriter[0]) > 0:
+                if (
+                    len(self.csfirm_agents.firmDataWriter) > 0
+                    and len(self.csfirm_agents.firmDataWriter[0]) > 0
+                ):
                     self.record(
                         "CSFirmDataWriter",
                         listToArray(self.csfirm_agents.firmDataWriter)[-1][-1],
                     )
-                if len(self.cpfirm_agents.firmDataWriter) > 0 and len(self.cpfirm_agents.firmDataWriter[0]) > 0:
+                if (
+                    len(self.cpfirm_agents.firmDataWriter) > 0
+                    and len(self.cpfirm_agents.firmDataWriter[0]) > 0
+                ):
                     self.record(
                         "CPFirmDataWriter",
                         listToArray(self.cpfirm_agents.firmDataWriter)[-1][-1],
@@ -1022,15 +1103,15 @@ class EconModel(am.Model):
 
         # Vectorized firm update: set demand proportional to market share
         self.csfirm_agents.call("prepareForecast")
-        
+
         market_shares = self.csfirm_agents.market_share
         if isinstance(market_shares, list):
             market_shares = np.array(market_shares)
-            
+
         demands = aggregated_demand * market_shares
-        
+
         # Iterate to set since we don't have a direct vector setter for this specific calculation pattern yet
-        # (Could use batch_update if we constructed a dict, but this loop is simple enough for now 
+        # (Could use batch_update if we constructed a dict, but this loop is simple enough for now
         # given we need to multiply scalar * vector)
         for i, firm in enumerate(self.csfirm_agents):
             firm.set_aggregate_demand(demands[i])
@@ -1084,26 +1165,26 @@ class EconModel(am.Model):
             # Pre-calculate offset for firm ID mapping
             # The 'company' key in orderedCompaniesProductionC comes from loop index 'i' (0 to n_firms-1)
             # The code below previously searched for identity == company + offset
-            # But wait, self.csfirm_agents is a list/sequence. 
+            # But wait, self.csfirm_agents is a list/sequence.
             # If 'company' is just the index 'i' from the first loop (line 1014),
             # then we can just access self.csfirm_agents[company] directly!
-            
+
             # The original code used:
             # chosenFirm = self.csfirm_agents.select(getIdentity() - offset == company)
             # If company 'i' corresponds to csfirm_agents[i], then getIdentity() should match.
             # Let's verify indexing assumption. Yes, line 1014 iterates range(len).
             # So 'company' IS the index.
-            
+
             # Optimization: Direct access
             for company, production in self.orderedCompaniesProductionC.items():
                 if purchase >= desired_consumption:
                     break
-                    
-                chosenFirm = self.csfirm_agents[company] 
-                
+
+                chosenFirm = self.csfirm_agents[company]
+
                 # Double check identity if paranoid, but structure implies index alignment
                 # (The original code searched for identity - offset == company)
-                
+
                 if production == 0:
                     continue
 
@@ -1119,7 +1200,8 @@ class EconModel(am.Model):
                                     np.min(
                                         [
                                             desired_consumption,
-                                            (aConsumer.deposit + aConsumer.getIncome()) / price,
+                                            (aConsumer.deposit + aConsumer.getIncome())
+                                            / price,
                                         ]
                                     ),
                                     0,
@@ -1157,36 +1239,39 @@ class EconModel(am.Model):
         self.cpfirm_agents.call("prepareForecast")
 
         firmsList = self.csfirm_agents + self.brownEFirm + self.greenEFirm
-        
+
         # Vectorized aggregation
         # Assuming `useEnergy` is an attribute 'brown' or 'green'
         use_energy = firmsList.useEnergy
-        capital_demands = firmsList.get_capital_demand() # Vectorized call
-        
+        capital_demands = firmsList.get_capital_demand()  # Vectorized call
+
         # Check if returned as list or numpy array, convert if needed
-        if isinstance(use_energy, list): use_energy = np.array(use_energy)
-        if isinstance(capital_demands, list): capital_demands = np.array(capital_demands)
-        
-        b_mask = (use_energy == "brown")
+        if isinstance(use_energy, list):
+            use_energy = np.array(use_energy)
+        if isinstance(capital_demands, list):
+            capital_demands = np.array(capital_demands)
+
+        b_mask = use_energy == "brown"
         b_aggregated_demand = np.sum(capital_demands[b_mask])
         g_aggregated_demand = np.sum(capital_demands[~b_mask])
 
         # Vectorized assignment
         # CP firms also have `useEnergy`
         cp_use_energy = self.cpfirm_agents.useEnergy
-        if isinstance(cp_use_energy, list): cp_use_energy = np.array(cp_use_energy)
-        
-        cp_b_mask = (cp_use_energy == "brown")
-        
+        if isinstance(cp_use_energy, list):
+            cp_use_energy = np.array(cp_use_energy)
+
+        cp_b_mask = cp_use_energy == "brown"
+
         # Set demands using loops for now to be safe until bulk setter is confirmed safe
         # self.cpfirm_agents.select(cp_b_mask).call("set_aggregate_demand", b_aggregated_demand)
         # self.cpfirm_agents.select(~cp_b_mask).call("set_aggregate_demand", g_aggregated_demand)
-        
+
         for firm in self.cpfirm_agents:
             if firm.useEnergy == "brown":
-                 firm.set_aggregate_demand(b_aggregated_demand)
+                firm.set_aggregate_demand(b_aggregated_demand)
             else:
-                 firm.set_aggregate_demand(g_aggregated_demand)
+                firm.set_aggregate_demand(g_aggregated_demand)
 
     def _cpf_transaction(self):
         """Capital-goods market clearing: CP sells to CS+Energy firms"""
