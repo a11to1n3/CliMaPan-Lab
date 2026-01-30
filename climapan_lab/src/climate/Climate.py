@@ -1,6 +1,6 @@
 import copy
 
-import agentpy as ap
+import ambr as am
 import numpy as np
 
 # ============================================================================
@@ -42,7 +42,7 @@ import numpy as np
 # ============================================================================
 
 
-class Climate(ap.Agent):
+class Climate(am.Agent):
     def setup(self):
         # ----------------------------------------
         # Parameters & Core State

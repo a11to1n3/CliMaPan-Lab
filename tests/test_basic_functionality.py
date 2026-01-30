@@ -88,16 +88,25 @@ class TestBasicFunctionality(unittest.TestCase):
 
     def test_model_run_short(self):
         """Test that we can run the model for a few steps."""
+
+    def test_model_run_short(self):
+        """Test that we can run the model for a few steps."""
         model = EconModel(self.params)
-        model.run()
+        results = model.run()
 
         # Check that the model ran for the expected number of steps
         self.assertEqual(model.t, self.params["steps"])
 
-        # Check that data collection works (AgentPy stores in model.output.variables)
-        self.assertTrue(hasattr(model, "output"))
-        if hasattr(model, "output"):
-            self.assertTrue(hasattr(model.output, "variables"))
+        # Check that data collection works (ambr returns dict with 'model' DataFrame)
+        # Legacy AgentPy checked model.output.variables
+        # We now check the returned results
+        if isinstance(results, dict):
+            self.assertIn("model", results)
+            self.assertFalse(results["model"].is_empty())
+        else:
+            # If wrapper is used or AgentPy compat matches
+            self.assertTrue(hasattr(results, "variables"))
+            self.assertTrue(hasattr(results.variables, "EconModel"))
 
 
 class TestDataStructures(unittest.TestCase):

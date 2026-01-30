@@ -1,13 +1,13 @@
 import copy
 from collections import OrderedDict
 
-import agentpy as ap
+import ambr as am
 import numpy as np
 import numpy.random as random
 import pandas as pd
 
 
-class Bank(ap.Agent):
+class Bank(am.Agent):
     """A bank agent"""
 
     def setup(self):
@@ -44,16 +44,37 @@ class Bank(ap.Agent):
             self.model.cpfirm_agents.loan_demand > 0
         )
 
-        self.orderedAgentsInterestsRaw = np.argsort(
-            np.concatenate(
-                [
-                    updateCSFList.defaultProb,
-                    updateCPList.defaultProb,
-                    self.model.greenEFirm.defaultProb,
-                    self.model.brownEFirm.defaultProb,
-                ]
+        # print("DEBUG: updateCSFList.defaultProb shape:", updateCSFList.defaultProb.shape)
+        # print("DEBUG: updateCPList.defaultProb shape:", updateCPList.defaultProb.shape)
+        # print("DEBUG: greenEFirm.defaultProb shape:", self.model.greenEFirm.defaultProb.shape)
+        # print("DEBUG: brownEFirm.defaultProb shape:", self.model.brownEFirm.defaultProb.shape)
+
+        try:
+            self.orderedAgentsInterestsRaw = np.argsort(
+                np.concatenate(
+                    [
+                        updateCSFList.defaultProb,
+                        updateCPList.defaultProb,
+                        self.model.greenEFirm.defaultProb,
+                        self.model.brownEFirm.defaultProb,
+                    ]
+                )
             )
-        )
+        except ValueError as e:
+            print(f"Error concatenating defaultProb: {e}")
+            print(
+                f"updateCSFList.defaultProb: {updateCSFList.defaultProb}, type: {type(updateCSFList.defaultProb)}, shape: {getattr(updateCSFList.defaultProb, 'shape', 'N/A')}"
+            )
+            print(
+                f"updateCPList.defaultProb: {updateCPList.defaultProb}, type: {type(updateCPList.defaultProb)}, shape: {getattr(updateCPList.defaultProb, 'shape', 'N/A')}"
+            )
+            print(
+                f"greenEFirm.defaultProb: {self.model.greenEFirm.defaultProb}, type: {type(self.model.greenEFirm.defaultProb)}, shape: {getattr(self.model.greenEFirm.defaultProb, 'shape', 'N/A')}"
+            )
+            print(
+                f"brownEFirm.defaultProb: {self.model.brownEFirm.defaultProb}, type: {type(self.model.brownEFirm.defaultProb)}, shape: {getattr(self.model.brownEFirm.defaultProb, 'shape', 'N/A')}"
+            )
+            raise e
         self.orderedAgentsInterests = np.concatenate(
             [
                 updateCSFList.id,
@@ -110,7 +131,7 @@ class Bank(ap.Agent):
         Returns:
         """
         # print("bank start")
-        agent = self.agentList.select(self.agentList.getIdentity() == agent_id)
+        agent = self.agentList.select(self.agentList.getIdentity() == agent_id)[0]
         bankruptFraction = agent.defaultProb * np.sum(agent.loanList[0])
 
         L_CAR = 0
@@ -154,10 +175,19 @@ class Bank(ap.Agent):
 
         # Demands and Transactions
         # [self._calculate_wealth(agent) for agent in self.model.consumer_agents]
-        [
-            self._calculate_consumer_networth(agent)
-            for agent in self.model.aliveConsumers
+        # Consolidate consumer demands efficiently (Vectorized)
+        live_consumers = [
+            c for c in self.model.aliveConsumers if c.covidState["state"] != "dead"
         ]
+
+        if live_consumers:
+            # Sum wealth (wealthList[-1]) and deposits
+            # Using generator expression for memory efficiency
+            total_wealth = sum(c.wealthList[-1] for c in live_consumers)
+            total_deposits = sum(c.deposit for c in live_consumers)
+
+            self.deposits += total_wealth
+            self.profit += -np.sum(self.p.bankID * total_deposits)
         [self._calculate_firm_networth(agent) for agent in self.model.cpfirm_agents]
         self._calculate_firm_networth(self.model.greenEFirm[0])
         self._calculate_firm_networth(self.model.brownEFirm[0])
@@ -183,24 +213,21 @@ class Bank(ap.Agent):
             + self.model.greenEFirm
             + self.model.brownEFirm
         )
-        self.numberOfUnemployed = sum(
-            np.array(self.model.aliveConsumers.getEmploymentState() == 0)
-            * np.array(
-                (
-                    self.model.aliveConsumers.consumerType == "workers"
-                    and self.model.aliveConsumers.getCovidStateAttr("state") != "dead"
-                )
-            )
-        )
-        self.numberOfEmployed = sum(
-            np.array(self.model.aliveConsumers.getEmploymentState() == 1)
-            * np.array(
-                (
-                    self.model.aliveConsumers.consumerType == "workers"
-                    and self.model.aliveConsumers.getCovidStateAttr("state") != "dead"
-                )
-            )
-        )
+        consumers = self.model.aliveConsumers
+        # Optimization: Pre-fetch arrays to avoid method call overhead
+        is_employed = np.array([c.employed for c in consumers])
+        # Direct dict access for covid state
+        cov_states = np.array([c.covidState["state"] for c in consumers])
+        # Attribute access for type (AMBER handles this or we list comp)
+        cons_types = np.array([c.consumerType for c in consumers])
+
+        is_worker = cons_types == "workers"
+        not_dead = cov_states != "dead"
+
+        # Unemployed: Worker AND Not Employed AND Not Dead
+        # Employed: Worker AND Employed AND Not Dead
+        self.numberOfUnemployed = np.sum((~is_employed) & is_worker & not_dead)
+        self.numberOfEmployed = np.sum(is_employed & is_worker & not_dead)
         self.profit = 0
         self.totalLoanDemands = 0
         self.equities = 0

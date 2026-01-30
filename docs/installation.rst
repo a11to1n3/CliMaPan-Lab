@@ -18,7 +18,7 @@ Core Dependencies
 * **numpy** (>=1.21.0) - Numerical computing
 * **pandas** (>=1.3.0) - Data manipulation and analysis
 * **matplotlib** (>=3.5.0) - Plotting and visualization
-* **agentpy** (>=0.1.5) - Agent-based modeling framework
+* **ambr** (>=0.1.5) - Agent-based modeling framework (replaces agentpy)
 * **scikit-learn** (>=1.0.0) - Machine learning utilities
 * **scipy** (>=1.7.0) - Scientific computing
 * **joblib** (>=1.1.0) - Parallel computing
@@ -27,6 +27,7 @@ Core Dependencies
 * **pathos** (>=0.2.8) - Parallel processing
 * **dill** (>=0.3.4) - Serialization
 * **h5py** (>=3.7.0) - HDF5 file handling
+* **pyarrow** (>=10.0.0) - Polars integration
 
 Installation Methods
 --------------------
