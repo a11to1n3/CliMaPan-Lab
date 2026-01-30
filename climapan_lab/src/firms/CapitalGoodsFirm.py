@@ -136,10 +136,8 @@ class CapitalGoodsFirm(GoodsFirmBase):
 
         if len(self.workersList) > 0:
             denominator = 720 * len(self.workersList)
-            if denominator > 0: # Guard against division by zero
-                sick_ratio = np.min(
-                    [1, np.max([0, aggSickLeaves / denominator])]
-                )
+            if denominator > 0:  # Guard against division by zero
+                sick_ratio = np.min([1, np.max([0, aggSickLeaves / denominator])])
             else:
                 sick_ratio = 0
         else:

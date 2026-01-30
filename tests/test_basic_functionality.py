@@ -88,6 +88,7 @@ class TestBasicFunctionality(unittest.TestCase):
 
     def test_model_run_short(self):
         """Test that we can run the model for a few steps."""
+
     def test_model_run_short(self):
         """Test that we can run the model for a few steps."""
         model = EconModel(self.params)

@@ -356,7 +356,7 @@ class Consumer(am.Agent):
         try:
             return self.covidState[attr]
         except KeyError:
-             raise SyntaxError(
+            raise SyntaxError(
                 f"No such attribute '{attr}'. Please select from: {list(self.covidState.keys())}"
             )
 
@@ -384,13 +384,13 @@ class Consumer(am.Agent):
     def _progressCovidExposedState(self):
         """Progress from exposed state"""
         self.setSickLeaves(str(self.model.today))
-        if self.covidState['duration'] is None:
+        if self.covidState["duration"] is None:
             # Choose branch to 'mild' or 'infected non-symptomatic' by age
             if self.getAgeGroup() == "young":
                 if np.random.rand() < self.p.p_exposed_mild_young:
                     self.setCovidState(
                         "exposed",
-                        self.covidState['t'],
+                        self.covidState["t"],
                         lognormal(
                             self.p.T_exposed_mild_mean, self.p.T_exposed_mild_std
                         ),
@@ -399,7 +399,7 @@ class Consumer(am.Agent):
                 else:
                     self.setCovidState(
                         "infected non-sympotomatic",
-                        self.covidState['t'],
+                        self.covidState["t"],
                         lognormal(
                             self.p.T_nonsym_recovered_mean,
                             self.p.T_nonsym_recovered_std,
@@ -410,7 +410,7 @@ class Consumer(am.Agent):
                 if np.random.rand() < self.p.p_exposed_mild_working:
                     self.setCovidState(
                         "exposed",
-                        self.covidState['t'],
+                        self.covidState["t"],
                         lognormal(
                             self.p.T_exposed_mild_mean, self.p.T_exposed_mild_std
                         ),
@@ -419,7 +419,7 @@ class Consumer(am.Agent):
                 else:
                     self.setCovidState(
                         "infected non-sympotomatic",
-                        self.covidState['t'],
+                        self.covidState["t"],
                         lognormal(
                             self.p.T_nonsym_recovered_mean,
                             self.p.T_nonsym_recovered_std,
@@ -430,7 +430,7 @@ class Consumer(am.Agent):
                 if np.random.rand() < self.p.p_exposed_mild_elderly:
                     self.setCovidState(
                         "exposed",
-                        self.covidState['t'],
+                        self.covidState["t"],
                         lognormal(
                             self.p.T_exposed_mild_mean, self.p.T_exposed_mild_std
                         ),
@@ -439,7 +439,7 @@ class Consumer(am.Agent):
                 else:
                     self.setCovidState(
                         "infected non-sympotomatic",
-                        self.covidState['t'],
+                        self.covidState["t"],
                         lognormal(
                             self.p.T_nonsym_recovered_mean,
                             self.p.T_nonsym_recovered_std,
@@ -448,23 +448,21 @@ class Consumer(am.Agent):
                     )
         else:
             # If duration was set earlier, transition when time is up
-            if self.model.t >= self.covidState['t'] + self.getCovidStateAttr(
+            if self.model.t >= self.covidState["t"] + self.getCovidStateAttr(
                 "duration"
             ):
-                self.setCovidState(self.covidState['nextState'], self.model.t)
+                self.setCovidState(self.covidState["nextState"], self.model.t)
 
     def _progressCovidInfectedNonsympotomaticState(self):
         """Progress from infected non-symptomatic state"""
         self.setSickLeaves(str(self.model.today))
-        if self.model.t >= self.covidState['t'] + self.getCovidStateAttr(
-            "duration"
-        ):
-            self.setCovidState(self.covidState['nextState'], self.model.t)
+        if self.model.t >= self.covidState["t"] + self.getCovidStateAttr("duration"):
+            self.setCovidState(self.covidState["nextState"], self.model.t)
 
     def _progressCovidMildState(self):
         """Progress from mild symptoms state"""
         self.setSickLeaves(str(self.model.today))
-        if self.covidState['duration'] is None:
+        if self.covidState["duration"] is None:
             # Age-specific branch to 'severe' vs 'recovered' with vaccination modifier
             if self.getAgeGroup() == "young":
                 if np.random.rand() < self.p.p_mild_severe_young * (
@@ -524,15 +522,15 @@ class Consumer(am.Agent):
                         "recovered",
                     )
         else:
-            if self.model.t >= self.covidState['t'] + self.getCovidStateAttr(
+            if self.model.t >= self.covidState["t"] + self.getCovidStateAttr(
                 "duration"
             ):
-                self.setCovidState(self.covidState['nextState'], self.model.t)
+                self.setCovidState(self.covidState["nextState"], self.model.t)
 
     def _progressCovidSevereState(self):
         """Progress from severe symptoms state"""
         self.setSickLeaves(str(self.model.today))
-        if self.covidState['duration'] is None:
+        if self.covidState["duration"] is None:
             # Branch to 'critical' or 'recovered' by age
             if self.getAgeGroup() == "young":
                 if np.random.rand() < self.p.p_severe_critical_young:
@@ -595,15 +593,15 @@ class Consumer(am.Agent):
                         "recovered",
                     )
         else:
-            if self.model.t >= self.covidState['t'] + self.getCovidStateAttr(
+            if self.model.t >= self.covidState["t"] + self.getCovidStateAttr(
                 "duration"
             ):
-                self.setCovidState(self.covidState['nextState'], self.model.t)
+                self.setCovidState(self.covidState["nextState"], self.model.t)
 
     def _progressCovidCriticalState(self):
         """Progress from critical state"""
         self.setSickLeaves(str(self.model.today))
-        if self.covidState['duration'] is None:
+        if self.covidState["duration"] is None:
             # Branch to death vs recovery by age
             if self.getAgeGroup() == "young":
                 if np.random.rand() < self.p.p_critical_death_young:
@@ -666,10 +664,10 @@ class Consumer(am.Agent):
                         "recovered",
                     )
         else:
-            if self.model.t >= self.covidState['t'] + self.getCovidStateAttr(
+            if self.model.t >= self.covidState["t"] + self.getCovidStateAttr(
                 "duration"
             ):
-                self.setCovidState(self.covidState['nextState'], self.model.t)
+                self.setCovidState(self.covidState["nextState"], self.model.t)
 
     def _progressCovidRecoveredState(self):
         """Progress from recovered state to immunity or susceptible"""
@@ -693,9 +691,7 @@ class Consumer(am.Agent):
     def _progressCovidImmunizedState(self):
         """Progress from immunized state"""
         # Immunity wears off after 'duration' days
-        if self.model.t >= self.covidState['t'] + self.getCovidStateAttr(
-            "duration"
-        ):
+        if self.model.t >= self.covidState["t"] + self.getCovidStateAttr("duration"):
             self.setCovidState()
 
     def _progressCovidDeadState(self):
@@ -706,20 +702,20 @@ class Consumer(am.Agent):
 
     def progressCovid(self):
         """Main COVID progression dispatcher by current state"""
-        if self.covidState['state'] == "exposed":
+        if self.covidState["state"] == "exposed":
             self._progressCovidExposedState()
-        elif self.covidState['state'] == "infected non-sympotomatic":
+        elif self.covidState["state"] == "infected non-sympotomatic":
             self._progressCovidInfectedNonsympotomaticState()
-        elif self.covidState['state'] == "mild":
+        elif self.covidState["state"] == "mild":
             self._progressCovidMildState()
-        elif self.covidState['state'] == "severe":
+        elif self.covidState["state"] == "severe":
             self._progressCovidSevereState()
-        elif self.covidState['state'] == "critical":
+        elif self.covidState["state"] == "critical":
             self._progressCovidCriticalState()
-        elif self.covidState['state'] == "recovered":
+        elif self.covidState["state"] == "recovered":
             self._progressCovidRecoveredState()
             self.resetSickLeaves()
-        elif self.covidState['state'] == "immunized":
+        elif self.covidState["state"] == "immunized":
             # Mutation risk while immunized (re-exposure)
             if np.random.rand() < self.p.p_mutation * (
                 (1 - self.p.p_vax) ** int(self.p.covid_settings == "VAX")
@@ -727,7 +723,7 @@ class Consumer(am.Agent):
                 self.setCovidState("exposed", self.model.t)
             else:
                 self._progressCovidImmunizedState()
-        elif self.covidState['state'] == "dead":
+        elif self.covidState["state"] == "dead":
             self._progressCovidDeadState()
 
     # ----------------------------------------

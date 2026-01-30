@@ -216,7 +216,9 @@ class TestPerformance(unittest.TestCase):
             # For extremely fast runs, system noise dominates.
             threshold = max(avg_time, 0.1)
             self.assertLess(
-                max_deviation, threshold, f"Performance is too inconsistent between runs (dev={max_deviation:.4f}, avg={avg_time:.4f})"
+                max_deviation,
+                threshold,
+                f"Performance is too inconsistent between runs (dev={max_deviation:.4f}, avg={avg_time:.4f})",
             )
 
 

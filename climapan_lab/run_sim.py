@@ -53,20 +53,23 @@ varListCsv = []  # Variables to export as CSV files
 
 class AgentPyCompatibleResults:
     """Wrapper to make ambr results compatible with AgentPy structure used in CliMaPan-Lab."""
+
     def __init__(self, ambr_results):
         # Create a structure that mimics result.variables.EconModel
-        self.variables = type('Variables', (), {})()
+        self.variables = type("Variables", (), {})()
         # ambr returns {'model': df, 'agents': df, ...}
         # We map 'model' df to EconModel and convert to pandas
-        if isinstance(ambr_results, dict) and 'model' in ambr_results:
-             setattr(self.variables, 'EconModel', ambr_results['model'].to_pandas())
-             # Also attach agents if needed, though mostly EconModel is used
-             if 'agents' in ambr_results:
-                 setattr(self.variables, 'agents', ambr_results['agents'].to_pandas())
+        if isinstance(ambr_results, dict) and "model" in ambr_results:
+            setattr(self.variables, "EconModel", ambr_results["model"].to_pandas())
+            # Also attach agents if needed, though mostly EconModel is used
+            if "agents" in ambr_results:
+                setattr(self.variables, "agents", ambr_results["agents"].to_pandas())
         else:
-             # Fallback if it's already in the right format or something else
-             # If it's already an AgentPy-like object, just assign its variables
-             self.variables = ambr_results.variables if hasattr(ambr_results, 'variables') else None
+            # Fallback if it's already in the right format or something else
+            # If it's already an AgentPy-like object, just assign its variables
+            self.variables = (
+                ambr_results.variables if hasattr(ambr_results, "variables") else None
+            )
 
 
 def single_run(
