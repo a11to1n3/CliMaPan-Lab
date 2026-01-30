@@ -1,6 +1,7 @@
-import polars as pl
 import time
+
 import ambr
+import polars as pl
 from ambr.model import Model
 
 

@@ -6,19 +6,20 @@ Calibrates model parameters against Germany9122.csv using AUTOCORRELATION-BASED 
 This matches the dynamics/patterns of time series rather than absolute values.
 """
 
+import json
 import os
 import sys
 import time
-import json
+from typing import Any, Dict, List, Tuple
+
 import numpy as np
 import pandas as pd
-from typing import Dict, Any, List, Tuple
 
 # Add parent directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from climapan_lab.src.models import EconModel
 from climapan_lab.base_params import economic_params as parameters
+from climapan_lab.src.models import EconModel
 
 # =============================================================================
 # Load Target Data
