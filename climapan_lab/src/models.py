@@ -13,12 +13,6 @@ from datetime import date, timedelta
 
 import ambr as am
 
-# Apply monkeypatch for ambr v0.1.5 compatibility
-try:
-    from . import ambr_patch
-except ImportError:
-    pass
-
 import numpy as np
 
 from .banks.Bank import Bank
