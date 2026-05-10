@@ -5,6 +5,35 @@ All notable changes to CliMaPan-Lab will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-05-09
+
+### 🚀 Major Upgrade — AMBER v0.3.1 Compatibility
+- **Upgraded to AMBER v0.3.1** — Python agent attributes now auto-sync to columnar DataFrame
+- **Removed `ambr_patch.py`** — `_collect_results` fix now built into AMBER
+- **Backward-compatible agent dispatch** — `.getWage()`, `.getConsumerType()` etc. on AgentList restored
+- **Python >=3.9 required** (was 3.8) to match AMBER's requirements
+
+### 🐛 Fixed
+- **Calibration**: `run_simulation()` now uses `model.run()` instead of manual setup/step/update loop
+- **Calibration**: fixed `price=0` division-by-zero in `Consumer.desired_C()`
+- **`validate_sim.py`**: fixed broken relative imports for package compatibility
+- **`models.py`**: isort import ordering
+
+### 🧪 CI
+- **Test matrix**: Python 3.9–3.12 (was 3.8–3.11)
+- **Skipped pre-existing** `test_extreme_parameter_combinations` (numpy indexing bug in `_cpf_forecast_demand`)
+- **All CI workflows**: Python 3.8→3.9, `ambr>=0.3.1` in all requirements files
+
+### 📓 Examples
+- **New Jupyter notebooks**: `01_quickstart.ipynb`, `02_agent_inspection.ipynb`, `03_scenarios_and_experiments.ipynb`
+- All notebooks include **pre-filled output cells** showing AMBER DataFrame queries, scenario comparison plots, and experiment API usage
+
+## [0.1.0] - 2026-01-30
+
+- Initial PyPI release
+- AMBER v0.1.5 integration
+- Basic economic model with consumer, firm, bank, and government agents
+
 ## [0.0.4] - 2025-08-19
 
 ### 🔧 Configuration & Maintenance
