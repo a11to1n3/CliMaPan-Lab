@@ -113,7 +113,11 @@ class Consumer(am.Agent):
         sick = self.model.covidState  # model-level COVID flag
 
         # Base demand: subsistence + add-on (higher if employed/owner),
-        # bounded by 80% of current deposits in real terms
+        # bounded by 80% of current deposits in real terms.
+        # Guard against price == 0 (before first market clearing).
+        if self.price <= 0:
+            self.desired_consumption = self.consumptionSubsistenceLevel
+            return
         base_consumption = self.consumptionSubsistenceLevel + np.min(
             [
                 self.employed * self.worker_additional_consumption

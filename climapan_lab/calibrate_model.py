@@ -172,48 +172,32 @@ def run_simulation(params: dict, n_years: int = 10) -> dict:
     sim_params["climateModuleFlag"] = True
 
     model = EconModel(sim_params)
-    model.setup()
+    results = model.run()
 
-    monthly_gdp = []
-    monthly_unemployment = []
-    monthly_investment = []
-    monthly_co2 = []
+    # Extract monthly data from the model's recorded DataFrame.
+    model_df = results["model"]
 
-    for step in range(steps):
-        model.step()
-        model.update()
-
-        if hasattr(model, "GDP") and model.GDP > 0:
-            monthly_gdp.append(model.GDP)
-        if hasattr(model, "unemploymentRate"):
-            monthly_unemployment.append(model.unemploymentRate * 100)
-        if hasattr(model, "ksale"):
-            monthly_investment.append(model.ksale)
-        if hasattr(model, "climateModule") and hasattr(model.climateModule, "EM"):
-            monthly_co2.append(
-                model.climateModule.EM[-1] if len(model.climateModule.EM) > 0 else 0
-            )
-
-    def yearly_aggregate(monthly_data: list, n_years: int) -> np.ndarray:
-        if not monthly_data:
-            return np.zeros(n_years)
-        arr = np.array(monthly_data)
-        n_months = len(arr)
+    def yearly_aggregate(col_name: str, n_years: int, default: float = 0) -> np.ndarray:
+        if col_name not in model_df.columns:
+            return np.full(n_years, default)
+        values = model_df[col_name].drop_nulls().to_numpy()
+        if len(values) == 0:
+            return np.full(n_years, default)
         years = []
         for y in range(n_years):
             start = y * 12
-            end = min((y + 1) * 12, n_months)
-            if start < n_months:
-                years.append(np.mean(arr[start:end]))
+            end = min((y + 1) * 12, len(values))
+            if start < len(values):
+                years.append(float(np.mean(values[start:end])))
             else:
-                years.append(0)
+                years.append(default)
         return np.array(years)
 
     return {
-        "GDP": yearly_aggregate(monthly_gdp, n_years),
-        "UnemploymentRate": yearly_aggregate(monthly_unemployment, n_years),
-        "Investment": yearly_aggregate(monthly_investment, n_years),
-        "Climate C02": yearly_aggregate(monthly_co2, n_years),
+        "GDP": yearly_aggregate("GDP", n_years),
+        "UnemploymentRate": yearly_aggregate("UnemploymentRate", n_years, 0),
+        "Investment": yearly_aggregate("Investment", n_years),
+        "Climate C02": yearly_aggregate("Climate C02", n_years),
     }
 
 
