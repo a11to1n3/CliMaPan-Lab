@@ -33,7 +33,7 @@ def load_target_data(filepath: str = None) -> pd.DataFrame:
         filepath = os.path.join(
             os.path.dirname(os.path.abspath(__file__)), "data", "TwoCountriesData.csv"
         )
-    
+
     try:
         df = pd.read_csv(filepath)
         df = df.ffill().bfill()
@@ -112,7 +112,6 @@ PARAM_SPACE = {
     "wageAdjustmentRate": (0.0001, 0.01),
     "depreciationRate": (0.1, 0.4),
     "rho_labour": (40, 120),
-    
     # Country B parameters (if explicit in your model setup)
     # "countryB_wageAdjustmentRate": (0.0001, 0.01),
     # "countryB_depreciationRate": (0.1, 0.4),
@@ -132,7 +131,7 @@ def run_simulation(params: dict, n_years: int = 10) -> dict:
     sim_params.update(params)
     sim_params["steps"] = steps
     sim_params["show_progress"] = False
-    
+
     model = EconModel(sim_params)
     model.setup()
 
@@ -155,11 +154,15 @@ def run_simulation(params: dict, n_years: int = 10) -> dict:
             monthly_metrics["CountryA_GDP"].append(model.countryA_GDP)
         if hasattr(model, "countryB_GDP"):
             monthly_metrics["CountryB_GDP"].append(model.countryB_GDP)
-            
+
         if hasattr(model, "countryA_unemploymentRate"):
-            monthly_metrics["CountryA_Unemployment"].append(model.countryA_unemploymentRate * 100)
+            monthly_metrics["CountryA_Unemployment"].append(
+                model.countryA_unemploymentRate * 100
+            )
         if hasattr(model, "countryB_unemploymentRate"):
-            monthly_metrics["CountryB_Unemployment"].append(model.countryB_unemploymentRate * 100)
+            monthly_metrics["CountryB_Unemployment"].append(
+                model.countryB_unemploymentRate * 100
+            )
 
     def yearly_aggregate(monthly_data: list, n_years: int) -> np.ndarray:
         if not monthly_data:
@@ -181,7 +184,7 @@ def run_simulation(params: dict, n_years: int = 10) -> dict:
         key: yearly_aggregate(values, n_years)
         for key, values in monthly_metrics.items()
     }
-    
+
     return yearly_results
 
 
@@ -200,11 +203,13 @@ def objective_function(
         sim_results = run_simulation(params, n_years)
         total_distance = 0.0
         n_metrics = 0
-        
+
         # Define the exact column names expected in your Target CSV
         target_metrics = [
-            "CountryA_GDP", "CountryB_GDP", 
-            "CountryA_Unemployment", "CountryB_Unemployment"
+            "CountryA_GDP",
+            "CountryB_GDP",
+            "CountryA_Unemployment",
+            "CountryB_Unemployment",
         ]
 
         for metric in target_metrics:
@@ -343,7 +348,7 @@ def save_results(results: list, output_path: str):
 
 if __name__ == "__main__":
     target_data = load_target_data()
-    
+
     if target_data.empty:
         print("Exiting due to missing target data.")
         sys.exit(1)
@@ -351,7 +356,12 @@ if __name__ == "__main__":
     print("\nTarget Data Statistics:")
     print("-" * 40)
     # Match the metrics from dual target lists
-    target_metrics = ["CountryA_GDP", "CountryB_GDP", "CountryA_Unemployment", "CountryB_Unemployment"]
+    target_metrics = [
+        "CountryA_GDP",
+        "CountryB_GDP",
+        "CountryA_Unemployment",
+        "CountryB_Unemployment",
+    ]
     for col in target_metrics:
         if col in target_data.columns:
             stats = compute_statistics(target_data[col].values)
@@ -374,7 +384,8 @@ if __name__ == "__main__":
         print(f"  {k}: {v:.6f}")
 
     output_path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "calibration_results_2_countries.json"
+        os.path.dirname(os.path.abspath(__file__)),
+        "calibration_results_2_countries.json",
     )
     save_results(results, output_path)
     print(f"Results JSON saved to: {output_path}")
@@ -383,7 +394,9 @@ if __name__ == "__main__":
         os.path.dirname(os.path.abspath(__file__)), "optimized_params_2_countries.py"
     )
     with open(best_params_path, "w") as f:
-        f.write("# Optimized Multi-Country parameters from Autocorrelation-Based Monte Carlo calibration\n")
+        f.write(
+            "# Optimized Multi-Country parameters from Autocorrelation-Based Monte Carlo calibration\n"
+        )
         f.write("optimized_params = {\n")
         for k, v in sorted(results[0]["params"].items()):
             f.write(f"    '{k}': {v},\n")

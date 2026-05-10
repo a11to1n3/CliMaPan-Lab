@@ -12,7 +12,6 @@ from collections import OrderedDict
 from datetime import date, timedelta
 
 import ambr as am
-
 import numpy as np
 
 from .banks.Bank import Bank
