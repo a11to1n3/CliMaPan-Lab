@@ -18,9 +18,9 @@ from joblib import Parallel, delayed
 from tqdm.contrib.concurrent import thread_map
 
 warnings.filterwarnings("ignore")
-from src.models import EconModel
-from src.params import parameters
-from validation_params import params
+from .src.models import EconModel
+from .src.params import parameters
+from .analysis.validation_params import params
 
 
 class Validator:
