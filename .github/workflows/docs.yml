@@ -9,12 +9,15 @@ on:
       - '.readthedocs.yaml'
       - 'pyproject.toml'
       - 'requirements.txt'
+      - '.github/workflows/docs.yml'
   pull_request:
     branches: [ main ]
     paths:
       - 'docs/**'
       - 'climapan_lab/**'
       - '.readthedocs.yaml'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
 
 jobs:
   build-docs:
@@ -76,15 +79,19 @@ jobs:
     needs: build-docs
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    # Secrets cannot be used in `if:` expressions (causes "Unrecognized named-value: 'secrets'"
+    # and the whole workflow fails with "No jobs were run"). Map to env first, then gate on env.
+    env:
+      RTD_WEBHOOK_URL: ${{ secrets.RTD_WEBHOOK_URL }}
     
     steps:
     - name: Trigger Read the Docs build
-      if: ${{ secrets.RTD_WEBHOOK_URL != '' }}
+      if: env.RTD_WEBHOOK_URL != ''
       run: |
         curl -X POST \
           -H "Content-Type: application/json" \
           -d '{"branches": ["main"]}' \
-          ${{ secrets.RTD_WEBHOOK_URL }}
+          "$RTD_WEBHOOK_URL"
       continue-on-error: true
     
     - name: Notify documentation update
@@ -92,10 +99,12 @@ jobs:
         echo "Documentation has been updated and should be available at:"
         echo "https://climapan-lab.readthedocs.io/en/latest/"
         echo ""
-        echo "If this is the first setup, please:"
-        echo "1. Go to https://readthedocs.org"
-        echo "2. Import this repository"
-        echo "3. Configure the webhook for automatic builds"
+        if [ -z "${RTD_WEBHOOK_URL}" ]; then
+          echo "Note: RTD_WEBHOOK_URL secret is not set; skipped webhook trigger."
+          echo "To enable automatic RTD builds from this workflow:"
+          echo "1. Go to https://readthedocs.org and import this repository"
+          echo "2. Add a repository secret RTD_WEBHOOK_URL with the RTD build webhook URL"
+        fi
 
   check-docs-coverage:
     runs-on: ubuntu-latest
