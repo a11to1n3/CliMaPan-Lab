@@ -61,7 +61,7 @@ docs/
 └── _static/
 ```
 
-User-facing summary of the same topics also lives in the root **[README.md](../README.md)**.
+User-facing summary of the same topics also lives in the repository root ``README.md``.
 
 ## 🔨 Building Documentation Locally
 

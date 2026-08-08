@@ -35,7 +35,6 @@ The EconModel integrates several key components with detailed documentation:
 Key Methods
 -----------
 
-.. automethod:: EconModel.__init__
-.. automethod:: EconModel.setup
-.. automethod:: EconModel.step
-.. automethod:: EconModel.run 
+Primary lifecycle methods (``setup``, ``step``, ``update``) are documented on the
+class above via ``:members:``. Prefer that section over re-declaring automethods
+here (avoids Sphinx duplicate-object warnings under ``-W``).

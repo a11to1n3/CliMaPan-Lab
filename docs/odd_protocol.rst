@@ -1,5 +1,5 @@
 ODD+D Protocol Documentation for CliMaPan-Lab
-============================================
+=============================================
 
 This document provides a comprehensive Overview, Design concepts, and Details (ODD) protocol with Decision logic extensions (ODD+D) for the CliMaPan-Lab agent-based model.
 
@@ -41,7 +41,7 @@ Each step executes the following (monthly):
 6. Update climate indicators (emissions, temperature)
 
 Temporal Granularity
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
 
 The simulation advances in daily steps. COVID transmission, health-state progression, and contact generation run daily.
 
@@ -103,7 +103,7 @@ Firms
    NW_{f,t} < 0 \Rightarrow \text{exit and replacement}
 
 Exit and Replacement
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
 
 Firms with negative net worth or failed loan schedules are marked bankrupt, cleared of outstanding loans, and immediately replaced with new firm while retains current capital. Replacement may switch energy type to preserve sectoral diversity (brown/green share constraints).
 

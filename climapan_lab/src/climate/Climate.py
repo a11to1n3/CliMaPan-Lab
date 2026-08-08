@@ -255,9 +255,11 @@ class Climate(am.Agent):
 
     def process_aggregate_damage(self):
         """
-        Compute aggregate damages:
-          - ETD (economic/output) as a function of GDP, concentration ratio, and parameters.
-          - ETM (labor/employment) as a function of workers_t, GDP ratio, and parameters.
+        Compute aggregate damages.
+
+        - ETD (economic/output) as a function of GDP, concentration ratio, and parameters.
+        - ETM (labor/employment) as a function of workers_t, GDP ratio, and parameters.
+
         These are stored as attributes and can be recorded/used elsewhere.
         """
         # Output damages (concentration ratio raised to gamma_etd, scaled by GDP and sigma_d)

@@ -59,11 +59,17 @@ autodoc_default_options = {
 }
 
 templates_path = ["_templates"]
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = [
+    "_build",
+    "Thumbs.db",
+    ".DS_Store",
+    "README.md",  # RTD setup notes only; not part of the Sphinx toctree
+]
 
-# MyST parser settings
+# MyST parser settings (keep .md optional; exclude docs/README.md above)
 source_suffix = {
-    ".rst": None,
+    ".rst": "restructuredtext",
+    ".md": "markdown",
 }
 
 myst_enable_extensions = [
@@ -135,4 +141,4 @@ intersphinx_mapping = {
 master_doc = "index"
 
 # Mock imports for dependencies that might not be available during build
-autodoc_mock_imports = ["agentpy", "pathos", "salib", "h5py"]
+autodoc_mock_imports = ["agentpy", "ambr", "pathos", "salib", "h5py", "sobol_seq"]

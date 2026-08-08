@@ -63,7 +63,7 @@ Historical search note: ``calibration_results.json`` currently contains only
 ``optimized_params`` as a **candidate**, not a fully explored optimum.
 
 Evaluation under ambr 0.4.7
---------------------------
+---------------------------
 
 Re-scored configurations at ``n_years=5`` (full agent scale):
 
