@@ -1,0 +1,655 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ODD+D Protocol Documentation for CliMaPan-Lab &mdash; CliMaPan-Lab 0.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e259d695"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing to CliMaPan-Lab" href="contributing.html" />
+    <link rel="prev" title="Economic Agents" href="api/agents.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CliMaPan-Lab
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#dependencies">Dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#core-dependencies">Core Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-methods">Installation Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#install-from-source-recommended">Install from Source (Recommended)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#install-from-github">Install from GitHub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#install-in-development-mode">Install in Development Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#virtual-environment-recommended">Virtual Environment (Recommended)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#verify-installation">Verify Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#common-issues">Common Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#system-specific-notes">System-specific Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#basic-simulation">Basic Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#running-different-scenarios">Running Different Scenarios</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#business-as-usual-bau">Business as Usual (BAU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#carbon-tax-scenario">Carbon Tax Scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#pandemic-scenario">Pandemic Scenario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#combined-climate-and-pandemic">Combined Climate and Pandemic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#climate-damage-scenarios">Climate Damage Scenarios</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#command-line-interface">Command Line Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#basic-run">Basic Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#with-visualization">With Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#multiple-runs">Multiple Runs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#custom-parameters">Custom Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#climate-damage-options">Climate Damage Options</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#analyzing-results">Analyzing Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#basic-visualization">Basic Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#key-parameters">Key Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#economic-settings">Economic Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#covid-settings">COVID Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#climate-settings">Climate Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#simulation-settings">Simulation Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="climate.html">Climate Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#climate-damage-types">Climate Damage Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="climate.html#aggpop-aggregate-population">AggPop (Aggregate Population)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="climate.html#idiosyncratic">Idiosyncratic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="climate.html#none">None</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#climate-parameters">Climate Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#climate-variables">Climate Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#command-line-usage">Command Line Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#integration-with-economic-scenarios">Integration with Economic Scenarios</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="climate.html#carbon-tax-scenarios">Carbon Tax Scenarios</a></li>
+<li class="toctree-l3"><a class="reference internal" href="climate.html#covid-climate-interactions">COVID-Climate Interactions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#historical-context">Historical Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#best-practices">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="climate.html#example-analysis">Example Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="amber.html">AMBER Compatibility</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="amber.html#results-api">Results API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="amber.html#time-steps-and-monthly-recording">Time steps and monthly recording</a></li>
+<li class="toctree-l2"><a class="reference internal" href="amber.html#execution-modes-vectorized-vs-oop">Execution modes (vectorized vs OOP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="amber.html#amber-0-3-0-4-notes">AMBER 0.3 → 0.4 notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="amber.html#integrity-checks-performed">Integrity checks performed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="amber.html#related-docs">Related docs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="calibration.html">Model Calibration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calibration.html#entry-points">Entry points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calibration.html#how-a-trial-works">How a trial works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calibration.html#objective-lower-is-better">Objective (lower is better)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calibration.html#bayesian-search">Bayesian search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calibration.html#evaluation-under-ambr-0-4-7">Evaluation under ambr 0.4.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calibration.html#known-limitations">Known limitations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#acf-inert-for-short-horizons">ACF inert for short horizons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#scale-and-unit-mismatches">Scale and unit mismatches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibration.html#unemployment-dynamics">Unemployment dynamics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="calibration.html#running-calibration">Running calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calibration.html#recommended-follow-ups">Recommended follow-ups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calibration.html#see-also">See also</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/model.html">Economic Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/model.html#climapan_lab.src.models.EconModel"><code class="docutils literal notranslate"><span class="pre">EconModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/model.html#climapan_lab.src.models.EconModel.setup"><code class="docutils literal notranslate"><span class="pre">EconModel.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/model.html#climapan_lab.src.models.EconModel.step"><code class="docutils literal notranslate"><span class="pre">EconModel.step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/model.html#climapan_lab.src.models.EconModel.initiate_step"><code class="docutils literal notranslate"><span class="pre">EconModel.initiate_step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/model.html#climapan_lab.src.models.EconModel.stepwise_forecast"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_forecast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/model.html#climapan_lab.src.models.EconModel.stepwise_produce"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_produce()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/model.html#climapan_lab.src.models.EconModel.stepwise_after_production"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_after_production()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/model.html#climapan_lab.src.models.EconModel.stepwise_termination"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_termination()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/model.html#climapan_lab.src.models.EconModel.update"><code class="docutils literal notranslate"><span class="pre">EconModel.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/model.html#climapan_lab.src.models.EconModel.end"><code class="docutils literal notranslate"><span class="pre">EconModel.end()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/model.html#model-architecture">Model Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/model.html#model-components">Model Components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/model.html#key-methods">Key Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/agents.html">Economic Agents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/agents.html#consumers">Consumers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/agents.html#climapan_lab.src.consumers.Consumer"><code class="docutils literal notranslate"><span class="pre">Consumer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/agents.html#firms">Firms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/agents.html#consumer-goods-firms">Consumer Goods Firms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/agents.html#capital-goods-firms">Capital Goods Firms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/agents.html#energy-firms">Energy Firms</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/agents.html#banks">Banks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/agents.html#climapan_lab.src.banks.Bank"><code class="docutils literal notranslate"><span class="pre">Bank</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/agents.html#government">Government</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/agents.html#climapan_lab.src.governments.Government"><code class="docutils literal notranslate"><span class="pre">Government</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/agents.html#climate-module">Climate Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/agents.html#climapan_lab.src.climate.Climate"><code class="docutils literal notranslate"><span class="pre">Climate</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#main-model">Main Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/index.html#climapan_lab.EconModel"><code class="docutils literal notranslate"><span class="pre">EconModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/index.html#climapan_lab.EconModel.setup"><code class="docutils literal notranslate"><span class="pre">EconModel.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/index.html#climapan_lab.EconModel.step"><code class="docutils literal notranslate"><span class="pre">EconModel.step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/index.html#climapan_lab.EconModel.initiate_step"><code class="docutils literal notranslate"><span class="pre">EconModel.initiate_step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/index.html#climapan_lab.EconModel.stepwise_forecast"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_forecast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/index.html#climapan_lab.EconModel.stepwise_produce"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_produce()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/index.html#climapan_lab.EconModel.stepwise_after_production"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_after_production()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/index.html#climapan_lab.EconModel.stepwise_termination"><code class="docutils literal notranslate"><span class="pre">EconModel.stepwise_termination()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/index.html#climapan_lab.EconModel.update"><code class="docutils literal notranslate"><span class="pre">EconModel.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/index.html#climapan_lab.EconModel.end"><code class="docutils literal notranslate"><span class="pre">EconModel.end()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#module-climapan_lab.base_params">Core Parameters</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Model Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ODD+D Protocol Documentation for CliMaPan-Lab</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#purpose">Purpose</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#entities-state-variables-and-scales">Entities, State Variables, and Scales</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#process-overview-and-scheduling">Process Overview and Scheduling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#temporal-granularity">Temporal Granularity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stopping-condition">Stopping Condition</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#design-concepts-odd-core-odd-d-extensions">Design Concepts (ODD core + ODD+D extensions)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#decision-logic-odd-d-extension">Decision Logic (ODD+D Extension)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#households">Households</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#firms">Firms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#exit-and-replacement">Exit and Replacement</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#banks">Banks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#government">Government</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pandemic-module">Pandemic Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bounded-rationality-and-uncertainty">Bounded Rationality and Uncertainty</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#details">Details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#initialization">Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#input-data">Input Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submodels">Submodels</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#appendices">Appendices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#appendix-a-parameter-overview">Appendix A: Parameter Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#appendix-b-simulation-configuration-and-modularity">Appendix B: Simulation Configuration and Modularity</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#model-configuration">Model Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#shock-dynamics-and-event-handling">Shock Dynamics and Event Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#appendix-c-epidemic-network-structure">Appendix C: Epidemic Network Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#appendix-d-model-limitations">Appendix D: Model Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#appendix-e-output-format-and-data-export">Appendix E: Output Format and Data Export</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-abbreviations">Acronyms and Abbreviations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to CliMaPan-Lab</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#development-setup">Development Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#code-style">Code Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#submitting-changes">Submitting Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#reporting-issues">Reporting Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-0-2026-08-08">Version 0.3.0 (2026-08-08)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-0-2026-01-30">Version 0.1.0 (2026-01-30)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-0-4-2025-08-19">Version 0.0.4 (2025-08-19)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-0-3-2025-07-21">Version 0.0.3 (2025-07-21)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-0-2-2025-07-20">Version 0.0.2 (2025-07-20)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-0-1-2025-07-15">Version 0.0.1 (2025-07-15)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="license.html#mit-license">MIT License</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CliMaPan-Lab</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ODD+D Protocol Documentation for CliMaPan-Lab</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/odd_protocol.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="odd-d-protocol-documentation-for-climapan-lab">
+<h1>ODD+D Protocol Documentation for CliMaPan-Lab<a class="headerlink" href="#odd-d-protocol-documentation-for-climapan-lab" title="Link to this heading"></a></h1>
+<p>This document provides a comprehensive Overview, Design concepts, and Details (ODD) protocol with Decision logic extensions (ODD+D) for the CliMaPan-Lab agent-based model.</p>
+<p><strong>Authors:</strong> Paola D’Orazio, Anh-Duy Pham, Son Hong Nguyen</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<section id="purpose">
+<h3>Purpose<a class="headerlink" href="#purpose" title="Link to this heading"></a></h3>
+<p>The CliMaPan Lab model simulates macro-financial and socio-environmental effects arising from compound climate and pandemic risks. It integrates epidemiological (SEIR-based), climate (FUND-based), and macroeconomic modules in an agent-based setting to investigate feedback loops, sectoral vulnerabilities, and systemic fragility. The model supports scenario analysis and policy design under deep uncertainty.</p>
+</section>
+<section id="entities-state-variables-and-scales">
+<h3>Entities, State Variables, and Scales<a class="headerlink" href="#entities-state-variables-and-scales" title="Link to this heading"></a></h3>
+<p>Agent types include:</p>
+<ul class="simple">
+<li><p><strong>Households</strong> (workers, capitalists, energy owners): health state, income, consumption rule, deposits</p></li>
+<li><p><strong>Firms</strong> (consumption, capital, energy): capital stock, productivity, cash reserves, debt</p></li>
+<li><p><strong>Banks</strong>: equity, loans, deposits, capital ratio</p></li>
+<li><p><strong>Government</strong>: budget, taxation rules, activation thresholds for fiscal/health policies</p></li>
+<li><p><strong>Climate and Epidemic Modules</strong>: systemic variables (e.g., temperature, infection states)</p></li>
+</ul>
+<p><strong>Time scale:</strong> daily steps with monthly economic blocks</p>
+<p><strong>Space:</strong> single-country closed economy (Germany for calibration)</p>
+</section>
+<section id="process-overview-and-scheduling">
+<h3>Process Overview and Scheduling<a class="headerlink" href="#process-overview-and-scheduling" title="Link to this heading"></a></h3>
+<p>Each step executes the following (monthly):</p>
+<ol class="arabic simple">
+<li><p>Income generation, epidemic transmission, mortality updates</p></li>
+<li><p>Household consumption, savings update</p></li>
+<li><p>Firm production, investment, pricing, credit demand</p></li>
+<li><p>Bank loan allocation, interest pricing</p></li>
+<li><p>Government policy application (e.g., taxes, lockdowns)</p></li>
+<li><p>Update climate indicators (emissions, temperature)</p></li>
+</ol>
+<section id="temporal-granularity">
+<h4>Temporal Granularity<a class="headerlink" href="#temporal-granularity" title="Link to this heading"></a></h4>
+<p>The simulation advances in daily steps. COVID transmission, health-state progression, and contact generation run daily.</p>
+</section>
+<section id="stopping-condition">
+<h4>Stopping Condition<a class="headerlink" href="#stopping-condition" title="Link to this heading"></a></h4>
+<p>The simulation runs for a fixed horizon of T days (or M months). No early stopping conditions are used.</p>
+</section>
+</section>
+</section>
+<section id="design-concepts-odd-core-odd-d-extensions">
+<h2>Design Concepts (ODD core + ODD+D extensions)<a class="headerlink" href="#design-concepts-odd-core-odd-d-extensions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Basic Principles</strong>: Post-Keynesian ABM with feedbacks between health, climate, and macro-financial states</p></li>
+<li><p><strong>Emergence</strong>: Systemic crises, sectoral shocks, environmental degradation from micro-decisions</p></li>
+<li><p><strong>Adaptation</strong>: Rule-of-thumb adjustments based on past performance</p></li>
+<li><p><strong>Objectives</strong>: Agents pursue satisficing behavior (not optimization)</p></li>
+<li><p><strong>Learning</strong>: Bounded adaptation; no machine learning or optimization</p></li>
+<li><p><strong>Prediction</strong>: Agents use lagged observations to forecast demand/income</p></li>
+<li><p><strong>Sensing</strong>: Local observations; no perfect foresight</p></li>
+<li><p><strong>Interaction</strong>: Markets (goods, labor, credit, energy), epidemics via network links</p></li>
+<li><p><strong>Stochasticity</strong>: Storm shocks, epidemic states, productivity, firm exit</p></li>
+<li><p><strong>Collectives</strong>: Sector aggregates; no group-level decision-making</p></li>
+<li><p><strong>Observation</strong>: Outputs include GDP, credit volumes, infection rates, emissions</p></li>
+<li><p><strong>Uncertainty Representation</strong>: All stochastic draws use NumPy pseudo random number generator. Runs are reproducible via the parameter <code class="docutils literal notranslate"><span class="pre">seed</span></code>. Monte Carlo and parameter sweeps are orchestrated from <code class="docutils literal notranslate"><span class="pre">run_sim.py</span></code></p></li>
+</ul>
+</section>
+<section id="decision-logic-odd-d-extension">
+<h2>Decision Logic (ODD+D Extension)<a class="headerlink" href="#decision-logic-odd-d-extension" title="Link to this heading"></a></h2>
+<p>This section formalizes the decision rules of agents as required by the ODD+D protocol.</p>
+<section id="households">
+<h3>Households<a class="headerlink" href="#households" title="Link to this heading"></a></h3>
+<p><strong>Consumption:</strong></p>
+<div class="math notranslate nohighlight">
+\[C^*_h = \bar{C}_x + \alpha Y_h \quad \text{(healthy)} \quad \text{and} \quad C^*_h = \psi C^*_h \quad \text{(if sick)}\]</div>
+<p><strong>Savings update:</strong></p>
+<div class="math notranslate nohighlight">
+\[D_{h,t} = D_{h,t-1}(1+i_d) + Y_{h,t} - C_{h,t}\]</div>
+</section>
+<section id="firms">
+<h3>Firms<a class="headerlink" href="#firms" title="Link to this heading"></a></h3>
+<p><strong>Production and credit demand:</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}Q_{f,t} &amp;= f(E_{f,t}, L_{f,t}, K_{f,t}) \\
+\text{If } R_{f,t} &lt; \text{costs} &amp;\Rightarrow \text{apply for loan } L_{f,t} = \max(0, \text{gap})\end{split}\]</div>
+<p><strong>Default condition:</strong></p>
+<div class="math notranslate nohighlight">
+\[NW_{f,t} &lt; 0 \Rightarrow \text{exit and replacement}\]</div>
+<section id="exit-and-replacement">
+<h4>Exit and Replacement<a class="headerlink" href="#exit-and-replacement" title="Link to this heading"></a></h4>
+<p>Firms with negative net worth or failed loan schedules are marked bankrupt, cleared of outstanding loans, and immediately replaced with new firm while retains current capital. Replacement may switch energy type to preserve sectoral diversity (brown/green share constraints).</p>
+</section>
+</section>
+<section id="banks">
+<h3>Banks<a class="headerlink" href="#banks" title="Link to this heading"></a></h3>
+<p><strong>Credit rule:</strong></p>
+<div class="math notranslate nohighlight">
+\[\sum \zeta_{x,t} L_{x,t} \leq \gamma E_{B,t} \quad \text{(capital adequacy)}\]</div>
+<p><strong>Interest rate:</strong></p>
+<div class="math notranslate nohighlight">
+\[i_{x,t} = (1 + \zeta_{x,t})i_{CB} \quad \text{with } i_D &lt; i_{CB} &lt; i_x\]</div>
+</section>
+<section id="government">
+<h3>Government<a class="headerlink" href="#government" title="Link to this heading"></a></h3>
+<p>Rules:</p>
+<ul class="simple">
+<li><p>Lockdowns triggered if infection &gt; θ_I</p></li>
+<li><p>Transfers triggered if unemployment &gt; θ_U</p></li>
+<li><p>Emissions taxed if policy active</p></li>
+</ul>
+</section>
+<section id="pandemic-module">
+<h3>Pandemic Module<a class="headerlink" href="#pandemic-module" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Infection Dynamics:</strong> An extension based on a stochastic SEIR process with network transmission</p></li>
+<li><p><strong>Transmission Probability:</strong> Infection occurs when a susceptible household is connected to an infected individual in the network</p></li>
+<li><p><strong>Health States:</strong> Susceptible, Non-Symptomatic, Mild, Severe, Critical, Recovered, Dead. Mortality won’t remove the agent from the model</p></li>
+<li><p><strong>Behavioral Adjustments:</strong> Infected households reduce consumption and labor supply according to parameters ψ (consumption) and sick leave rules</p></li>
+<li><p><strong>Uncertainty:</strong> Stochastic variation in infection outcomes (random draws for exposure, recovery, and mortality)</p></li>
+</ul>
+</section>
+<section id="bounded-rationality-and-uncertainty">
+<h3>Bounded Rationality and Uncertainty<a class="headerlink" href="#bounded-rationality-and-uncertainty" title="Link to this heading"></a></h3>
+<p>All agents operate under heuristic rules, use partial information, and adjust reactively. No intertemporal optimization.</p>
+</section>
+</section>
+<section id="details">
+<h2>Details<a class="headerlink" href="#details" title="Link to this heading"></a></h2>
+<section id="initialization">
+<h3>Initialization<a class="headerlink" href="#initialization" title="Link to this heading"></a></h3>
+<p>Firms, households, and bank parameters are drawn from stylized distributions. Initial states (e.g., equity, productivity, infection status) are randomized within bounds. Simulation burn-in of 3 years used.</p>
+</section>
+<section id="input-data">
+<h3>Input Data<a class="headerlink" href="#input-data" title="Link to this heading"></a></h3>
+<p>Macroeconomic indicators (GDP, CPI, labor share) and emissions data from IMF and World Bank. Climate parameters follow FUND model calibration.</p>
+</section>
+<section id="submodels">
+<h3>Submodels<a class="headerlink" href="#submodels" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Households</strong>: Rule-of-thumb consumption, epidemic status adjustment</p></li>
+<li><p><strong>Firms</strong>: Adaptive demand forecasting, CES production, credit constraints</p></li>
+<li><p><strong>Banks</strong>: Risk-weighted credit rationing, threshold-based interest markup</p></li>
+<li><p><strong>Government</strong>: Fiscal responses, emissions regulation toggles</p></li>
+<li><p><strong>Epidemic Module</strong>: Networked SEIR model by age and severity class</p></li>
+<li><p><strong>Climate Module</strong>: CO2 accumulation, temperature forcing, storm mortality</p></li>
+</ul>
+</section>
+</section>
+<section id="appendices">
+<h2>Appendices<a class="headerlink" href="#appendices" title="Link to this heading"></a></h2>
+<section id="appendix-a-parameter-overview">
+<h3>Appendix A: Parameter Overview<a class="headerlink" href="#appendix-a-parameter-overview" title="Link to this heading"></a></h3>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Key Model Parameters</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 35.0%" />
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 20.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Symbol</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Unit</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Source</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>α</p></td>
+<td><p>Marginal propensity to consume</p></td>
+<td><p>–</p></td>
+<td><p>0.6</p></td>
+<td><p>Calibrated</p></td>
+</tr>
+<tr class="row-odd"><td><p>C̄_x</p></td>
+<td><p>Minimum consumption</p></td>
+<td><p>$</p></td>
+<td><p>400</p></td>
+<td><p>Stylized</p></td>
+</tr>
+<tr class="row-even"><td><p>ψ</p></td>
+<td><p>Sick consumption reduction</p></td>
+<td><p>–</p></td>
+<td><p>0.8</p></td>
+<td><p>Assumed</p></td>
+</tr>
+<tr class="row-odd"><td><p>δ_k</p></td>
+<td><p>Capital depreciation rate</p></td>
+<td><p>% per month</p></td>
+<td><p>20</p></td>
+<td><p>Calibrated</p></td>
+</tr>
+<tr class="row-even"><td><p>γ</p></td>
+<td><p>Capital buffer ratio</p></td>
+<td><p>–</p></td>
+<td><p>0.08</p></td>
+<td><p>Regulation</p></td>
+</tr>
+<tr class="row-odd"><td><p>ζ_{x,t}</p></td>
+<td><p>Default probability</p></td>
+<td><p>–</p></td>
+<td><p>[0.01–0.25]</p></td>
+<td><p>Endogenous</p></td>
+</tr>
+<tr class="row-even"><td><p>θ_I</p></td>
+<td><p>Lockdown infection threshold</p></td>
+<td><p>%</p></td>
+<td><p>3.0</p></td>
+<td><p>Assumed</p></td>
+</tr>
+<tr class="row-odd"><td><p>θ_U</p></td>
+<td><p>Transfer unemployment threshold</p></td>
+<td><p>%</p></td>
+<td><p>8.0</p></td>
+<td><p>Assumed</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="appendix-b-simulation-configuration-and-modularity">
+<h3>Appendix B: Simulation Configuration and Modularity<a class="headerlink" href="#appendix-b-simulation-configuration-and-modularity" title="Link to this heading"></a></h3>
+<section id="model-configuration">
+<h4>Model Configuration<a class="headerlink" href="#model-configuration" title="Link to this heading"></a></h4>
+<p>The model is modular. Users can activate or deactivate key modules via Boolean flags in the configuration file:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">epidemic_module</span> <span class="pre">=</span> <span class="pre">TRUE</span></code>: Activates SEIR network-based epidemic simulation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">climate_module</span> <span class="pre">=</span> <span class="pre">TRUE</span></code>: Activates climate damage and temperature dynamics</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">policy_rules</span> <span class="pre">=</span> <span class="pre">FLEX</span></code>: Enables adaptive fiscal responses to shocks</p></li>
+</ul>
+</section>
+<section id="shock-dynamics-and-event-handling">
+<h4>Shock Dynamics and Event Handling<a class="headerlink" href="#shock-dynamics-and-event-handling" title="Link to this heading"></a></h4>
+<p>Climate shocks (e.g., AggPop or Idiosyncratic) are triggered when temperature crosses stochastic thresholds. Epidemic outbreaks emerge endogenously when infection rates exceed calibrated baseline levels. Both shocks include duration and severity components that influence mortality, income, and production.</p>
+</section>
+</section>
+<section id="appendix-c-epidemic-network-structure">
+<h3>Appendix C: Epidemic Network Structure<a class="headerlink" href="#appendix-c-epidemic-network-structure" title="Link to this heading"></a></h3>
+<p>The epidemic module uses a fixed random network:</p>
+<ul class="simple">
+<li><p><strong>Topology</strong>: Random Poisson distribution with mean degree calibrated to pre-pandemic contact data</p></li>
+<li><p><strong>Static Structure</strong>: Network remains constant across simulation but varies across Monte Carlo runs</p></li>
+<li><p><strong>Link Type</strong>: Only intra-firm links are assumed for transmission; no inter-firm spread</p></li>
+</ul>
+</section>
+<section id="appendix-d-model-limitations">
+<h3>Appendix D: Model Limitations<a class="headerlink" href="#appendix-d-model-limitations" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>No international spillovers or trade channels</p></li>
+<li><p>Monetary policy is exogenous and does not respond to macro conditions</p></li>
+<li><p>Climate policy limited to carbon tax; no green subsidies or ETS</p></li>
+<li><p>Health sector capacity and vaccination policies are abstracted</p></li>
+<li><p>Firms are homogeneous within sectors; no firm-level innovation or upgrading</p></li>
+<li><p>The population is demographically static; no births or migration</p></li>
+</ul>
+</section>
+<section id="appendix-e-output-format-and-data-export">
+<h3>Appendix E: Output Format and Data Export<a class="headerlink" href="#appendix-e-output-format-and-data-export" title="Link to this heading"></a></h3>
+<p>The model records all relevant micro- and macroeconomic variables monthly in CSV format:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">macro_summary.csv</span></code>: GDP, unemployment, inflation, emissions, infection rate</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">firm_panel.csv</span></code>: firm-level balance sheets, output, credit usage</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">household_panel.csv</span></code>: income, consumption, deposits, health state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">shock_log.csv</span></code>: timing and type of shocks (pandemic, climate)</p></li>
+</ul>
+<p>Each file is time-stamped and supports multi-run aggregation via companion Python scripts.</p>
+</section>
+<section id="acronyms-and-abbreviations">
+<h3>Acronyms and Abbreviations<a class="headerlink" href="#acronyms-and-abbreviations" title="Link to this heading"></a></h3>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Summary of acronyms and abbreviations</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Acronym</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>COV</p></td>
+<td><p>Baseline COVID scenario</p></td>
+</tr>
+<tr class="row-odd"><td><p>DIST</p></td>
+<td><p>Social distancing intervention</p></td>
+</tr>
+<tr class="row-even"><td><p>VAX</p></td>
+<td><p>Vaccination intervention</p></td>
+</tr>
+<tr class="row-odd"><td><p>LOCK</p></td>
+<td><p>Lockdown intervention</p></td>
+</tr>
+<tr class="row-even"><td><p>NPI</p></td>
+<td><p>Non-pharmaceutical intervention (include social distancing, vaccination, and lockdown)</p></td>
+</tr>
+<tr class="row-odd"><td><p>AggPop</p></td>
+<td><p>Aggregate Population Shock</p></td>
+</tr>
+<tr class="row-even"><td><p>Idio</p></td>
+<td><p>Idiosyncratic Shock</p></td>
+</tr>
+<tr class="row-odd"><td><p>S1</p></td>
+<td><p>Baseline scenario</p></td>
+</tr>
+<tr class="row-even"><td><p>S2</p></td>
+<td><p>COVID baseline only</p></td>
+</tr>
+<tr class="row-odd"><td><p>S3</p></td>
+<td><p>Climate shock only</p></td>
+</tr>
+<tr class="row-even"><td><p>S4</p></td>
+<td><p>Combined pandemic and climate shock</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api/agents.html" class="btn btn-neutral float-left" title="Economic Agents" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing to CliMaPan-Lab" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Paola D&#39;Orazio, Anh-Duy Pham, Hong Son Nguyen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
