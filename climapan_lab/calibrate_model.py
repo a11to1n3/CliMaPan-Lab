@@ -4,6 +4,21 @@ Model Calibration Script for CliMaPan-Lab using Bayesian Optimization
 
 Calibrates model parameters against Germany9122.csv using AUTOCORRELATION-BASED matching.
 This matches the dynamics/patterns of time series rather than absolute values.
+
+Documentation
+-------------
+- User guide: ``docs/calibration.rst`` (also summarized in the root README)
+- AMBER / results recording: ``docs/amber.rst``
+- Best parameter vector: ``optimized_params.py``
+- Trial log: ``calibration_results.json``
+- Re-score snapshot under ambr 0.4.7: ``calibration_eval_ambr047.json``
+
+Important limitations (see docs for detail)
+-------------------------------------------
+- With default ``n_years=5`` and ``max_lag=5``, ACF distances are always zero
+  because ``compute_autocorrelation`` requires ``n >= max_lag + 2``.
+- Absolute levels/units (GDP scale, unemployment percent vs fraction, climate
+  CO2 definition) are not part of the objective.
 """
 
 import json

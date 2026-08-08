@@ -1,9 +1,13 @@
 CliMaPan-Lab Documentation
 ==========================
 
-.. image:: https://img.shields.io/badge/python-3.8+-blue.svg
+.. image:: https://img.shields.io/badge/python-3.9+-blue.svg
    :target: https://www.python.org/downloads/
-   :alt: Python 3.8+
+   :alt: Python 3.9+
+
+.. image:: https://img.shields.io/badge/ambr-%3E%3D0.4.7-green.svg
+   :target: https://pypi.org/project/ambr/
+   :alt: ambr >= 0.4.7
 
 .. image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://opensource.org/licenses/MIT
@@ -20,6 +24,8 @@ CliMaPan-Lab is a comprehensive agent-based economic modeling framework that int
 climate change and pandemic dynamics. This documentation provides detailed information 
 about installation, usage, API reference, and examples.
 
+**Runtime:** Python ≥ 3.9 and AMBER (``ambr``) ≥ 0.4.7.
+
 .. toctree::
    :maxdepth: 2
    :caption: Getting Started
@@ -27,6 +33,8 @@ about installation, usage, API reference, and examples.
    installation
    quickstart
    climate
+   amber
+   calibration
 
 .. toctree::
    :maxdepth: 2
@@ -52,18 +60,21 @@ Key Features
 ------------
 
 * **Agent-Based Modeling**: Comprehensive economic agents including consumers, firms, banks, and government
+* **AMBER backend**: Columnar agent store (Polars) via ``ambr>=0.4.7``; vectorized and OOP modes yield identical end results for this model
 * **Climate Integration**: Climate shocks and economic impacts modeling with detailed step-by-step dynamics
 * **Pandemic Dynamics**: COVID-19 effects on economic activity with SEIR-like disease progression
 * **Policy Analysis**: Carbon taxes, fiscal policies, and intervention scenarios
+* **Calibration**: Autocorrelation-oriented matching to German macro series (see :doc:`calibration`)
 * **Flexible Scenarios**: Various economic and environmental conditions
-* **Comprehensive Testing**: 60+ tests across 5 categories ensuring reliability
-* **Extensive Documentation**: Well-documented codebase with detailed inline comments explaining agent lifecycles, simulation flow, and component interactions
+* **Comprehensive Testing**: 50+ automated tests across unit, integration, and performance suites
 
 Quick Links
 -----------
 
 * :doc:`installation` - Get started with installing CliMaPan-Lab
 * :doc:`quickstart` - Run your first simulation
+* :doc:`amber` - AMBER results API, monthly recording, mode verification
+* :doc:`calibration` - Calibration pipeline and evaluation notes
 * :doc:`api/index` - Complete API documentation
 
 Indices and tables

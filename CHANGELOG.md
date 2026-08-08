@@ -5,6 +5,32 @@ All notable changes to CliMaPan-Lab will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [0.3.0] - 2026-08-08
+
+### 📦 Dependencies
+- **Bumped AMBER (`ambr`) floor to ≥0.4.7** across `requirements.txt`, `setup.py`, and `pyproject.toml` (aligned previously inconsistent pins: `>=0.3.1` / `>=0.1.5`)
+- **Docs / packaging**: installation guide and badges list `ambr>=0.4.7` and Python ≥3.9
+
+### ✅ Verification (ambr 0.4.7)
+- Full `pytest tests/` and `run_all_tests.py --fast` pass
+- **Vectorized vs OOP** AMBER modes: bit-identical model/agent frames for `EconModel` (same seed)
+- Determinism, multi-month GDP, BAU/CT/climate paths re-checked
+- Calibration re-score: `optimized_params` best among baseline/midpoint/random; see `docs/calibration.rst` and `climapan_lab/calibration_eval_ambr047.json`
+- Known calibration limits documented (ACF inert at `n_years=5`, scale/unit mismatches)
+
+### 📖 Documentation
+- New Sphinx pages: `docs/amber.rst`, `docs/calibration.rst` (linked from `docs/index.rst`)
+- README: AMBER requirements, results API, monthly recording, verification, calibration
+- Quickstart: daily steps + Polars `results["model"]` access (not AgentPy-only)
+
+### Notes on AMBER 0.3.x → 0.4.x
+- Deprecated but still functional until 1.0: `Model.record` and `AgentList.select` (prefer `record_model` / `agents.where` when migrating later)
+- Global `np.random` is no longer seeded by AMBER's model seed alone — CliMaPan continues to call `np.random.seed(self.p.seed)` explicitly
+- Existing `model.run()` / results dict (`'model'` / `'agents'`) paths remain supported
+- Macro metrics are recorded on **month boundaries** only; short runs may only have column `t`
+
 ## [0.2.0] - 2026-05-09
 
 ### 🚀 Major Upgrade — AMBER v0.3.1 Compatibility

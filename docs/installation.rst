@@ -4,7 +4,7 @@ Installation
 Requirements
 ------------
 
-* Python 3.8 or higher
+* Python 3.9 or higher
 * pip package manager
 
 Dependencies
@@ -18,7 +18,7 @@ Core Dependencies
 * **numpy** (>=1.21.0) - Numerical computing
 * **pandas** (>=1.3.0) - Data manipulation and analysis
 * **matplotlib** (>=3.5.0) - Plotting and visualization
-* **ambr** (>=0.1.5) - Agent-based modeling framework (replaces agentpy)
+* **ambr** (>=0.4.7) - Agent-based modeling framework (replaces agentpy); see :doc:`amber`
 * **scikit-learn** (>=1.0.0) - Machine learning utilities
 * **scipy** (>=1.7.0) - Scientific computing
 * **joblib** (>=1.1.0) - Parallel computing

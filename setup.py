@@ -10,7 +10,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="climapan-lab",
-    version="0.2.0",
+    version="0.3.0",
     author="CliMaPan-Lab Team",
     description="Climate-Pandemic Economic Modeling Laboratory",
     long_description=long_description,
@@ -34,7 +34,7 @@ setup(
         "numpy>=1.21.0",
         "pandas>=1.3.0",
         "matplotlib>=3.5.0",
-        "ambr>=0.3.1",
+        "ambr>=0.4.7",
         "scikit-learn>=1.0.0",
         "scipy>=1.7.0",
         "joblib>=1.1.0",

@@ -42,20 +42,26 @@ To enable automatic builds triggered by GitHub Actions:
 ```
 docs/
 ├── conf.py                 # Sphinx configuration
-├── index.rst              # Main documentation page
-├── installation.rst       # Installation guide
-├── quickstart.rst         # Quick start tutorial
-├── api/                   # API documentation
+├── index.rst               # Main documentation page
+├── installation.rst        # Install & ambr>=0.4.7 pins
+├── quickstart.rst          # First simulation (daily steps, Polars results)
+├── amber.rst               # AMBER API, monthly recording, vectorized/OOP checks
+├── calibration.rst         # Calibration pipeline & evaluation notes
+├── climate.rst             # Climate module
+├── odd_protocol.rst        # ODD+D model description
+├── api/                    # API documentation
 │   ├── index.rst
 │   ├── model.rst
 │   └── agents.rst
-├── contributing.rst       # Contributing guidelines
-├── changelog.rst         # Version history
-├── license.rst           # License information
-├── requirements.txt      # Documentation dependencies
-├── Makefile             # Build automation
-└── _static/             # Static assets
+├── contributing.rst
+├── changelog.rst
+├── license.rst
+├── requirements.txt
+├── Makefile
+└── _static/
 ```
+
+User-facing summary of the same topics also lives in the root **[README.md](../README.md)**.
 
 ## 🔨 Building Documentation Locally
 

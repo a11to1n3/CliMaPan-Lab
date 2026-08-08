@@ -8,7 +8,11 @@ each component works and interacts within the simulation.
 Basic Simulation
 ----------------
 
-Here's how to run a basic simulation with default parameters:
+Here's how to run a basic simulation with default parameters.
+
+**Note:** time steps are **daily**. Macro metrics (``GDP``, unemployment, …) are
+written on **month boundaries** only. Use enough steps to cross at least one
+month (e.g. ``steps >= 40``). See :doc:`amber` for details.
 
 .. code-block:: python
 
@@ -17,16 +21,27 @@ Here's how to run a basic simulation with default parameters:
 
    # Create model with default parameters
    params = economic_params.copy()
-   params['steps'] = 120  # 10 years (monthly steps)
+   params["steps"] = 120          # ~4 months of daily steps
+   params["show_progress"] = False
+   # Optional: reduce scale for interactive exploration
+   # params["c_agents"] = 200
 
-   # Run simulation
+   # Run simulation (AMBER RunResults mapping)
    model = EconModel(params)
    results = model.run()
 
-   # Access results
-   df = results.variables.EconModel
-   print(f"Final GDP: {df['GDP'].iloc[-1]}")
-   print(f"Final Unemployment Rate: {df['unemployment_rate'].iloc[-1]}")
+   # Model-level frame is Polars; convert to pandas if preferred
+   model_df = results["model"].to_pandas()
+   # Rows without a month-end record may have NaNs for GDP etc.
+   gdp = model_df["GDP"].dropna()
+   print(f"Monthly GDP observations: {len(gdp)}")
+   if len(gdp):
+       print(f"Last recorded GDP: {gdp.iloc[-1]}")
+
+   # Or use the CLI / single_run wrapper (AgentPy-style access):
+   # from climapan_lab.run_sim import single_run
+   # result = single_run(params, parent_folder="results", make_stats=True)
+   # pdf = result.variables.EconModel
 
 Running Different Scenarios
 ----------------------------

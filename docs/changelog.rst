@@ -1,6 +1,30 @@
 Changelog
 =========
 
+The authoritative release history is maintained in ``CHANGELOG.md`` at the
+repository root. This page mirrors key Sphinx-oriented notes.
+
+Version 0.3.0 (2026-08-08)
+--------------------------
+
+**Dependencies**
+
+* Bumped AMBER (``ambr``) floor to **≥0.4.7** in ``requirements.txt``,
+  ``setup.py``, and ``pyproject.toml`` (aligned previously inconsistent pins)
+* Installation docs: Python ≥3.9, ``ambr>=0.4.7``
+
+**Verification (ambr 0.4.7)**
+
+* Full automated test suite passes (unit / integration / performance)
+* AMBER ``vectorized`` vs ``oop`` modes: identical end results for ``EconModel``
+* Calibration re-score documented in :doc:`calibration` and
+  ``climapan_lab/calibration_eval_ambr047.json``
+
+**Docs**
+
+* New pages: :doc:`amber`, :doc:`calibration`
+* Quickstart corrected for daily steps, monthly recording, and Polars results
+
 Version 0.1.0 (2026-01-30)
 ---------------------------
 
