@@ -19,9 +19,15 @@ on:
       - '.github/workflows/docs.yml'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build-docs:
     runs-on: ubuntu-latest
+    # GITHUB_TOKEN needs write to push the gh-pages branch (peaceiris/actions-gh-pages).
+    permissions:
+      contents: write
     
     steps:
     - name: Checkout repository
